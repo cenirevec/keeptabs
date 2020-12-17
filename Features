@@ -1,0 +1,38 @@
+Iteration 1
+Detect the URL of each tabs
+Save tabs somewhere
+Render saved tabs
+Close all saved tabs
+
+Load all saved tabds
+Load one tab
+Load a selection of tabs
+Delete while loaded
+
+Load tabs with delay between
+
+Load in another window
+
+Create the in context sidebar
+
+Protect mode for tabs/tab sections allow the items to not be deleted
+
+Iteration 2
+Allow delete
+Allow to move the items
+add a square aside when item hovered with a list of options aside
+
+Iteration 3
+Allow search
+Allow sorting
+
+Iteration 4
+Allow auto-delete = pb parfois videos d'info
+->Replace by auto-hide with a show hidden tabs button
+
+Iteration U1
+Link the tabs to the Firefox Account
+Save a image of the URL in thumbnail mode
+
+Possibility to add contextual actions such as YouTube AutoPlay list
+
