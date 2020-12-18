@@ -1,8 +1,18 @@
 Iteration 1
-Detect the URL of each tabs
+Detect the URL of each tabs	OK
+Make version of Keep Tabs main page UI
+	Add a save button 
 Save tabs somewhere
+	Make previous code cleaner and comment
+	Create a JSON from current tabs
+	Save the JSON in a file
+	Launch a render function when ended
 Render saved tabs
+	Make previous code cleaner and comment
+	Generate a list from a JSON
 Close all saved tabs
+	Make previous code cleaner and comment
+	Loop and close all tabs
 
 Load all saved tabds
 Load one tab
@@ -35,4 +45,6 @@ Link the tabs to the Firefox Account
 Save a image of the URL in thumbnail mode
 
 Possibility to add contextual actions such as YouTube AutoPlay list
+Support for multi-window
 
+Don't load twice a same favicon

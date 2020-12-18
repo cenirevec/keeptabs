@@ -1,0 +1,33 @@
+{
+  
+  "background": {
+      "scripts": ["main.js"]
+  },
+  "browser_action": {
+      "browser_style": true,
+      "default_title": "KeepTabs",
+      "default_icon": "media/ico-48.png"
+  },
+  "description": "Tool to save all your tabs.",
+  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/tabs-tabs-tabs",
+    
+  "icons": {
+    "48": "media/ico-48.png"
+  },
+
+  "manifest_version": 2,
+  "name": "KeepTabs",
+  "permissions": [
+      "tabs"
+  ],
+  "version": "0.0",
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./script/backend.js"]
+    }
+  ],
+  
+  "web_accessible_resources": ["*.js"]
+}
