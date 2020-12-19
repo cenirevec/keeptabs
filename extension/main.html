@@ -2,11 +2,57 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Méchant</title>
+    <title>KeepTabs</title>
 </head>
 <body>
-    <h1>KeepTabs</h1>
 
+
+    		<!-- CSS Style sheet-->
+		<link rel="stylesheet" type="text/css" href="./media/elements.css">
+        <link rel="stylesheet" type="text/css" href="./media/layout.css">
+        
+     <div id="content">
+         <p>LOGO Monochrome grand</p>
+        <header id="title">
+            <h1>KeepTabs</h1>
+            <div id="searchbar">
+                <div contenteditable="true"  placeholder="Search..."></div>
+                <button>Rechercher</button>
+            </div>
+            
+            
+        </header>
+         <section id="moodbar">
+             <h3>Moods</h3>
+             <ul>
+                 <li selected="true">Travail</li>
+                 <li>Streaming</li>
+                 <li>Divertissement</li>
+             </ul>
+             <p>Mode Secret: <b>OFF</b></p>
+             <p>Settings</p>
+             <small>v2020-12-19's (pre-alpha)</small>
+         </section>
+         <section id="list">
+             <h2>Cette semaine</h2>
+             <section>
+                <article>
+                    <ul>
+                        <li>YouTube</li>
+                        <li>Facebook</li>
+                        <li>Bing</li>
+                        <li>Qwant</li>
+                        <li>Nokia</li>
+                    </ul>
+                    <div class="tools">
+                        <!-- Need to be improved with React-->
+                        <button onclick="Save()">Save</button>
+                    </div>
+                </article>
+                <article></article>
+             </section>
+         </section>
+     </div>
     <script type="text/javascript" src="./script/backend.js"></script>
     
 </body>
