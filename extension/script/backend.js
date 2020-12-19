@@ -1,39 +1,28 @@
-console.log("Back-end");
-
-/*Make browser object accesible on Chrome and Firefox*/
+/** GLOBAL VARIABLES */
+/*      Make browser object accesible on Chrome and Firefox     */
 var browser = (browser != undefined) ? browser : chrome;
 var navigatorName = navigator.userAgent.split(" ")[navigator.userAgent.split(" ").length - 1];
 
-function logTabs(tabs) {
-    let tab = tabs[0]; // Safe to assume there will only be one result
-    console.log(tab);
-}
-
-//If browser used is Firefox
-if (navigatorName.indexOf("Firefox") == -1) {
-    browser.tabs.query({currentWindow: true, active: false},GetAllTabs);
-} else {
-    browser.tabs.query({currentWindow: true, active: false}).then(GetAllTabs, console.error);
-}
-
-console.log(browser)
+/** HANDLERS */
+/*   Read tabs at launch    */
+//Example code
+//M: Need to be changed to take the KeepTabs URL more than the unactive tabs 
+//browser.tabs.query({currentWindow: true, active: false},GetAllTabs);
 
 
-function GetAllTabs(tabs){
-    console.log(tabs);
-    //Security : check if the object receved is a tab object
-    let tabList = new Array();
-    for (let i = 0; i < tabs.length; i++) {
-        //const tab = tabs[i];
-        tabList.push(new Tab(tabs[i]));
-    }
-    console.log(tabList);
-}
 
+
+/*   Example function   */
 function NextFunction(){
     
 }
 
+/** RENDERING */
+
+/** REACT COMPONENTS */
+
+/** OBJECTS */
+/**     Tab object       */
 class Tab{
     constructor(tab){
         this.url = tab.url;
@@ -42,3 +31,25 @@ class Tab{
         this.lastAccessed = tab.lastAccessed;
     }
 }
+
+class TabSet{
+    constructor(tabs){
+        if(Array.isArray(tabs)){
+            //Create a brand new TabSet
+            this.children = tabs;        // List of tabs
+            this.length = tabs.length;   //Number of children
+            this.lastUpdate = "";       //To be defined
+            this.name = "";             //Name of the tab set
+        }else{
+            //Create a TabSet object based on JSON data
+            this.children = tabs.children;
+            this.length = tabs.length;
+            this.lastUpdate = tabs.lastUpdate;
+            this.name = tabs.name;
+        }
+    }
+}
+
+/** INITIALIZATION */
+//Create a Tab Management object
+var tab = new TabManagementObject();

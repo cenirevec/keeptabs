@@ -1,9 +1,11 @@
 *{
-   font-family: FreeSans, Calibri, serif;
+   font-family: var(--font-sans);
 }
 
 :root{
   --hovercolor: #00ff58;
+  --font-sans: FreeSans, Calibri, serif;
+  --font-fantasy: Lexend Deca, Century Gothic, Sans;
 }
 
 body{
@@ -27,7 +29,7 @@ ul{
 }
 
 #moodbar *{
-  font-family: Lexend Deca,serif;
+  font-family: var(--font-fantasy);
 }
 
 #moodbar ul{
@@ -60,8 +62,8 @@ ul{
 }
 
 #searchbar div{
-
-  padding: 5px 15px;
+  font-family: var(--font-sans);
+  padding: 12px 20px;
   color: #000c;
   background-color: white;
 }
@@ -70,6 +72,7 @@ ul{
 #list article, #searchbar div{
   box-shadow: 0px 0px 10px -8px;
   border: solid #ddd 1px;
+  border-radius: 25px;
 }
 
 #list article:hover{
@@ -83,9 +86,11 @@ ul{
 }
 
 #list{
-  background-color: white;
+  background-color: #fff7;
   overflow-y: auto;
   max-height: 100vh; /* To improve to take the size of the searchbar*/
+  border: 1px solid #5551;
+  border-radius: 5px;
 }
 
 #list, header{
@@ -93,7 +98,7 @@ ul{
 }
 
 h1{
-  font-family: Free Sans, Century Gothic, Sans;
+  font-family: var(--font-fantasy);
   color: var(--hovercolor);
   text-shadow: 0px 1px 1px #0006;
 }
@@ -106,4 +111,18 @@ h1{
 h3{
   margin: 0;
   opacity: 0.9;
+}
+
+#searchbar > button:nth-child(2){
+  background: none;
+  border: none;
+  font-size: 1.4em;
+  text-align: left;
+  padding-left: 35px;
+  border-radius: 15px; 
+}
+
+#searchbar > button:nth-child(2):hover{
+  color: var(--hovercolor);
+  cursor: pointer;
 }
