@@ -6,6 +6,7 @@ Save tabs somewhere
 	Make previous code cleaner and comment
 	Create a JSON from current tabs
 	Save the JSON in a file
+	Add the secret mode for tabSet
 	Launch a render function when ended
 Render saved tabs
 	Make previous code cleaner and comment
@@ -30,6 +31,8 @@ Load in another window
 Create the in context sidebar
 
 Protect mode for tabs/tab sections allow the items to not be deleted
+Make keeptabs as homepage 
+Add the posibility to search on the internet ?
 
 Iteration 2
 Allow delete

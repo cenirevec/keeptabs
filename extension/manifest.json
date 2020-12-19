@@ -8,7 +8,7 @@
       "default_title": "KeepTabs",
       "default_icon": "media/ico-48.png"
   },
-  "description": "Tool to save all your tabs.",
+  "description": "Tool to manage you browser workspace.",
   "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/tabs-tabs-tabs",
     
   "icons": {

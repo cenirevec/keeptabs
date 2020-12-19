@@ -1,5 +1,5 @@
 *{
-   font-family: Fira Sans, Calibri, serif;
+   font-family: FreeSans, Calibri, serif;
 }
 
 :root{
@@ -22,8 +22,12 @@ ul{
   border-radius: 5px
 }
 
-#moodbar{
-  font-size: 1.3em;
+#moodbar h2{
+  font-size: 1.5em;
+}
+
+#moodbar *{
+  font-family: Lexend Deca,serif;
 }
 
 #moodbar ul{
@@ -34,6 +38,7 @@ ul{
   margin: 10px 0px;
   padding-left: 20px;
   border-left: #0000 5px solid  ;
+  font-weight: thin;
 }
 
 #moodbar li[selected=true]{
