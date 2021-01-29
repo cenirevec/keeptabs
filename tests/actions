@@ -1,0 +1,15 @@
+Open file
+Read file lines and store in a var
+return the var content
+free the memory
+Free file
+
+
+Open file
+Erase file
+Get JSON stringified
+Write in file
+Free file
+
+
+//Choose file name

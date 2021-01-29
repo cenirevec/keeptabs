@@ -1,0 +1,2 @@
+
+int showNumber(int number);

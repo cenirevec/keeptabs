@@ -1,0 +1,18 @@
+Module['asm'] = asm;
+Module["ccall"] = ccall;
+Module["cwrap"] = cwrap;
+/*
+//Get right binary file
+if(browser == undefined){
+  var browser = chrome;
+}
+var wasmBinaryFile = browser.runtime.getURL("webAssembly/a.out.wasm");
+
+
+*/
+/*
+<script>
+	var hello = Module.cwrap('main', 'int', ['string']);
+	var show = Module.cwrap('showNumber', 'int', ['int']);
+</script>
+*/
