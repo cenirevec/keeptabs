@@ -1,16 +1,17 @@
 Iteration 1
 Detect the URL of each tabs	OK
-Make version of Keep Tabs main page UI
-	Add a save button 
+Make version of Keep Tabs main page UI Ok
+	Add a save button	OK 
 Save tabs somewhere
 	Make previous code cleaner and comment
-	Create a JSON from current tabs
-	Save the JSON in a file
+	Create a JSON from current tabs	OK
+	Save the JSON in a file		
 	Add the secret mode for tabSet
 	Launch a render function when ended
 Render saved tabs
 	Make previous code cleaner and comment
 	Generate a list from a JSON
+	Make the list savable
 Close all saved tabs
 	Make previous code cleaner and comment
 	Loop and close all tabs
