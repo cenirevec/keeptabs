@@ -1,0 +1,27 @@
+Iteration 1
+Detect the URL of each tabs	OK
+Make version of Keep Tabs main page UI Ok
+	Add a save button	OK 
+Save tabs somewhere
+	Make previous code cleaner and comment
+	Create a JSON from current tabs	OK
+	Save the JSON in a file		OK
+Load all saved tabs
+	Store all moods in "init" and load all moods in it	OK
+	Load all tabs then	OK
+Render saved tabs
+	Generate a list from a JSON	OK
+	
+======>Piste de React
+	Make the list savable	
+Close all saved tabs
+	Make previous code cleaner and comment	
+	Loop and close all tabs	
+
+	
+Load all moods tabs
+	Store all moods in ${password} and load all moods in it
+	Shape secret moods "secret@tabname" like this
+	
+Ensure that the tab object isn't accessible from other tabs
+

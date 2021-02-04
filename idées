@@ -1,0 +1,20 @@
+Les icônes dans un conteneur, p ou autre chose seront avec fond plein les autres fond vide
+Les icônes seront prise de bootstrap svg
+Les theme sera bootstrap 5.0
+
+SVG choices
+
+sliders pour paramètres = https://icons.getbootstrap.com/icons/sliders/
+suppression = https://icons.getbootstrap.com/icons/trash-fill/
+secret unlocked = https://icons.getbootstrap.com/icons/unlock/
+goto = https://icons.getbootstrap.com/icons/box-arrow-up-right/
+image-alt = https://icons.getbootstrap.com/icons/image-alt/
+filter = https://icons.getbootstrap.com/icons/filter/
+file-save =https://icons.getbootstrap.com/icons/file-arrow-down/
+
+file-upl = https://icons.getbootstrap.com/icons/file-arrow-up/
+
+remove-category = https://icons.getbootstrap.com/icons/dash/
+add-category = https://icons.getbootstrap.com/icons/plus/
+
+three-dots = https://icons.getbootstrap.com/icons/three-dots-vertical/

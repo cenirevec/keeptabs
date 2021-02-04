@@ -15,8 +15,8 @@ Render saved tabs
 Close all saved tabs
 	Make previous code cleaner and comment
 	Loop and close all tabs
-
-Load all saved tabds
+Dark theme
+Load all saved tabs
 Load one tab
 Load a selection of tabs
 Delete while loaded
@@ -47,6 +47,8 @@ Allow sorting
 Iteration 4
 Allow auto-delete = pb parfois videos d'info
 ->Replace by auto-hide with a show hidden tabs button
+
+Schedule moods
 
 Iteration U1
 Link the tabs to the Firefox Account

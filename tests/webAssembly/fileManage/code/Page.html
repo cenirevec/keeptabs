@@ -14,4 +14,7 @@
 </html>
 <script>
 	var version = Module.cwrap('version', 'string', null);
+	var readFile = Module.cwrap('read_file_content', 'string', ['string']);
+	var pwd = Module.cwrap('whichDir', 'string', ['string']);
+	
 </script>

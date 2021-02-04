@@ -18,9 +18,11 @@
   "manifest_version": 2,
   "name": "KeepTabs",
   "permissions": [
-      "tabs"
+      "tabs",
+      "storage",
+      "unlimitedStorage"
   ],
-  "version": "0.0",
+  "version": "0.0.1",
 
   "content_scripts": [
     {

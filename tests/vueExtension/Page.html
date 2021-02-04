@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Page Web sans titre</title>
+
+	<link href="./main.css" ref="stylesheet">
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		{{test}}
+	</div>
+</body>
+</html>
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			test: "Hello world !"
+		}
+	});
+</script>

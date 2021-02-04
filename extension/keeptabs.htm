@@ -3,60 +3,47 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeepTabs</title>
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' '; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval';">
 </head>
 <body>
 
 
     <!-- CSS Style sheet-->
+    <!--
     <link rel="stylesheet" type="text/css" href="./media/elements.css">
     <link rel="stylesheet" type="text/css" href="./media/layout.css">
+    -->
+    <link rel="stylesheet" type="text/css" href="./modules/bootstrap-5.0.0-beta1-dist/css/bootstrap.css">
 
-    <script type="script/javascript" src="./script/lib/vue.js"></script>
         
-     <div id="content">
-         <p>LOGO Monochrome grand</p>
-        <header id="title">
-            <h1>KeepTabs</h1>
-            <div id="searchbar">
-                <div contenteditable="true"  placeholder="Search..."></div>
-                <button>Rechercher</button>
-            </div>
-            
-            
-        </header>
-         <section id="moodbar">
-             <h3>Moods</h3>
-             <ul>
-                 <li selected="true">Travail</li>
-                 <li>Streaming</li>
-                 <li>Divertissement</li>
-             </ul>
-             <p>Mode Secret: <b>OFF</b></p>
-             <p>Settings</p>
-             <small>v2020-12-19's (pre-alpha)</small>
-         </section>
-         <section id="list">
-             <h2>Cette semaine</h2>
-             <section>
-                <article>
-                    <ul>
-                        <li>YouTube</li>
-                        <li>Facebook</li>
-                        <li>Bing</li>
-                        <li>Qwant</li>
-                        <li>Nokia</li>
+    <div id="content">
+            <header>KeepTabs</header>
+            <small>Development version 0.0.0</small>
+            <section>
+                <div id="current">
+                    <h3>Currently opened</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">URL 1</li>
+                        <li class="list-group-item">URL 2</li>
                     </ul>
-                    <div class="tools">
-                        <!-- Need to be improved with React-->
-                        <button onclick="tab.saveTabs()">Save</button>
-                    </div>
-                </article>
-                <article></article>
-             </section>
-         </section>
-     </div>
-    <script type="text/javascript" src="./script/tabManagementObject.js"></script>
+                </div>
+            </section>
+            <section>
+                <h2>Main</h2>
+                <div id="current">
+                    <h3>Today</h3>
+                    <small>Febr 4th, 3:26PM</small>
+                    <ul class="list-group">
+                        <li class="list-group-item">URL 1</li>
+                        <li class="list-group-item">URL 2</li>
+                    </ul>
+                </div>
+            </section>
+            <footer>Settings - KeepTabs is an Open Source project (Licence: Apache)</footer>
+    </div>
     <script type="text/javascript" src="./script/backend.js"></script>
+    <script type="text/javascript" src="./script/frontend.js"></script>
     
 </body>
 </html>

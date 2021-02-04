@@ -1,7 +1,13 @@
 /** GLOBAL VARIABLES */
 /*      Make browser object accesible on Chrome and Firefox     */
-var browser = (browser != undefined) ? browser : chrome;
-var navigatorName = navigator.userAgent.split(" ")[navigator.userAgent.split(" ").length - 1];
+var navigatorName;
+var browser = (browser != undefined)? browser : chrome;
+if (chrome != undefined) {
+    navigatorName = "Chrome";
+} else {
+    navigatorName = "Firefox";
+}
+
 
 /** HANDLERS */
 /*   Read tabs at launch    */
@@ -17,6 +23,32 @@ function NextFunction(){
     
 }
 
+class DataManagement{
+    constructor(){
+
+    }
+
+    save(json){
+        chrome.storage.local.set(json, console.log);
+    }
+
+    load(moodID,callback){
+        chrome.storage.local.get(moodID,function(json){
+            //Check if the element exists
+            if(!Object.keys(json).length)
+                json = null;
+            callback(json);
+        });
+    }
+
+    clear(moodID){
+        chrome.storage.local.remove(moodID);
+    }
+}
+
+var data = new DataManagement();
+/*data.save({"key":JSON.stringify([{"key":4,"bonjour":5},{"key":3,"bonjour":7}])});
+data.load("key",console.log)*/
 /** RENDERING */
 
 /** REACT COMPONENTS */
@@ -53,3 +85,5 @@ class TabSet{
 /** INITIALIZATION */
 //Create a Tab Management object
 var tab = new TabManagementObject();
+
+data.load("_init",tab.loadMoods);
