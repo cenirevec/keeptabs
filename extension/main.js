@@ -16,7 +16,7 @@ savebttn.addEventListener("click",TabService.saveCurrentTabs);
 
 /*
 var refbttn = document.querySelector("#refresh");
-refbttn.addEventListener("click",TabService.getActiveTabs);
+refbttn.addEventListener("click",TabService.getCurrentlyOpenTabs);
 
 var closebttn = document.querySelector("#closeAll");
 closebttn.addEventListener("click",TabService.closeAllTabs);
@@ -24,7 +24,7 @@ closebttn.addEventListener("click",TabService.closeAllTabs);
 
 
 var dropAllbttn =  document.querySelector("#dropAll");
-dropAllbttn.addEventListener("click",TabService.dropAllTabs);
+dropAllbttn.addEventListener("click",TabService.removeAllTabsFromStorage);
 
 
 var refAllbttn = document.querySelector("#refreshAll");

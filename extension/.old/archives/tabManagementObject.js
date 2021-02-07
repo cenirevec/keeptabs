@@ -22,7 +22,7 @@ class TabManagementObject {
 
 
   /** Save the tabs */
-  async SaveTabs() {
+  async saveTabsInStorage() {
     //Load all tabs
     list = await _classPrivateMethodGet(this, _GetAllTabs, _GetAllTabs2).call(this);
     console.log(list);

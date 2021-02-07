@@ -51,7 +51,7 @@ export default class TabManagementObject{
         return tabList;
     }
 
-    getActiveTabs(tabs){
+    getCurrentlyOpenTabs(tabs){
         /*   Get tabs   */
         // This code is redundant to ensure the privacy on ope
         let ReadTabs = function(tabs){
@@ -72,7 +72,7 @@ export default class TabManagementObject{
     }
 
     /** Load the tabs */
-    loadTabs(moodID){
+    loadTabsFromJSON(moodID){
         moodID = (moodID == undefined)? "main": moodID;
 
         data.load(moodID,this.render);
@@ -92,7 +92,7 @@ export default class TabManagementObject{
             this.moods = JSON.parse(array._init);
 
             for(let mood of this.moods){
-                this.loadTabs(mood);
+                this.loadTabsFromJSON(mood);
             }
         }
     }

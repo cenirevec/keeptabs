@@ -27,7 +27,7 @@ class TabManagementObject{
   }
 
   /** Save the tabs */
-  async SaveTabs(){
+  async saveTabsInStorage(){
     //Load all tabs
     list = await this.#GetAllTabs();
     console.log(list);

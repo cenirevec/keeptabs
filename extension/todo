@@ -1,7 +1,15 @@
 V2
+Selection mode when clicked on icon
+Load a selection of tabs
+	few
+Save a selection of tabs
+	few 
 Allow delete
 Protect from deletion
 Allow to move the items
 add a square aside when item hovered with a list of options aside
 Allow search
     Create an JSON object with the url and the title while loading the tabs
+Write date in "time ago" correctly
+
+Bug fixes

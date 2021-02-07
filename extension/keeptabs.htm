@@ -3,19 +3,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeepTabs</title>
-
-    <!--
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval';">
-    -->
 </head>
 <body>
 
-
-    <!-- CSS Style sheet-->
-    <!--
-    <link rel="stylesheet" type="text/css" href="./media/elements.css">
-    <link rel="stylesheet" type="text/css" href="./media/layout.css">
-    -->
     <link rel="stylesheet" type="text/css" href="./lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="./media/main.css">
 
@@ -36,38 +26,26 @@
                         </ul>
                         <button class="btn btn-primary" id="saveCurrent">Save</button>
                         <button class="btn btn-secondary" id="saveCurrentIn">Save in... </button>
-                        This button transforms itself in search box helped by the list of already created item and save when Enter pressed
+                        <!--This button transforms itself in search box helped by the list of already created item and save when Enter pressed-->
                     </div>
                     <div>
-                        <p>Development mode</p>
+                        <hr> 
                         <!--<button class="btn btn-secondary" id="refreshAll">Refresh</button> -->
                         <button class="btn btn-danger" id="dropAll">Clear</button>
+                        <i class="text-secondary">Development mode</i>
+                        <hr>
                     </div>
                 </section>
                 <section id="loaded">
                     <div id="wrapper">
                         <div id="main">
-                            <h2>Main</h2>
+                            <h2>Loading saved tabs</h2>
                             <ul class="list-group tabs">
-                                content here
+                                Loading...
                             </ul>
                         </div>
                     </div>
                 </section>
-                <!--
-                <section>
-                    <h2>Main</h2>
-                    <div id="main">
-                        <h3>Today</h3>
-                        <small>Febr 4th, 3:26PM</small>
-                        <ul class="list-group tabs">
-                            <li class="list-group-item">URL 1</li>
-                            <li class="list-group-item">URL 2</li>
-                        </ul>
-                        
-                    </div>
-                </section>
-            -->
             </div>
             <footer class="text text-secondary">Settings - KeepTabs is an <a href="https://github.com/cenirevec/keeptabs">Open Source project (Licence: Apache)</a> <button class="btn btn-success">Donate</button></footer>
     </div>

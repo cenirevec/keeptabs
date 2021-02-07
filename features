@@ -20,7 +20,7 @@ Close all saved tabs
 Load and delete function	OK
 Load and delete one tab	OK
 Load and delete a group of tabs	OK
-Update the data stored when tabs opened
+Update the data stored when tabs opened	OK
 
 V1
 
@@ -30,10 +30,11 @@ Finish V1's design
 	Remove the useless Dev buttons	OK
 Say when nothing is open yet in current tabs	OK
 Make previous code cleaner and comment
-	Define a specific vocabulary for each action
-	Reorder the elements
-	Comment
+	Define a specific vocabulary for each action	OK
+	Reorder the elements	OK
+	Comment	OK
 Correct the bug happening when clicking twice in a OK
+Delete the tab group when the group is empty	OK
 	
 Load all moods tabs
 	Store all moods in ${password} and load all moods in it	OK
