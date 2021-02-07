@@ -1,4 +1,6 @@
-export class TabManagementObject{
+import { Tab } from "../components/tab.component.mjs";
+
+export default class TabManagementObject{
  
     constructor(){
         this.render = this.render.bind(this);
@@ -82,6 +84,8 @@ export class TabManagementObject{
     }
     /** Load the moods */
     loadMoods(array){
+        console.log(array);
+        
         if (array == null) {
             data.save({"_init":JSON.stringify(this.moods)});
         } else {

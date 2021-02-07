@@ -2,54 +2,80 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Méchant</title>
+    <title>KeepTabs</title>
+
+    <!--
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval';">
+    -->
 </head>
 <body>
 
+
     <!-- CSS Style sheet-->
-    <link rel="stylesheet" type="text/css" href="layout.css">
-    <link rel="stylesheet" type="text/css" href="elements.css">
+    <!--
+    <link rel="stylesheet" type="text/css" href="./media/elements.css">
+    <link rel="stylesheet" type="text/css" href="./media/layout.css">
+    -->
+    <link rel="stylesheet" type="text/css" href="./lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./media/main.css">
+
         
+    <div id="content">
+        <header>
+            <img src="./media/ico-48.png">
+                <h1>KeepTabs</h1>
+            <small class="text text-secondary">Development version 0.0.12</small>
+        </header>
+        
+            
+            <div class="container">
+                <section class="row">
+                    <div id="current">
+                        <h2>Current Tabs <span class="badge badge-secondary">number</span></h2>
+                        <ul class="list-group tabs">
 
-    <!-- Blocs for testing -->
-    <h1>KeepTabs</h1>
-    <section>
-        <h2>Aujourd'hui - Mercredi 16 Décembre</h2>
-        <a href="https://www.youtube.com/">YouTube</a>
-        <a href="https://www.youtube.com/watch?v=ZXYo5ojdt_k&t=10s">Joueur du Grenier - Hors série - Les super-héros - YouTube</a>
-        <a href="https://www.youtube.com/watch?v=ayiJKsR5BTI">DANS LE NOIR | Among Us - YouTube</a>
-        <a href="https://www.youtube.com/watch?v=ZO3QNsDemvQ">Vercingétorix - LE PLUS GROS NANAR HISTORIQUE FRANÇAIS ! - YouTube</a>
-        <a href="https://www.youtube.com/watch?v=N5mO34_6x_M">Le Grand Paris Express expliqué - YouTube</a>
-        <a href="https://www.youtube.com/watch?v=N5mO34_6x_M">iPhone 12... "The Most Durable iPhone Ever" - YouTube</a>
-    </section>
-
-    <section>
-        <h2>Aujourd'hui - Mercredi 16 Décembre</h2>
-        <div>
-            <input type="checkbox" id="item0" name="item0"
-                   checked>
-            <label for="item0">YouTube</label>
-          </div>
-        <a href="https://www.youtube.com/">YouTube</a>
-        <a href="https://www.youtube.com/watch?v=ZXYo5ojdt_k&t=10s">Joueur du Grenier - Hors série - Les super-héros - YouTube</a>
-        <a href="https://www.youtube.com/watch?v=ayiJKsR5BTI">DANS LE NOIR | Among Us - YouTube</a>
-        <a href="https://www.youtube.com/watch?v=ZO3QNsDemvQ">Vercingétorix - LE PLUS GROS NANAR HISTORIQUE FRANÇAIS ! - YouTube</a>
-        <a href="https://www.youtube.com/watch?v=N5mO34_6x_M">Le Grand Paris Express expliqué - YouTube</a>
-        <a href="https://www.youtube.com/watch?v=N5mO34_6x_M">iPhone 12... "The Most Durable iPhone Ever" - YouTube</a>
-    </section>
-
-    <div contenteditable="true" onchange="refresh()">
-        https://www.youtube.com/ | YouTube
-https://www.youtube.com/watch?v=ZXYo5ojdt_k&t=10s | Joueur du Grenier - Hors série - Les super-héros - YouTube
-https://www.youtube.com/watch?v=ayiJKsR5BTI | DANS LE NOIR | Among Us - YouTube
-https://www.youtube.com/watch?v=ZO3QNsDemvQ | Vercingétorix - LE PLUS GROS NANAR HISTORIQUE FRANÇAIS ! - YouTube
-https://www.youtube.com/watch?v=N5mO34_6x_M | Le Grand Paris Express expliqué - YouTube
-https://www.youtube.com/watch?v=3mfur3zK3Ug | iPhone 12... "The Most Durable iPhone Ever" - YouTube
-https://www.youtube.com/watch?v=rkoYMuonRlA | Retour du service militaire en France en débat, sauvetage en mer miraculeux... Actus du jour - YouTube
-https://www.youtube.com/watch?v=1SVfEXX5ORk | Le PREMIER JEU sur...PS1 ! - YouTube
-https://www.youtube.com/watch?v=_M6HB0cVJ70 | Dites 33 ! / Panneaux de ville / Le magasin Aldi - Karambolage - ARTE - YouTube
-https://www.youtube.com/watch?v=VooHiweb1sw | Sneaky Ways Fast Food Restaurants Get You To Spend Money - YouTube
+                        </ul>
+                        <button class="btn btn-primary" id="saveCurrent">Save</button>
+                        <button class="btn btn-secondary" id="saveCurrent">Save in... </button>
+                        This button transforms itself in search box helped by the list of already created item and save when Enter pressed
+                    </div>
+                    <div>
+                        <p>Development mode</p>
+                        <button class="btn btn-secondary" id="refreshAll">Refresh</button>
+                        <button class="btn btn-danger" id="dropAll">Clear</button>
+                    </div>
+                </section>
+                <section id="loaded">
+                    <div id="wrapper">
+                        <div id="main">
+                            <h2>Main</h2>
+                            <ul class="list-group tabs">
+                                content here
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                <!--
+                <section>
+                    <h2>Main</h2>
+                    <div id="main">
+                        <h3>Today</h3>
+                        <small>Febr 4th, 3:26PM</small>
+                        <ul class="list-group tabs">
+                            <li class="list-group-item">URL 1</li>
+                            <li class="list-group-item">URL 2</li>
+                        </ul>
+                        
+                    </div>
+                </section>
+            -->
+            </div>
+            <footer class="text text-secondary">Settings - KeepTabs is an Open Source project (Licence: Apache)</footer>
     </div>
-
+    <!---
+    <script type="modules" src="./script/backend.js"></script>
+    <script type="modules" src="./script/frontend.js"></script>
+    --->
+    
 </body>
 </html>

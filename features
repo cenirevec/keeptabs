@@ -13,15 +13,38 @@ Render saved tabs
 	Generate a list from a JSON	OK
 	
 ======>Piste de React
-	Make the list savable	
-Close all saved tabs
-	Make previous code cleaner and comment	
-	Loop and close all tabs	
+	Make the list savable	OK
+Close all saved tabs	
+	Loop and close all tabs	OK
 
+Load and delete function	OK
+Load and delete one tab	OK
+Load and delete a group of tabs	OK
+Update the data stored when tabs opened
+
+V1
+
+Finish V1's design
+	Reorder elements to have a good looking design OK
+	Disable buttons when non savable, etc.	OK
+	Remove the useless Dev buttons	OK
+Say when nothing is open yet in current tabs	OK
+Make previous code cleaner and comment
+	Define a specific vocabulary for each action
+	Reorder the elements
+	Comment
+Correct the bug happening when clicking twice in a OK
 	
 Load all moods tabs
-	Store all moods in ${password} and load all moods in it
-	Shape secret moods "secret@tabname" like this
+	Store all moods in ${password} and load all moods in it	OK
+	Shape secret moods "secret@tabname" like this 
+	
+	Add a Donate button	OK
+	
+Bug to fix
+	Saved tabs loading twice	OK
+	Saved disappears (record to see)	OK
+	Make refresh button work again	OK
 	
 Ensure that the tab object isn't accessible from other tabs
 

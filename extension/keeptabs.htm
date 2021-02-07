@@ -4,7 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeepTabs</title>
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' '; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval';">
+    <!--
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval';">
+    -->
 </head>
 <body>
 
@@ -14,36 +16,66 @@
     <link rel="stylesheet" type="text/css" href="./media/elements.css">
     <link rel="stylesheet" type="text/css" href="./media/layout.css">
     -->
-    <link rel="stylesheet" type="text/css" href="./modules/bootstrap-5.0.0-beta1-dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./media/main.css">
 
         
     <div id="content">
-            <header>KeepTabs</header>
-            <small>Development version 0.0.0</small>
-            <section>
-                <div id="current">
-                    <h3>Currently opened</h3>
-                    <ul class="list-group">
-                        <li class="list-group-item">URL 1</li>
-                        <li class="list-group-item">URL 2</li>
-                    </ul>
-                </div>
-            </section>
-            <section>
-                <h2>Main</h2>
-                <div id="current">
-                    <h3>Today</h3>
-                    <small>Febr 4th, 3:26PM</small>
-                    <ul class="list-group">
-                        <li class="list-group-item">URL 1</li>
-                        <li class="list-group-item">URL 2</li>
-                    </ul>
-                </div>
-            </section>
-            <footer>Settings - KeepTabs is an Open Source project (Licence: Apache)</footer>
+        <header>
+            <img src="./media/ico-48.png">
+                <h1>KeepTabs</h1>
+            <small id="manifest-version" class="text text-secondary">version 0.0.12-dev</small>
+        </header>
+        
+            <div class="container">
+                <section class="row">
+                    <div id="current">
+                        <h2>Current Tabs <span class="badge badge-secondary">number</span></h2>
+                        <ul class="list-group tabs">
+
+                        </ul>
+                        <button class="btn btn-primary" id="saveCurrent">Save</button>
+                        <button class="btn btn-secondary" id="saveCurrentIn">Save in... </button>
+                        This button transforms itself in search box helped by the list of already created item and save when Enter pressed
+                    </div>
+                    <div>
+                        <p>Development mode</p>
+                        <!--<button class="btn btn-secondary" id="refreshAll">Refresh</button> -->
+                        <button class="btn btn-danger" id="dropAll">Clear</button>
+                    </div>
+                </section>
+                <section id="loaded">
+                    <div id="wrapper">
+                        <div id="main">
+                            <h2>Main</h2>
+                            <ul class="list-group tabs">
+                                content here
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                <!--
+                <section>
+                    <h2>Main</h2>
+                    <div id="main">
+                        <h3>Today</h3>
+                        <small>Febr 4th, 3:26PM</small>
+                        <ul class="list-group tabs">
+                            <li class="list-group-item">URL 1</li>
+                            <li class="list-group-item">URL 2</li>
+                        </ul>
+                        
+                    </div>
+                </section>
+            -->
+            </div>
+            <footer class="text text-secondary">Settings - KeepTabs is an <a href="https://github.com/cenirevec/keeptabs">Open Source project (Licence: Apache)</a> <button class="btn btn-success">Donate</button></footer>
     </div>
-    <script type="text/javascript" src="./script/backend.js"></script>
-    <script type="text/javascript" src="./script/frontend.js"></script>
+    <!---
+    <script type="modules" src="./script/backend.js"></script>
+    <script type="modules" src="./script/frontend.js"></script>
+    --->
+    <script type="module" src="main.js"></script>
     
 </body>
 </html>

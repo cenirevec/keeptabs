@@ -1,11 +1,12 @@
-import { TabManagementObject } from "./tabManagementObject";
+import { TabManagementObject } from "./tabManagementObject.js";
 
 console.log("Front-end");
 
 
-export class JSONtoDOMParser{
+class JSONtoDOMParser{
     constructor(){
         this.tab = new TabManagementObject();
+        console.log("bite")
     }
 
     hello(){
@@ -14,3 +15,5 @@ export class JSONtoDOMParser{
         return el;
     }
 }
+
+jsdomparam = new JSONtoDOMParser();

@@ -5,21 +5,26 @@ Make version of Keep Tabs main page UI Ok
 Save tabs somewhere
 	Make previous code cleaner and comment
 	Create a JSON from current tabs	OK
-	Save the JSON in a file		
+	Save the JSON in a file		OK
 	Add the secret mode for tabSet
-	Launch a render function when ended
+	Launch a render function when ended	OK
 Render saved tabs
 	Make previous code cleaner and comment
-	Generate a list from a JSON
-	Make the list savable
+	Generate a list from a JSON	OK
+	Make the list savable	OK
 Close all saved tabs
 	Make previous code cleaner and comment
-	Loop and close all tabs
+	Loop and close all tabs	OK
 Dark theme
-Load all saved tabs
-Load one tab
+Load all saved tabs	OK
+Load one tab	OK
 Load a selection of tabs
-Delete while loaded
+	all OK
+	few
+Save a selection of tabs
+	all OK
+	few 
+Delete while loaded	OK
 
 Active research: Filter instantaneously while typing
 Mood system
