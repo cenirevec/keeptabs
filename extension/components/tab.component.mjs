@@ -9,6 +9,7 @@ var Imgs = {
 }
 
 export class Tab{
+    static createdTabs = 0;
     constructor(tab){
         this.id = tab.id;
         this.url = tab.url;
@@ -17,9 +18,16 @@ export class Tab{
         this.lastAccessed = 
             (tab.lastAccessed != undefined)? tab.lastAccessed : Date.now();
         this.groupId = -1;
+        this.searchId = this.createdTabs++;
+        
+        this.isHidden = false;
     }
 
     render(context){
+        if (this.isHidden) {
+            return null;
+        }
+
         let el = document.createElement("li");
         el.className = "list-group-item list-group-item-action";
         el.key = this.id;
@@ -72,14 +80,37 @@ export class Tab{
         return elements;
     }
 
+    /** Open the tab
+        Returns if the tab is opened of not */
     open(options){
-        options = (options == undefined || options == null)? {}:options;
-        options["url"] = this.url;
+        if (this.isHidden) {
+            return false;
+        } else {
+            options = (options == undefined || options == null)? {}:options;
+            options["url"] = this.url;
 
-        Browser.tabs.create(options);
+            Browser.tabs.create(options);
+            return true;
+        }
     }
 
-}
+    match(regexp){
+        //if(this.url.indexOf(regexp) + this.title.search(regexp) >= -2){
+        //regexp = new RegExp(regexp,i);
+        let text = this.url.concat(" "+this.title);
+        //console.log(text);
+        if(text.search(regexp) > -1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    show(boolean){
+        this.isHidden = !boolean;
+    }
+
+} 
 
 export class TabSet{
     constructor(tabs){

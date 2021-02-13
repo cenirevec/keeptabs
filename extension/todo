@@ -1,4 +1,7 @@
 V2
+Allow search	OK
+    Create a JSON object with the url and the title while loading the tabs	OK
+	Add the keywords property fetched from tab data
 Selection mode when clicked on icon
 Load a selection of tabs
 	few
@@ -8,8 +11,9 @@ Allow delete
 Protect from deletion
 Allow to move the items
 add a square aside when item hovered with a list of options aside
-Allow search
-    Create an JSON object with the url and the title while loading the tabs
 Write date in "time ago" correctly
+Clean the directories
 
 Bug fixes
+Link chrome-extension by eventListener in Google 
+Only delete the tab not hidden when Open all

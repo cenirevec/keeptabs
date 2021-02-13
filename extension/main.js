@@ -1,7 +1,7 @@
 import { DataService } from "./services/data.service.mjs";
 import { TabService } from "./services/tab.service.mjs";
 import { Browser } from "./components/shared.variables.mjs";
-
+import { SearchBar } from "./components/searchBar.component.mjs"
 
 var data = new DataService();
 var tab = new TabService(data);
@@ -32,3 +32,5 @@ var refAllbttn = document.querySelector("#refreshAll");
 
 let version = Browser.runtime.getManifest().version;
 document.getElementById("manifest-version").innerHTML = version+"-dev";
+
+let search = new SearchBar("#searchbox");

@@ -1,6 +1,7 @@
 import { DataService } from "./data.service.mjs";
 import { Browser } from "../components/shared.variables.mjs";
 import { Tab } from "../components/tab.component.mjs"
+import { TabSet } from "../components/tab.component.mjs";
 
 export class TabService{
     // The tabs open or saved
@@ -176,12 +177,17 @@ export class TabService{
     // and tabGroupID, then render it and then save it in browser's data storage
     static OpenAllTabsByGroupID(moodID,groupID){
         //Load all tabs
-        TabService.loadedTabs[moodID][groupID].forEach(tab=>{
-            tab.open();
-        })
-
+        for (let index = 0; index < TabService.loadedTabs[moodID][groupID].length; index++) {
+            const tab = TabService.loadedTabs[moodID][groupID][index];
+           
+            if(tab.open()){
+                TabService.loadedTabs[moodID][groupID].splice(index,1);
+                index--;
+            }
+        }
         //Remove for TabService.loadedTabs
-        delete TabService.loadedTabs[moodID][groupID];
+        if(!TabService.loadedTabs[moodID][groupID].length)
+            TabService.loadedTabs[moodID].splice(groupID,1);
         //Render and save
         this.renderSavedTabs();
         this.saveTabsInStorage(moodID);
@@ -265,10 +271,14 @@ export class TabService{
             let ulID = 0;
 
             //savedTabsGroup.appendChild(TabService.current[tab].render("current"));
-            TabService.loadedTabs[moodID].forEach(array => {
-
+            
+            for (let index = 0; index < TabService.loadedTabs[moodID].length; index++) {
+                const array = TabService.loadedTabs[moodID][index];
+                
                 if (array == null) {
-                    //Skip
+                    //Remove the element and skip
+                    TabService.loadedTabs[moodID].splice(index,1);
+                    index--;
                 } else {
                     let list = document.createElement("ul");
                     list.id = ulID;
@@ -279,33 +289,47 @@ export class TabService{
                     description.innerHTML = "3 days ago";
                     list.appendChild(description)
                     
-                    
+                    let numberOfLiToRender = 0;
                     //Add the li elements
                     array.forEach(el =>{
-                        list.appendChild(el.render());
+                        let toRender = el.render()
+                        if (toRender != null) {
+                            list.appendChild(toRender);
+                            numberOfLiToRender++; 
+                        }                        
                     })
-
-
-                    let loadAllbttn = document.createElement("button");
-                    loadAllbttn.className = "btn btn-primary";
-                    loadAllbttn.addEventListener("click",(event)=>{
-                        let moodID = event.target.parentNode.id;
-                        let groupID =  event.target.previousElementSibling.id;
-                        TabService.OpenAllTabsByGroupID(moodID,groupID)
-                    });
-                    loadAllbttn.innerHTML = "Open all"
                     
-                    list.appendChild(loadAllbttn);
-                    container.appendChild(list);
+                    if (!numberOfLiToRender) {
+                        //Do nothing if nothing is shown
+                    } else {
+                        let loadAllbttn = document.createElement("button");
+                        loadAllbttn.className = "btn btn-primary";
+                        loadAllbttn.addEventListener("click",(event)=>{
+                            let moodID = event.target.parentNode.parentNode.id;
+                            let groupID =  event.target.parentNode.id;
+                            TabService.OpenAllTabsByGroupID(moodID,groupID)
+                        });
+                        loadAllbttn.innerHTML = "Open all";
+                        
+                        list.appendChild(loadAllbttn);
+                        container.appendChild(list);
+                        
+                    }
                     ulID++;
+                    
+
                 }
                 
-            });
-
+            }
+            //console.log(TabService.loadedTabs.main[0][4])
             savedTabsGroup.appendChild(container);
            // console.log(savedTabsGroup);
         }
         
         //console.log(TabService.loadedTabs);
+    }
+
+    static hideTabsNotIn(object){
+
     }
 }
