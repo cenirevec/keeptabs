@@ -25,7 +25,7 @@ export class SearchBar{
         })
 
         let searchbutton = document.createElement("button");
-        searchbutton.innerHTML = "Erase";
+        searchbutton.innerHTML = "Empty search bar";
         searchbutton.className="btn btn-danger";
         searchbutton.disabled = "true";
 

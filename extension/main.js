@@ -2,9 +2,11 @@ import { DataService } from "./services/data.service.mjs";
 import { TabService } from "./services/tab.service.mjs";
 import { Browser } from "./components/shared.variables.mjs";
 import { SearchBar } from "./components/searchBar.component.mjs"
+import { SelectionService } from "./services/selection.service.mjs";
 
 var data = new DataService();
 var tab = new TabService(data);
+var select = new SelectionService();
 
 //Load old elements
 DataService.load("_init",TabService.loadMoods);

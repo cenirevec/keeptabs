@@ -1,5 +1,4 @@
 import { TabService } from "../services/tab.service.mjs";
-import { Tab } from "./tab.component.mjs";
 
 export class SearchAlgorithm{
     constructor(){}

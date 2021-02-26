@@ -1,19 +1,27 @@
-V2
+V2=======================
 Allow search	OK
     Create a JSON object with the url and the title while loading the tabs	OK
 	Add the keywords property fetched from tab data
-Selection mode when clicked on icon
-Load a selection of tabs
-	few
+Selection mode when clicked on icon		OK
+Load a selection of tabs	OK
+	few		OK
 Save a selection of tabs
 	few 
-Allow delete
+Allow deletion
+	Add a selection bar with these options
 Protect from deletion
 Allow to move the items
 add a square aside when item hovered with a list of options aside
-Write date in "time ago" correctly
-Clean the directories
+Write date in "time ago" correctly	OK
+Clean the directories	OK
 
-Bug fixes
-Link chrome-extension by eventListener in Google 
-Only delete the tab not hidden when Open all
+Bug fixes=================
+Link chrome-extension or moz-extension by eventListeners 
+Only delete the tab not hidden when Open all	OK
+The selection mode doesn't go back to false when all selected current tabs are closed
+
+Ideas for feature=========
+Reorganise the element with the help of JavaScript
+
+Give a name to a tabGroup according to the most present domain/keyword/search
+antiDDOS feature limit the speed the tabs open when they are in the same domain

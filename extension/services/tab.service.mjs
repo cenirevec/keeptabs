@@ -1,7 +1,7 @@
 import { DataService } from "./data.service.mjs";
 import { Browser } from "../components/shared.variables.mjs";
 import { Tab } from "../components/tab.component.mjs"
-import { TabSet } from "../components/tab.component.mjs";
+import { timeSince } from "../components/shared.variables.mjs";
 
 export class TabService{
     // The tabs open or saved
@@ -10,6 +10,11 @@ export class TabService{
     //The categories
     static moods = ["main"];
     static secretMoods = []; //Hidden categories, not implemented yet
+
+    static mode = {
+        selection: false,
+        selectedTabs: 0
+    };
 
     //Buttons to load into the DOM
     static buttons = {
@@ -182,15 +187,57 @@ export class TabService{
            
             if(tab.open()){
                 TabService.loadedTabs[moodID][groupID].splice(index,1);
+                this.mode.selectedTabs--;
                 index--;
             }
         }
+        this.changeNumberOfSelectedTabs(0);
         //Remove for TabService.loadedTabs
         if(!TabService.loadedTabs[moodID][groupID].length)
             TabService.loadedTabs[moodID].splice(groupID,1);
         //Render and save
         this.renderSavedTabs();
         this.saveTabsInStorage(moodID);
+    }
+
+    /** INTERACTIONS FROM DOM TO TABSERVICE */
+    static getTabByLiElement(DOMelement){
+        let pos = this.getTabIndexesByLiElement(DOMelement);
+
+        if(pos.moodID == "current"){
+            return TabService.current[pos.tabID];
+        }else{
+            return TabService.loadedTabs[pos.moodID][pos.groupID][pos.tabID];
+        }
+    }
+
+    static getTabIndexesByLiElement(DOMelement){
+        console.log(DOMelement)
+        let key = DOMelement.key;
+        let groupID = DOMelement.parentElement.id;
+        let moodID = DOMelement.parentElement.parentElement.id;
+        // let moodID = "current";
+        // let groupID = "";
+
+        return {moodID:`${moodID}`,groupID:`${groupID}`,tabID:`${key}`};
+    }
+
+    /** SELECTION */
+    static unselectAllTabs(){
+        this.current.forEach(element => {
+            element.toggleSelected(false);
+        });
+
+        this.loadedTabs.forEach(moods =>{
+            moods.forEach(groups=>{
+                groups.forEach(tab=>{
+                    tab.toggleSelected(false);
+                });
+            });
+        });
+
+        this.mode.selectedTabs = 0;
+        this.mode.selection = false;
     }
     
     /** INTERACT WITH THE MOODS */
@@ -275,7 +322,7 @@ export class TabService{
             for (let index = 0; index < TabService.loadedTabs[moodID].length; index++) {
                 const array = TabService.loadedTabs[moodID][index];
                 
-                if (array == null) {
+                if (array == null || array.length == 0) {
                     //Remove the element and skip
                     TabService.loadedTabs[moodID].splice(index,1);
                     index--;
@@ -286,7 +333,11 @@ export class TabService{
 
                     let description = document.createElement("p");
                     description.className = "time-ago";
-                    description.innerHTML = "3 days ago";
+                    
+                    let date = new Date(array[0].lastAccessed);
+                    
+                    //let timeAgo = timeSince(date);
+                    description.innerHTML = timeSince(date) + " ago";
                     list.appendChild(description)
                     
                     let numberOfLiToRender = 0;
@@ -321,15 +372,18 @@ export class TabService{
                 }
                 
             }
-            //console.log(TabService.loadedTabs.main[0][4])
             savedTabsGroup.appendChild(container);
-           // console.log(savedTabsGroup);
         }
-        
-        //console.log(TabService.loadedTabs);
     }
 
-    static hideTabsNotIn(object){
-
+    static changeNumberOfSelectedTabs(variation){
+        this.mode.selectedTabs += variation;
+        
+        if(this.mode.selectedTabs <= 0){
+            this.mode.selection = false;
+        }else{
+            this.mode.selection = true;
+        }
+        this.render();
     }
 }

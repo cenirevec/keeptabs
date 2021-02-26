@@ -1,4 +1,5 @@
 import { TabService } from "../services/tab.service.mjs";
+import { timeSince } from "./shared.variables.mjs";
 import { Browser } from "./shared.variables.mjs";
 
 var rootURL = window.location.href.split("/keeptabs")[0];
@@ -9,7 +10,6 @@ var Imgs = {
 }
 
 export class Tab{
-    static createdTabs = 0;
     constructor(tab){
         this.id = tab.id;
         this.url = tab.url;
@@ -18,9 +18,9 @@ export class Tab{
         this.lastAccessed = 
             (tab.lastAccessed != undefined)? tab.lastAccessed : Date.now();
         this.groupId = -1;
-        this.searchId = this.createdTabs++;
         
         this.isHidden = false;
+        this.selected = false;
     }
 
     render(context){
@@ -30,7 +30,14 @@ export class Tab{
 
         let el = document.createElement("li");
         el.className = "list-group-item list-group-item-action";
+        if(!this.selected && TabService.mode.selection)
+            el.className += " unselected";
         el.key = this.id;
+/*
+        el.addEventListener("mousedown",event=>{
+            //console.log(TabService.getTabByLiElement(event.target));
+            console.log(this);
+        });*/
         
         let img = document.createElement("img");
         let link = document.createElement("a");
@@ -42,19 +49,29 @@ export class Tab{
         if (img.src.indexOf("chrome-extension") != -1) {
             img.src = Imgs.extension;
         }
-
-
-        if(context != "current") link.href = this.url;
-        link.innerHTML = this.title;
-        link.target = "_blank";
-        link.addEventListener("click",event => {
-            let tabID = event.target.parentNode.key;
-            let tabGroupID = parseInt(event.target.parentNode.parentNode.id);
-            let moodID = event.target.parentNode.parentNode.parentNode.id;
-
-            TabService.removeTabFromLoadedTabsByID(moodID,tabGroupID,tabID);
+        
+        img.addEventListener("click",event=>{
+            this.toggleSelected();
         })
-        lastAccessed.innerHTML = this.lastAccessed;
+        img.title = "Click to select this link";
+        
+
+        if(context != "current" || (!this.selected && TabService.mode.selection))
+            link.href = this.url;
+        link.innerHTML = this.title;
+
+        if (!TabService.mode.selection) {
+            link.target = "_blank";
+            link.addEventListener("click",event => {
+                let tabID = event.target.parentNode.key;
+                let tabGroupID = parseInt(event.target.parentNode.parentNode.id);
+                let moodID = event.target.parentNode.parentNode.parentNode.id;
+
+                TabService.removeTabFromLoadedTabsByID(moodID,tabGroupID,tabID);
+            })
+        }
+        
+        lastAccessed.innerHTML = timeSince(new Date(this.lastAccessed));
 
         el.appendChild(img);
         el.appendChild(link);
@@ -83,7 +100,7 @@ export class Tab{
     /** Open the tab
         Returns if the tab is opened of not */
     open(options){
-        if (this.isHidden) {
+        if (this.isHidden || (!this.selected && TabService.mode.selection)) {
             return false;
         } else {
             options = (options == undefined || options == null)? {}:options;
@@ -110,22 +127,30 @@ export class Tab{
         this.isHidden = !boolean;
     }
 
-} 
+    toggleSelected(boolean){
+        this.selected = (boolean != undefined)? boolean : !this.selected;
 
-export class TabSet{
-    constructor(tabs){
-        if(Array.isArray(tabs)){
-            //Create a brand new TabSet
-            this.children = tabs;        // List of tabs
-            this.length = tabs.length;   //Number of children
-            this.lastUpdate = "";       //To be defined
-            this.name = "";             //Name of the tab set
-        }else{
-            //Create a TabSet object based on JSON data
-            this.children = tabs.children;
-            this.length = tabs.length;
-            this.lastUpdate = tabs.lastUpdate;
-            this.name = tabs.name;
+        if (this.selected) {
+            TabService.changeNumberOfSelectedTabs(1);
+        } else {
+            TabService.changeNumberOfSelectedTabs(-1);
         }
     }
-}
+
+    compareTo(tab){
+        let identifier1 = this.id + "" + this.groupId + "" + this.lastAccessed;
+        let identifier2 = tab.id + "" + tab.groupId + "" + tab.lastAccessed;
+        console.log(identifier1,identifier2,identifier1 == identifier2)
+        return identifier1 == identifier2;
+    }
+
+    findIn(array){
+        for (let index = 0; index < array.length; index++) {
+            const element = array[index];
+            if(element.compareTo(this)){
+                return index;
+            }
+        }
+        return -1;
+    }
+} 
