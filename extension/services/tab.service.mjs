@@ -11,6 +11,8 @@ export class TabService{
     static moods = ["main"];
     static secretMoods = []; //Hidden categories, not implemented yet
 
+    static once = true;
+
     static mode = {
         selection: false,
         selectedTabs: 0
@@ -33,7 +35,6 @@ export class TabService{
 
         //Add listeners to handle the tabs changes
         Browser.tabs.onActivated.addListener(TabService.getCurrentlyOpenTabs);
-        //Browser.tabs.onCreated.addListener(console.log);
         Browser.tabs.onRemoved.addListener(TabService.onRemovedTab);
 
         //Set the buttons
@@ -46,7 +47,6 @@ export class TabService{
     /**Event listeners */
     // Action to do when a tab is closed
     static onRemovedTab(tabToRemoveId){
-        delete TabService.current[tabToRemoveId];
         TabService.renderCurrentTabs();
     }
     //Update the button appearances and behavior according to the TabService state
@@ -64,7 +64,6 @@ export class TabService{
     /** Save the current tabs */
     static saveCurrentTabs(moodID){
         moodID = (typeof moodID != "string")? "main": moodID;
-        //console.log("saving current tabs");
 
         //Define function content
         let save = function(tabList){
@@ -75,7 +74,6 @@ export class TabService{
             }
             //Add the list of tabs to loaded tabs
             TabService.loadedTabs[moodID].unshift(tabList);
-            //console.log(TabService.loadedTabs)
             //Save in the local storage
             DataService.save(TabService.loadedTabs,TabService.closeAllTabs);
             
@@ -100,14 +98,22 @@ export class TabService{
         /*   Get tabs   */
         // This code is redundant to ensure the privacy on ope
         let ReadTabs = function(tabs){
-            let tabList = new Object();
+            let tabList = new Array();
             for (let i = 0; i < tabs.length; i++) {
-                tabList[tabs[i].id]= new Tab(tabs[i]);
+                tabList.push(""+tabs[i].id);
+                if (TabService.current[tabs[i].id] == undefined) {
+                    TabService.current[tabs[i].id] = new Tab(tabs[i]);
+                } else {
+                    TabService.current[tabs[i].id].update(tabs[i],"current");
+                }
             }
+            //Remove the tabs that are already closed
+            let toDeleteIDs = Object.keys(TabService.current).filter(
+                x => !tabList.includes(x));
 
-            //Callback
-            TabService.current = tabList;
-         //   console.log(tabList);
+            toDeleteIDs.forEach(id=>{
+                TabService.current[id].tokenForDeletion();
+            });
 
             TabService.renderCurrentTabs();
         }
@@ -117,6 +123,12 @@ export class TabService{
     // Close all the tabs currently opened
     static closeAllTabs(){
         Browser.tabs.remove(Object.keys(TabService.current).map(x=>parseInt(x)),null);
+        for (const key in TabService.current) {
+            if (Object.hasOwnProperty.call(TabService.current, key)) {
+                const tab = TabService.current[key];
+                tab.tokenForDeletion();
+            }
+        }
     }
 
     /** USING DATA STORAGE */
@@ -135,7 +147,7 @@ export class TabService{
             let tabSetToLoad = new Object();
             tabSetToLoad[moodID] = new Array();
             for (let index = 0; index < json[moodID].length; index++) {
-                let tab = Tab.getTabsFromArray(json[moodID][index]);
+                let tab = Tab.getTabsFromArray(json[moodID][index],index);
                 tabSetToLoad[moodID].push(tab);
             }
             TabService.loadedTabs = tabSetToLoad;
@@ -212,12 +224,9 @@ export class TabService{
     }
 
     static getTabIndexesByLiElement(DOMelement){
-        console.log(DOMelement)
         let key = DOMelement.key;
-        let groupID = DOMelement.parentElement.id;
+        let groupID = DOMelement.parentElement.id.split('gid')[1];
         let moodID = DOMelement.parentElement.parentElement.id;
-        // let moodID = "current";
-        // let groupID = "";
 
         return {moodID:`${moodID}`,groupID:`${groupID}`,tabID:`${key}`};
     }
@@ -278,37 +287,51 @@ export class TabService{
 */
     //Render the tabs currently open
     static renderCurrentTabs(){
-        let currentTabsGroup = document.querySelector("#current .list-group");
-        currentTabsGroup.innerHTML ="";
+        let currentTabsGroup = document.querySelector("#current .list-group");       
 
-        for (const tab in TabService.current) {
-            currentTabsGroup.appendChild(TabService.current[tab].render("current"));
+        for (const tabID in TabService.current) {
+            let tab = TabService.current[tabID];
+            let empty = tab.target.innerHTML == "";
+            let toRender = tab.render("current");
+
+            if(empty){ //Check if an element is not added yet
+                currentTabsGroup.appendChild(toRender);
+            }else if (toRender.className.indexOf("deleted") != -1) {  //Remove an element
+                currentTabsGroup.removeChild(toRender);
+                delete TabService.current[tab.id];
+            } else {//Nothing to do 
+            }
         }
         
         TabService.updateButtons();
         let currentTabLength = Object.keys(TabService.current).length;
         document.querySelector("#current h2 .badge").innerHTML = currentTabLength;
+        
     }
+
     // Render the tabs saved in TabService.loadedTabs
     static renderSavedTabs(){
         let savedTabsGroup = document.querySelector("#loaded #wrapper");
-      //  savedTabsGroup.removeChild(savedTabsGroup.childNodes[0]);
-        savedTabsGroup.innerHTML = "";
+        //savedTabsGroup.className = savedTabsGroup.className.split("empty").join("");
+        if(this.once)savedTabsGroup.innerHTML = "";
+        
         TabService.updateButtons();
-
+        this.once = false;
         if(Object.keys(TabService.loadedTabs).length == 0){
             let savedTabsGroup = document.querySelector("#loaded #wrapper");
-            savedTabsGroup.innerHTML = "<h2>Nothing saved yet</h2>";
+            //savedTabsGroup.className += "empty";
+            savedTabsGroup.innerHTML = "<h2 class='empty'>Nothing saved yet</h2>";
 
             return true;
         }
         
         
         for (const moodID  in TabService.loadedTabs) {
-            let container = document.createElement("div");
+            let container = (savedTabsGroup.querySelector(`#${moodID}`) != null) ?
+                            savedTabsGroup.querySelector(`#${moodID}`) :
+                            document.createElement("div");
             container.id = moodID;
 
-            //container = (document.querySelector("#"+moodID));
             container.innerHTML = "";
             container.className = `group-by-moodID row`;
             
@@ -316,8 +339,6 @@ export class TabService{
             sectiontitle.innerHTML = moodID;
             container.appendChild(sectiontitle);
             let ulID = 0;
-
-            //savedTabsGroup.appendChild(TabService.current[tab].render("current"));
             
             for (let index = 0; index < TabService.loadedTabs[moodID].length; index++) {
                 const array = TabService.loadedTabs[moodID][index];
@@ -327,8 +348,10 @@ export class TabService{
                     TabService.loadedTabs[moodID].splice(index,1);
                     index--;
                 } else {
-                    let list = document.createElement("ul");
-                    list.id = ulID;
+                    let list = (container.querySelector(`gid${ulID}`) != null)?
+                                container.querySelector(`gid${ulID}`):
+                                document.createElement("ul");
+                    list.id = `gid${ulID}`;
                     list.className = "list-group tabs col-lg-6";
 
                     let description = document.createElement("p");
@@ -343,11 +366,12 @@ export class TabService{
                     let numberOfLiToRender = 0;
                     //Add the li elements
                     array.forEach(el =>{
-                        let toRender = el.render()
+                        let toRender = el.target;
                         if (toRender != null) {
                             list.appendChild(toRender);
                             numberOfLiToRender++; 
-                        }                        
+                        }
+                        el.render();                        
                     })
                     
                     if (!numberOfLiToRender) {
@@ -355,9 +379,10 @@ export class TabService{
                     } else {
                         let loadAllbttn = document.createElement("button");
                         loadAllbttn.className = "btn btn-primary";
+                        loadAllbttn.className += " btn-tabGroup";
                         loadAllbttn.addEventListener("click",(event)=>{
                             let moodID = event.target.parentNode.parentNode.id;
-                            let groupID =  event.target.parentNode.id;
+                            let groupID =  event.target.parentNode.id.split("gid")[1];
                             TabService.OpenAllTabsByGroupID(moodID,groupID)
                         });
                         loadAllbttn.innerHTML = "Open all";

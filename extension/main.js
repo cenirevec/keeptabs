@@ -30,9 +30,14 @@ dropAllbttn.addEventListener("click",TabService.removeAllTabsFromStorage);
 
 
 var refAllbttn = document.querySelector("#refreshAll");
-//refAllbttn.addEventListener("click",TabService.render);
+refAllbttn.addEventListener("click",TabService.renderCurrentTabs);
 
 let version = Browser.runtime.getManifest().version;
 document.getElementById("manifest-version").innerHTML = version+"-dev";
 
 let search = new SearchBar("#searchbox");
+
+// var test =  document.querySelector("#remTab");
+// test.addEventListener("click",()=>{
+//     TabService.current[4].target.className += "deleted";
+// });

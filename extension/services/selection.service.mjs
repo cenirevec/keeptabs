@@ -1,3 +1,4 @@
+import { Tab } from "../components/tab.component.mjs";
 import { TabService } from "./tab.service.mjs";
 
 export class SelectionService{
@@ -14,6 +15,13 @@ export class SelectionService{
         window.addEventListener("mouseup",event => {
             this.onClick = false;
         });
+
+        window.addEventListener("click",event=>{
+            if(TabService.mode.selection && !Tab.isElementInTarget(event.target,1)){
+                TabService.changeNumberOfSelectedTabs(-1*TabService.mode.selectedTabs);
+                TabService.mode.selection = false;
+            }
+        })
 
         this.selectedElements = new Array();
         this.unselectedElements = new Array();

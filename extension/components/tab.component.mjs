@@ -9,6 +9,7 @@ var Imgs = {
     default : rootURL + "/media/ico-48.png"
 }
 
+var uniqueId = 0;
 export class Tab{
     constructor(tab){
         this.id = tab.id;
@@ -21,67 +22,98 @@ export class Tab{
         
         this.isHidden = false;
         this.selected = false;
+
+        this.target = document.createElement("li");
+        this.target.className = "list-group-item list-group-item-action";
+        this.uniqueId = uniqueId++;
     }
 
     render(context){
-        if (this.isHidden) {
-            return null;
+        if (this.isHidden || this.target == null) {
+            if(this.target == null){
+                return null;
+            }else{
+                this.target.className += " hidden";
+            }
+        }else{
+            this.target.className = this.target.className.split(" hidden").join("");
         }
 
-        let el = document.createElement("li");
-        el.className = "list-group-item list-group-item-action";
-        if(!this.selected && TabService.mode.selection)
-            el.className += " unselected";
-        el.key = this.id;
-/*
-        el.addEventListener("mousedown",event=>{
-            //console.log(TabService.getTabByLiElement(event.target));
-            console.log(this);
-        });*/
-        
-        let img = document.createElement("img");
-        let link = document.createElement("a");
-        let options;
-        let lastAccessed = document.createElement("small");
-
-       
-        img.src = this.favicon;
-        if (img.src.indexOf("chrome-extension") != -1) {
-            img.src = Imgs.extension;
+        if(!this.selected && TabService.mode.selection){
+            this.target.className += " unselected";
+        }else{
+            this.target.className = this.target.className.split(" unselected").join("");
+            if(!TabService.mode.selection){
+                this.selected = false;
+            }
         }
+
+        this.target.key = this.id;
+
+        if(this.target.innerHTML == ""){
+
+            let img = document.createElement("img");
+            let link = document.createElement("a");
+            let options;
+            let lastAccessed = document.createElement("small");
+
         
-        img.addEventListener("click",event=>{
-            this.toggleSelected();
-        })
-        img.title = "Click to select this link";
-        
-
-        if(context != "current" || (!this.selected && TabService.mode.selection))
-            link.href = this.url;
-        link.innerHTML = this.title;
-
-        if (!TabService.mode.selection) {
-            link.target = "_blank";
-            link.addEventListener("click",event => {
-                let tabID = event.target.parentNode.key;
-                let tabGroupID = parseInt(event.target.parentNode.parentNode.id);
-                let moodID = event.target.parentNode.parentNode.parentNode.id;
-
-                TabService.removeTabFromLoadedTabsByID(moodID,tabGroupID,tabID);
+            img.src = this.favicon;
+            if (img.src.indexOf("chrome-extension") != -1) {
+                img.src = Imgs.extension;
+            }
+            
+            img.addEventListener("click",event=>{
+                this.toggleSelected();
             })
+            img.title = "Click to select this link";
+            
+
+            if(context != "current" || (!this.selected && TabService.mode.selection))
+                link.href = this.url;
+            link.innerHTML = this.title;
+
+            if (!TabService.mode.selection) {
+                link.target = "_blank";
+                link.addEventListener("click",event => {
+                    let tabID = event.target.parentNode.key;
+                    let tabGroupID = parseInt(event.target.parentNode.parentNode.id.split('gid')[1]);
+                    let moodID = event.target.parentNode.parentNode.parentNode.id;
+
+                    TabService.removeTabFromLoadedTabsByID(moodID,tabGroupID,tabID);
+                })
+            }
+            
+            lastAccessed.innerHTML = timeSince(new Date(this.lastAccessed));
+
+            this.target.appendChild(img);
+            this.target.appendChild(link);
+            this.target.appendChild(lastAccessed);
         }
         
-        lastAccessed.innerHTML = timeSince(new Date(this.lastAccessed));
-
-        el.appendChild(img);
-        el.appendChild(link);
-        el.appendChild(lastAccessed);
 
         //el.innerHTML=`<img src="${this.favicon}"><a href="${this.url}">${this.title}</a><small>last:${this.lastAccessed}</small>`
-        return el;
+        return this.target;
     }
 
-    static getTabsFromArray(tabArray){
+    update(tab,context){
+        if(context == undefined)
+            context = "";
+        
+        this.url = tab.url;
+        this.title = tab.title;
+        this.favicon = (tab.favicon != undefined)?tab.favicon : tab.favIconUrl;
+        this.lastAccessed = 
+            (tab.lastAccessed != undefined)? tab.lastAccessed : Date.now();
+        this.target.innerHTML = "";
+        this.render(context);
+    }
+
+    tokenForDeletion(){
+        this.target.className += "deleted";
+    }
+
+    static getTabsFromArray(tabArray,groupID){
         if (tabArray == null) {
             return null;
         }
@@ -90,11 +122,37 @@ export class Tab{
         tabArray.forEach(element => {
             if(element != null){
                 element.id = index;
-                elements.push(new Tab(element));
+                let tab = new Tab(element);
+                tab.groupId = groupID;
+                elements.push(tab);
                 index++;
             }
         });
         return elements;
+    }
+
+    static isElementInTarget(DOMelement,skip){
+        let moodsList = Object.keys(TabService.loadedTabs).concat(["current"]);
+        if(skip == undefined)
+            skip = 0;
+        for (let iteration = 0; iteration < 4; iteration++) {
+            if (iteration >= skip && 
+                ((moodsList.indexOf(DOMelement.id) != -1 && DOMelement.nodeName == "DIV") || 
+                 DOMelement.className.indexOf("btn-tabGroup") > -1)) {
+                return true;
+            }else {
+                if(DOMelement.parentElement == null ||
+                   DOMelement.parentElement.nodeName == "BODY"||
+                   ["H2","P"].indexOf(DOMelement.nodeName) > -1
+                   ){
+                    return false;
+                }else{
+                    DOMelement = DOMelement.parentElement;
+                }
+            }
+            
+        }
+        return false;
     }
 
     /** Open the tab
@@ -137,10 +195,14 @@ export class Tab{
         }
     }
 
+    getIdentifier(){
+        return this.id + "" + this.groupId + "" + this.lastAccessed;
+    }
+
     compareTo(tab){
-        let identifier1 = this.id + "" + this.groupId + "" + this.lastAccessed;
-        let identifier2 = tab.id + "" + tab.groupId + "" + tab.lastAccessed;
-        console.log(identifier1,identifier2,identifier1 == identifier2)
+        let identifier1 = this.getIdentifier();
+        let identifier2 = tab.getIdentifier();
+       // console.log(identifier1,identifier2,identifier1 == identifier2)
         return identifier1 == identifier2;
     }
 
@@ -154,3 +216,21 @@ export class Tab{
         return -1;
     }
 } 
+
+class TabRegistry{
+    constructor(){
+        this.array = new Array();
+    }
+
+    get(id,wid){
+
+    }
+
+    add(id,wid){
+
+    }
+
+    drop(id,wid){
+
+    }
+}
