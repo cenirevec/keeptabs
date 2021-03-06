@@ -19,13 +19,13 @@ Allow select allow when in search mode
 Remove all etc.
 
 Bug fixes=================
-Link chrome-extension or moz-extension by eventListeners 
+Link chrome-extension or moz-extension by eventListeners
 Only delete the tab not hidden when Open all	OK
 	Selection mode behavior
 The selection mode doesn't go back to false when all selected current tabs are closed	OK
-When selection is fast certain elements can be skipped and not selected
 We can't selected/unselected more then 3 times, its bugs then
 We can't select from a tab group to another tab group
+When selection is fast certain elements can be skipped and not selected
 
 Ideas for feature=========
 Reorganise the element with the help of JavaScript
