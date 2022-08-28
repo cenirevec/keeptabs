@@ -1,0 +1,22 @@
+{
+    "name": "Refactored Keep Tabs",
+    "description": "Tool to manage your browser workspace.",
+    "homepage_url": "https://github.com/cenirevec/keeptabs",
+    "version": "0.3.0",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+        
+    "icons": {
+      "48": "media/ico-48.png"
+    },
+    "action":{
+      "default_icon": "media/ico-48.png"
+    },
+    "permissions": [
+      "tabs",
+      "storage",
+      "unlimitedStorage"
+    ]
+  }
