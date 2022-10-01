@@ -9,17 +9,17 @@ import { searchBarParameters } from "./models/searchFilter.model"/*
 import { TabService } from "../public/api/services/oldServices/tab.service.mjs"; */
 import DataService from "../public/api/services/data/data.service.mjs";
 import CategoryService from "../public/api/services/data/category.service.mjs";
+import { Services } from "./services.jsx";
 
 class Home extends React.Component{
-    
-    
-    
     
     //Shared Variables
     /** Parameters in the searchbar */
     searchFilter = new searchBarParameters();
     /** All the tabs arborescence */
     moods = {};
+
+    services = new Services();
 
 
     /**
@@ -47,18 +47,21 @@ class Home extends React.Component{
                 console.log("get",json)
             });
         }); */
-        DataService.save(() => {});
+/*         this.services.data.save(() => {});
 
-        DataService.load(()=>{
+        this.services.data.load(()=>{
             CategoryService.rename(DataService.model.categories["1"],"Test");
-        });
+            console.log(DataService.model)
+        }); */
     }
 
     //Shared Methods
     setMoods(loadedTabs){
         this.setState({
             moods:loadedTabs
-        });
+        });chrome.tabs.onActivated.addListener((event)=>{
+            console.log(event)
+        })
         this.moods = loadedTabs;
     }
     /**
@@ -90,14 +93,14 @@ class Home extends React.Component{
                     moods={this.state.moods} 
                     setMoods={this.setMoods}/>
                     
-                <SearchBarPanel 
+{/*                 <SearchBarPanel 
                     filter={this.searchFilter}
-                    onFilter={this.setFilter}/>
+                    onFilter={this.setFilter}/> */}
 
-                <SavedTabsPanel 
+{/*                 <SavedTabsPanel 
                     filter={this.searchFilter} 
                     moods={this.moods} 
-                    setMoods={this.setMoods}s/>
+                    setMoods={this.setMoods}/> */}
                 <FooterPanel />
             </div>
         )

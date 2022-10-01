@@ -2,10 +2,10 @@ import { navigatorName } from "../../shared.variables.mjs";
 
 export class DataService{
 
-    static model = {}
-    static mutex = {}
+    model = {}
+    mutex = {}
 
-    static defaultData = { model:
+    defaultData = { model:
         {
             meta:{},
             categories:{
@@ -39,7 +39,7 @@ export class DataService{
      * @param {function} callback Function to launch after saving data
      * @todo Make it evolve to save only the modified parts 
      */
-    static save(callback){
+    save(callback){
         //Get a model to save
         let data = (DataService.model == {} || DataService.model?.meta == undefined)? 
             this.defaultData: JSON.parse(JSON.stringify({model:DataService.model}));
@@ -60,7 +60,7 @@ export class DataService{
         }
     }
 
-    static patch(){
+    patch(){
 
     }
 
@@ -68,7 +68,7 @@ export class DataService{
      * Load tabs from the bowser's storage
      * @param {function} callback function to launch after loading
      */
-    static load(callback){
+    load(callback){
         //Allow to give an empty function
         if(callback == undefined)
             callback = ()=>{}
@@ -101,7 +101,7 @@ export class DataService{
     /**
      * Clearing all the moods and their content
      */
-    static clear(){
+    clear(){
         // console.info("Clearing mood data on "+navigatorName);
         if(navigatorName == "Firefox"){
             browser.storage.local.clear();
@@ -136,11 +136,11 @@ export class DataOperationService{
     - 
  */
 
-    static lockMutex(){
+    lockMutex(){
         
     }
 
-    static unlockMutex(){
+    unlockMutex(){
        // this.
     }
 

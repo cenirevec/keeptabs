@@ -24,6 +24,10 @@ export class CategoryService {
         this.create = this.create.bind(this);
     }
 
+    get(categoryId){
+        return this.model.categories[categoryId];
+    }
+
     /**
      * Generate an unique category id
      * @returns A new category id
@@ -39,17 +43,16 @@ export class CategoryService {
      * @param {string} newName Name to give to the category
      * @returns True if the operation succeeded, False otherwise
      */
-    static rename(category,newName){
+    rename(category,newName){
         category.meta.name = newName;
         DataService.save();
-        //DataService.patch()
     }
 
     /**
      * Create a category
      * @param {string} name Name of the category
      */
-    static create(name){
+    create(name){
         //Get an unique id
         let id = this.generateCategoryId();
         //Create a new category object
@@ -64,7 +67,7 @@ export class CategoryService {
      * Delete a category
      * @param {*} id 
      */
-    static delete(id){
+    delete(id){
         delete this.model.categories[id];
         DataService.save();
     }
