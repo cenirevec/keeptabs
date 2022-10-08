@@ -17,7 +17,7 @@ class Home extends React.Component{
     /** Parameters in the searchbar */
     searchFilter = new searchBarParameters();
     /** All the tabs arborescence */
-    moods = {};
+    data = DataService.model;
 
     services = new Services();
 
@@ -30,10 +30,13 @@ class Home extends React.Component{
         super(props);
 
         this.state = {
-            moods: {}
+            data: {},
+            selectedCategory: null
         };
         this.setMoods = this.setMoods.bind(this);
         this.setFilter = this.setFilter.bind(this);
+        this.setSelectedCategory = this.setSelectedCategory.bind(this);
+        this.saveData = this.saveData.bind(this);
 
         
         //document.body.addEventListener("dblclick",()=>{console.log("moods",this.moods)});
@@ -47,23 +50,44 @@ class Home extends React.Component{
                 console.log("get",json)
             });
         }); */
-/*         this.services.data.save(() => {});
+        /* this.services.data.save(() => {}); */
 
         this.services.data.load(()=>{
-            CategoryService.rename(DataService.model.categories["1"],"Test");
-            console.log(DataService.model)
-        }); */
+           /*  CategoryService.rename(DataService.model.categories["1"],"Test"); */
+           this.setMoods(DataService.model);
+            setTimeout(()=>{this.setSelectedCategory(0);},0)
+        });
     }
 
     //Shared Methods
     setMoods(loadedTabs){
         this.setState({
-            moods:loadedTabs
-        });chrome.tabs.onActivated.addListener((event)=>{
-            console.log(event)
-        })
-        this.moods = loadedTabs;
+            data:loadedTabs
+        });
+
+        this.data = loadedTabs;
+
+        if(this.state.selectedCategory == null){
+            this.setState({
+                selectedCategory:  loadedTabs.categories[0]
+            });
+        }
+        
     }
+
+    saveData(){
+        this.services.data.save(()=>{
+            this.setMoods(DataService.model);
+        })
+    }
+
+    setSelectedCategory(index){
+        let category = this.data.categories[index];
+        this.setState({
+            selectedCategory: category
+        });
+    }
+
     /**
      * Set search bar filter
      * @param filter Updated filter
@@ -90,17 +114,22 @@ class Home extends React.Component{
                 <HeaderPanel />
                 <CurrentTabsPanel 
                     filter={this.searchFilter} 
-                    moods={this.state.moods} 
+                    data={this.state.data} 
+                    selectedCategory={this.state.selectedCategory}
+                    saveData={this.saveData}
                     setMoods={this.setMoods}/>
                     
-{/*                 <SearchBarPanel 
+                <SearchBarPanel 
                     filter={this.searchFilter}
-                    onFilter={this.setFilter}/> */}
+                    onFilter={this.setFilter}
+                    />
 
-{/*                 <SavedTabsPanel 
+                <SavedTabsPanel 
                     filter={this.searchFilter} 
-                    moods={this.moods} 
-                    setMoods={this.setMoods}/> */}
+                    data={this.data}
+                    saveData={this.saveData}
+                    setSelectedCategory={this.setSelectedCategory}
+                    setMoods={this.setMoods}/>
                 <FooterPanel />
             </div>
         )

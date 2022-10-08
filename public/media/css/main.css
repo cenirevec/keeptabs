@@ -33,6 +33,7 @@
 .tabs li small{
     margin-left: 15px;
     opacity: 0.5;
+    white-space: nowrap;
 }
 
 .tabs a{
@@ -260,14 +261,12 @@ h2 .tabs-count{
 /*Components*/
 
 .kt-component-moodgroup .empty{
-    border: #0001 dotted 5px;
-    border-radius: 10px;
+    border: var(--transparent-border) dotted 5px;
     margin: 25px 15px;
     padding: 2vw;
     min-height: 300px;
     display: inline-block;
     font-size: 1.2em;
-    color:#000b;
 }
 
 .kt-component-moodgroup .empty p{

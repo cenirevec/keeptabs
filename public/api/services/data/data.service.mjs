@@ -5,21 +5,16 @@ export class DataService{
     model = {}
     mutex = {}
 
-    defaultData = { model:
+    defaultData = { 
+        model:
         {
             meta:{},
             categories:{
                 "0": {
                     "meta":{
                         expiration: 30*24*3600*1000,
-                        name: "main"
-                    },
-                    "tabGroups":[]
-                },
-                "1": {
-                    "meta":{
-                        expiration: 30*24*3600*1000,
-                        name: "test"
+                        name: "temporary",
+                        translationLabel: "TEMPORARY"
                     },
                     "tabGroups":[]
                 }
@@ -31,7 +26,6 @@ export class DataService{
     constructor(){
         this.load = this.load.bind(this);
         this.save = this.save.bind(this);
-        //this.load();
     }
 
     /**
@@ -43,7 +37,6 @@ export class DataService{
         //Get a model to save
         let data = (DataService.model == {} || DataService.model?.meta == undefined)? 
             this.defaultData: JSON.parse(JSON.stringify({model:DataService.model}));
-
         
         //Save function according to the chosen browser
         if(navigatorName == "Firefox"){

@@ -24,23 +24,25 @@ export class MoodNavBar extends Component{
      */
     constructor(props){
         super(props);
+        
 
         this.state = {
             moodLengths: this.props.moodLengths,  //Defines the number of tabs on each category 
-            selectedMood: this.props.selectedMood,  //Defines the name of the selected category 
+            selected: this.props.selected,  //Defines the name of the selected category 
             edition: new EditionInProgress()
         };
         //Function bindings
         this.createCategory = this.createCategory.bind(this);
         this.renameItem = this.renameItem.bind(this);
+        this.selectCategory = this.selectCategory.bind(this);
     }
 
     /**
      * Select which category to show
-     * @param {string} name 
+     * @param {number} index 
      */
-    selectMood(name){
-        this.props.selectMood(name);
+    selectCategory(index){
+        this.props.selectCategory(index);
     }
 
     /**
@@ -48,18 +50,19 @@ export class MoodNavBar extends Component{
      * @param {string} name Name of the category
      */
     createCategory(name){
-      this.props.addMood(name);
+      //@todo
+      //this.props.addMood(name);
+      console.log(name)
     }
 
     /**
-     * 
-     * @param {*} mood 
+     * Rename the item
+     * @param {*} category Category to rename
+     * @param {*} newName Name to give
      */
-    renameItem(index){
-      this.setState({
-        edition : Object.assign(this.state.edition,
-          {rename:index})
-      })
+    renameItem(category,newName){
+      category.meta.name = newName;
+      this.props.saveData();
     }
 
     /**
@@ -67,39 +70,56 @@ export class MoodNavBar extends Component{
      * @returns Rendered content
      */
     render(){
-
-      if(this.props.moods.length == 0)
+      if(this.props.data == undefined ||
+        this.props.data.categories == undefined || 
+        this.props.data.length == 0)
         return;
 
       let navbarItems = [];
       
-      Object.keys(this.props.moods).forEach((mood,index) => {
-        let length = this.props.moodLengths[mood];
+      Object.keys(this.props.data.categories).forEach(index=>{
+        const category = this.props.data.categories[index];
+        const categoryName = category.meta.name;
+        const length = getCategorySize(category);
 
         navbarItems.push(
           <Nav.Item key={index} 
-                    onClick={() => {this.selectMood(mood)}} 
+                    onClick={() => {this.selectCategory(index)}} 
                     onDoubleClick={()=>{this.renameItem(index)}}>
-            <Nav.Link eventKey={mood}>
+            <Nav.Link eventKey={index}>
               <span className="mood-name">
-                <Renamable value={mood} onSubmit={this.renameItem}></Renamable>
+                <Renamable value={categoryName} onSubmit={(newName)=>this.renameItem(category,newName)}></Renamable>
               </span>
-              {mood == this.props.selectedMood 
+              {index == this.props.selected 
               &&   <Badge pill bg="light" text="primary" className="selected"> {length} </Badge>}
-              {mood != this.props.selectedMood 
+              {index != this.props.selected 
               &&   <Badge pill> {length} </Badge>}
             </Nav.Link>
           </Nav.Item>
         );
-      });
+      })
 
-      return <Nav className="kt kt-component kt-component-mood-navbar" variant="pills" defaultActiveKey={this.props.selectedMood}>
+      return <Nav className="kt kt-component kt-component-mood-navbar" variant="pills" defaultActiveKey={this.props.selected}>
         {navbarItems}
         <Nav.Item>
-          <CreateCategory onCreated={this.createCategory}/>
+          <CreateCategory saveData={this.props.saveData} onCreated={this.createCategory}/>
         </Nav.Item>
       </Nav>
     }
 }
 
 export default MoodNavBar;
+
+/**
+ * Get the number of tabs in a category
+ * @param {*} category 
+ * @returns 
+ */
+export function getCategorySize(category){
+  let length = 0;
+  
+  category.tabGroups.forEach(tabGroup=>{
+    length += tabGroup.tabs.length;
+  });
+  return length;
+}

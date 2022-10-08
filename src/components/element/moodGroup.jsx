@@ -35,11 +35,7 @@ export class MoodGroup extends React.Component{
      */
     removeTabGroup(tabGroupId){
         this.props.tabGroups.splice(tabGroupId,1);
-        this.forceUpdate();
-
-        //Needs model update
-        //console.log(this.props.name,this.props.tabGroups)
-        //TabService.saveTabs(this.props.name,this.props.tabGroups,()=>{console.log("lol")});
+        this.props.saveData();
     }
 
     /**

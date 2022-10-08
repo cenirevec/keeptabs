@@ -5,6 +5,7 @@ import { TabGroup } from "../element/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
 import { CreateCategory } from "../element/createCategory.jsx";
 import { Browser } from "../../../public/api/shared.variables.mjs";
+import DataService from "../../../public/api/services/data/data.service.mjs";
 
 export class CurrentTabsPanel extends Component{  
 
@@ -22,6 +23,8 @@ export class CurrentTabsPanel extends Component{
             currentTabs: []
         };
         
+
+        this.saveCurrentTabs = this.saveCurrentTabs.bind(this);
         
         //Add listeners to handle the tabs changes
         Browser.tabs.onActivated.addListener(this.getCurrentTabs);
@@ -42,10 +45,34 @@ export class CurrentTabsPanel extends Component{
      * @param {string} category Name of the category in which store the currently opened tabs
      */
     saveCurrentTabs(category){
-        TabService.saveCurrentTabs(category,(tabs)=>{
-            this.props.setMoods(tabs);
-        });
-        
+
+        //Define function content
+        let save =  function (tabGroups,_this){
+            let newTabGroup = {
+                "meta": {
+                    "lastAccessed": Date.now(),
+                    "name": null
+                },
+                "tabs": tabGroups
+            };
+            category.tabGroups.push(newTabGroup);
+
+            //Save the model
+            _this.props.saveData();
+        }
+        /*   Get tabs   */
+        // This code is redundant to ensure the privacy on ope
+        let ReadTabs = function(tabs,_this){
+            let tabList = new Array();
+            for (let i = 0; i < tabs.length; i++) {
+                tabList.push(new TabModel(tabs[i]));
+            }
+            
+            //Callback
+            save(tabList,_this);
+        }
+        // Get the open tabs
+        Browser.tabs.query({currentWindow: true, active: false},(tabs)=>ReadTabs(tabs,this));
     }
     
     
@@ -53,7 +80,7 @@ export class CurrentTabsPanel extends Component{
     /**
      * Update the currently opened tab list
      * @param {Array<TabModel>} tabs Tabs opened
-     */s
+     */
     updateState(tabs){
         this.setState({
             currentTabs: tabs
@@ -65,6 +92,8 @@ export class CurrentTabsPanel extends Component{
      * @returns Rendered content
      */
     render(){
+        if(this.props.data.categories == undefined)
+            return;
         // Dropdown needs access to the DOM of the Menu to measure it
         const CustomMenu = React.forwardRef(
             ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
@@ -91,16 +120,17 @@ export class CurrentTabsPanel extends Component{
                         )}
                     </ul>
                     <Dropdown.Divider />
-                    <CreateCategory onCreated={(name)=>this.saveCurrentTabs(name)}/>
+                    <CreateCategory saveData={this.props.saveData} onCreated={(name)=>this.saveCurrentTabs(name)}/>
                 </div>
             );
             },
         );
 
         let categories = new Array();
-
-        Object.keys(this.props.moods).forEach((mood,index)=>{
-            categories.push(<Dropdown.Item key={index} onClick={()=>this.saveCurrentTabs(mood)}>{mood}</Dropdown.Item>);
+        
+        Object.keys(this.props.data.categories).forEach((categoryId,index)=>{
+            let category = this.props.data.categories[categoryId];
+            categories.push(<Dropdown.Item key={index} onClick={()=>this.saveCurrentTabs(category)}>{category.meta.name}</Dropdown.Item>);
         })
         
 
@@ -111,7 +141,7 @@ export class CurrentTabsPanel extends Component{
                 <TabGroup context="current" filter={this.props.filter} tabs={this.state.currentTabs}/>
 
                 <Dropdown as={ButtonGroup}>
-                    <Button variant="primary" onClick={() => this.saveCurrentTabs("main")}>Save</Button>
+                    <Button variant="primary" onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>Save</Button>
 
                     <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
 

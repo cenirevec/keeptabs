@@ -1,9 +1,18 @@
 import React, { Component } from "react";
 import { Form , Button, InputGroup } from "react-bootstrap";
+import DataService from "../../../public/api/services/data/data.service.mjs";
 
 export class CreateCategory extends Component{  
 
     category = ''
+
+    defaultCategoryData = {
+        "meta":{
+            name: "newCategory",
+            expiration: null
+        },
+        "tabGroups":[]
+    }
     
     /**
      * Constructor
@@ -26,11 +35,38 @@ export class CreateCategory extends Component{
     createCategory(event){
         event.preventDefault();
 
-        const {onCreated} = this.props;
-        if(onCreated)
-            onCreated(this.state.name);
+        let category = null;
+        let categories = DataService.model.categories;
+        let newCategoryIndex = 0;
 
-        this.toggleEditionMode(false);
+        for(let categoryIndex in categories){
+            if(categories[categoryIndex].meta.name == this.state.name){
+                category = categories[categoryIndex];
+            }
+            if(categoryIndex == newCategoryIndex){
+                newCategoryIndex++;
+            }
+        }
+
+        //Create the category and quit edition mode
+        let createAndToggle = ()=>{
+            const {onCreated} = this.props;
+            if(onCreated)
+                onCreated(category);
+
+            this.toggleEditionMode(false);
+        }
+
+        //  Check that the category doesnt exists yet
+        if(category == null){
+            category = {...this.defaultCategoryData};
+            category.meta.name = this.state.name;
+            categories[newCategoryIndex] = category;
+
+            this.props.saveData();
+        }else{
+            createAndToggle();
+        }
     }
 
     setName(name){

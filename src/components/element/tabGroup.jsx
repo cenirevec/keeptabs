@@ -37,8 +37,13 @@ export class TabGroup extends React.Component{
      * @returns 
      */
     filter(params){
-        let filteredTabs = this.props.tabs.filter(
-            tab=>tab.title.toLowerCase().indexOf(params.values[0].toLowerCase()) != -1);
+        let filteredTabs = [];
+        
+        let source = (this.props.context == "saved")? this.props.tabs.tabs : this.props.tabs;
+        if (source != undefined) {
+            filteredTabs = source.filter(
+                tab=>tab.title.toLowerCase().indexOf(params.values[0].toLowerCase()) != -1);
+        }
 
         return filteredTabs;
     }
@@ -59,7 +64,7 @@ export class TabGroup extends React.Component{
     }
 
     /**
-     * Remove all tabs and selete this tabGroup
+     * Remove all tabs and delete this tabGroup
      */
     delete(){
         this.props.deleteFunction();

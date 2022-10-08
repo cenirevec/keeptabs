@@ -12,6 +12,7 @@
         --list-font-color: white;
         --badge-secondary-color: var(--list-bg-color);
         --offcanvas-color: #111;
+        --transparent-border: #fff5;
     }
 }
 @media (prefers-color-scheme: light) {
@@ -22,5 +23,6 @@
         --list-font-color: var(--bs-body-color);
         --badge-secondary-color: #555;
         --offcanvas-color: white;
+        --transparent-border: #0001;
     }
 }
