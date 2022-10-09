@@ -18,15 +18,6 @@ export class MoodGroup extends React.Component{
             tabGroups: this.props.tabGroups
         };
         this.removeTabGroup = this.removeTabGroup.bind(this);
-        this.onUpdate = this.onUpdate.bind(this);
-    }
-    
-    /**
-     * .Update tab groups
-     */
-    onUpdate(){
-        this.props.onUpdate(this.props.tabGroups);
-        
     }
 
     /**
@@ -52,10 +43,10 @@ export class MoodGroup extends React.Component{
             <TabGroup key={index} 
                       id={index} 
                       category={this.props.name} 
-                      onUpdate={this.onUpdate}
+                      saveData={this.props.saveData}
                       deleteFunction={()=>{this.removeTabGroup(index)}}
                       filter={this.props.filter}
-                      tabs={tabGroup} context="saved"/>);
+                      tabGroup={tabGroup} context="saved"/>);
 
         this.length = 0;
         this.props.tabGroups.forEach(tabGroup => {

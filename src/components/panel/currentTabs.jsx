@@ -1,11 +1,10 @@
 import React, { Component, useState } from "react";
-import { TabService } from "../../../public/api/services/oldServices/tab.service.mjs";
 import { TabModel } from "../../models/tab.model.js";
 import { TabGroup } from "../element/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
 import { CreateCategory } from "../element/createCategory.jsx";
 import { Browser } from "../../../public/api/shared.variables.mjs";
-import DataService from "../../../public/api/services/data/data.service.mjs";
+
 
 export class CurrentTabsPanel extends Component{  
 
@@ -17,14 +16,15 @@ export class CurrentTabsPanel extends Component{
     constructor(props){
         super(props);
 
-        this.getCurrentTabs = this.getCurrentTabs.bind(this);
-        this.getCurrentTabs();
+        
         this.state = {
             currentTabs: []
         };
         
 
         this.saveCurrentTabs = this.saveCurrentTabs.bind(this);
+        this.getCurrentTabs = this.getCurrentTabs.bind(this);
+        this.getCurrentTabs();
         
         //Add listeners to handle the tabs changes
         Browser.tabs.onActivated.addListener(this.getCurrentTabs);
@@ -35,9 +35,13 @@ export class CurrentTabsPanel extends Component{
      * Get the currently opened tabs
      */
     getCurrentTabs(){
-        TabService.getCurrentlyOpenTabs((tabs)=>{
-            this.updateState(tabs)
-        })
+        // Get the currently openned tabs
+        Browser.tabs.query({currentWindow: true, active: false},(tabs,_this = this)=>{
+            let currentTabs = tabs.map(tab=>{
+                return new TabModel(tab);
+            });
+            _this.setState({currentTabs:currentTabs});
+        });  
     }
 
     /**
@@ -45,7 +49,6 @@ export class CurrentTabsPanel extends Component{
      * @param {string} category Name of the category in which store the currently opened tabs
      */
     saveCurrentTabs(category){
-
         //Define function content
         let save =  function (tabGroups,_this){
             let newTabGroup = {
@@ -67,6 +70,8 @@ export class CurrentTabsPanel extends Component{
             for (let i = 0; i < tabs.length; i++) {
                 tabList.push(new TabModel(tabs[i]));
             }
+            //Remove saved tabs
+            Browser.tabs.remove(tabList.map(tab=>parseInt(tab.id)),null);
             
             //Callback
             save(tabList,_this);
@@ -133,12 +138,14 @@ export class CurrentTabsPanel extends Component{
             categories.push(<Dropdown.Item key={index} onClick={()=>this.saveCurrentTabs(category)}>{category.meta.name}</Dropdown.Item>);
         })
         
-
         if (this.state.currentTabs.length > 0) {
             // Return the current tabs panel
             return <section className="kt kt-panel kt-panel-current">
                 <h2><span>Current Tabs</span> <span className="badge badge-secondary">{this.state.currentTabs.length}</span></h2>
-                <TabGroup context="current" filter={this.props.filter} tabs={this.state.currentTabs}/>
+                <TabGroup context="current" 
+                          filter={this.props.filter} 
+                          tabGroup={this.state.currentTabs} 
+                          saveData={this.props.saveData}/>
 
                 <Dropdown as={ButtonGroup}>
                     <Button variant="primary" onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>Save</Button>

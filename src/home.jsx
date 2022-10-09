@@ -72,7 +72,6 @@ class Home extends React.Component{
                 selectedCategory:  loadedTabs.categories[0]
             });
         }
-        
     }
 
     saveData(){
@@ -116,8 +115,7 @@ class Home extends React.Component{
                     filter={this.searchFilter} 
                     data={this.state.data} 
                     selectedCategory={this.state.selectedCategory}
-                    saveData={this.saveData}
-                    setMoods={this.setMoods}/>
+                    saveData={this.saveData}/>
                     
                 <SearchBarPanel 
                     filter={this.searchFilter}

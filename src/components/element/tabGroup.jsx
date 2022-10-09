@@ -1,8 +1,7 @@
 import React from "react";
 import { Badge, Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { Tab } from "./tab.jsx";
-import { timeSince } from "../../../public/api/shared.variables.mjs";
-import { TabService } from "../../../public/api/services/oldServices/tab.service.mjs";
+import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
 
 export class TabGroup extends React.Component{  
 
@@ -13,7 +12,7 @@ export class TabGroup extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            tabs: this.props.tabs
+            tabs: this.props.tabGroup
         };
 
         this.openAll = this.openAll.bind(this);
@@ -23,12 +22,26 @@ export class TabGroup extends React.Component{
     /**
      * Open all the tabs in this group
      */
-    openAll(){
+    openAll(options){
         const {category,id} = this.props;
-        TabService.OpenAllTabsByGroupID(this.props.tabs);
-        this.props.onUpdate();
+        let filteredTabs = this.filter(this.props.filter);
+        let tokenForDeletion = [];
+        filteredTabs.forEach(tab => {
+            //Open the tab
+            Browser.tabs.create({url: tab.url});
+            //Prepare for deletion
+            tokenForDeletion.push(this.props.tabGroup.tabs.findIndex(tabInGroup => tabInGroup == tab));
+        });
+        //Remove openned tabs
+        this.props.tabGroup.tabs = this.props.tabGroup.tabs.filter(
+            (tab,index)=> tokenForDeletion.indexOf(index) == -1);
 
-        this.delete();
+        //Delete the tabgroup if all tabs have been openned and/or deleted
+        if(this.props.tabGroup.tabs.length == 0){
+            this.delete();
+        }
+        //Save the modification
+        this.props.saveData();
     }
 
     /**
@@ -39,7 +52,7 @@ export class TabGroup extends React.Component{
     filter(params){
         let filteredTabs = [];
         
-        let source = (this.props.context == "saved")? this.props.tabs.tabs : this.props.tabs;
+        let source = (this.props.context == "saved")? this.props.tabGroup.tabs : this.props.tabGroup;
         if (source != undefined) {
             filteredTabs = source.filter(
                 tab=>tab.title.toLowerCase().indexOf(params.values[0].toLowerCase()) != -1);
@@ -53,12 +66,12 @@ export class TabGroup extends React.Component{
      * @param {number} tabID Identifier of the tab
      */
     removeItem(tabID){
-        let index = this.props.tabs.findIndex(tab=>tab.id == tabID);
+        let index = this.props.tabGroup.findIndex(tab=>tab.id == tabID);
 
         if(index == -1){
             console.error("Cannot find a tab with the given id : "+tabID);
         }else{
-            this.props.tabs.splice(index,1);
+            this.props.tabGroup.splice(index,1);
             console.warn("Needs to remove it from the storage")
         }
     }
