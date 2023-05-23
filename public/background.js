@@ -11,10 +11,6 @@ if(chrome != undefined && chrome.action != undefined){
 //console.log(chrome.windows.WINDOW_ID_CURRENT)
 
 //{tabId,currentWindow}
-/*
-chrome.tabs.onActivated.addListener((event)=>{
-    console.log(event)
-})
-*/
+
 
 //console.log(browser)

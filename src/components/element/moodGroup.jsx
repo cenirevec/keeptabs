@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { TabService } from "../../../public/api/services/oldServices/tab.service.mjs";
 import { TabGroup } from "./tabGroup.jsx";
 
 export class MoodGroup extends React.Component{  
@@ -44,6 +43,7 @@ export class MoodGroup extends React.Component{
                       id={index} 
                       category={this.props.name} 
                       saveData={this.props.saveData}
+                      onUpdate={this.props.onUpdate}
                       deleteFunction={()=>{this.removeTabGroup(index)}}
                       filter={this.props.filter}
                       tabGroup={tabGroup} context="saved"/>);
@@ -52,7 +52,6 @@ export class MoodGroup extends React.Component{
         this.props.tabGroups.forEach(tabGroup => {
             this.length += tabGroup.length;
         });
-        //console.log(this.props.name,this.props.tabGroups.length,JSON.parse(JSON.stringify(this.props.tabGroups)).length)
         
         return <div className="kt kt-component kt-component-moodgroup row">
                     {this.props.tabGroups.length > 0 && tabgroupList}

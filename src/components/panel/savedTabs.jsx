@@ -72,7 +72,6 @@ export class SavedTabsPanel extends React.Component{
         }else{
             this.updateMood(name,new Array());
         }
-        console.info("saveTabs",name)
         //Save the category
         this.saveTabs(name,tabGroups);
     }
@@ -104,7 +103,7 @@ export class SavedTabsPanel extends React.Component{
      * @param {Object} tabGroups 
      */
     updateMood(mood,tabGroups){
-        let moods = this.props.moods;
+/*         let moods = this.props.moods;
         moods[mood] = tabGroups;
         //Empty the array if there are no tabs
         if(moods[mood].length == 1 && moods[mood][0].length == 0)
@@ -117,11 +116,10 @@ export class SavedTabsPanel extends React.Component{
         
         //Save the data
 /*         TabService.loadedTabs[mood] = tabGroups;
-        TabService.saveTabs(mood); */
+        TabService.saveTabs(mood); *
 
-        this.getMoodLengths();
+        this.getMoodLengths(); */
     }
-
 
     /**
      * Save tabs in a category

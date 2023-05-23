@@ -2,13 +2,14 @@ import { navigatorName } from "../../shared.variables.mjs";
 
 export class DataService{
 
-    model = {}
     mutex = {}
 
     defaultData = { 
         model:
         {
-            meta:{},
+            meta:{
+                version: "2.0.0"
+            },
             categories:{
                 "0": {
                     "meta":{
@@ -22,6 +23,7 @@ export class DataService{
         }
     }
 
+    model = JSON.parse(JSON.stringify(this.defaultData))
 
     constructor(){
         this.load = this.load.bind(this);
@@ -35,8 +37,8 @@ export class DataService{
      */
     save(callback){
         //Get a model to save
-        let data = (DataService.model == {} || DataService.model?.meta == undefined)? 
-            this.defaultData: JSON.parse(JSON.stringify({model:DataService.model}));
+        let data = (this.model == {} || this.model?.meta == undefined)? 
+            this.defaultData: JSON.parse(JSON.stringify({model:this.model}));
         
         //Save function according to the chosen browser
         if(navigatorName == "Firefox"){
@@ -71,10 +73,10 @@ export class DataService{
 
             promise.then(json=>{
                 //Check if the element exists
-                DataService.model = 
+                this.model = 
                     (!Object.keys(json).length) ? this.defaultData.model : json.model;
     
-                callback(DataService.model);
+                callback(this.model);
             })
         }else{
             if(navigatorName != "Chrome"){
@@ -83,10 +85,10 @@ export class DataService{
 
             chrome.storage.local.get("model",function(json){
                 //Check if the element exists
-                DataService.model = 
+                this.model = 
                     (!Object.keys(json).length) ? this.defaultData.model : json.model;
                 
-                callback(DataService.model);
+                callback(this.model);
             });
         }
     }

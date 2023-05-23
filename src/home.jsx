@@ -5,10 +5,8 @@ import { CurrentTabsPanel } from "./components/panel/currentTabs.jsx";
 import { SavedTabsPanel } from "./components/panel/savedTabs.jsx";
 import { FooterPanel } from "./components/panel/footer.jsx";
 import { SearchBarPanel } from "./components/panel/searchBar.jsx";
-import { searchBarParameters } from "./models/searchFilter.model"/* 
-import { TabService } from "../public/api/services/oldServices/tab.service.mjs"; */
+import { searchBarParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
-import CategoryService from "../public/api/services/data/category.service.mjs";
 import { Services } from "./services.jsx";
 
 class Home extends React.Component{
@@ -53,8 +51,10 @@ class Home extends React.Component{
         /* this.services.data.save(() => {}); */
 
         this.services.data.load(()=>{
+            //console.log(this.services.data)
            /*  CategoryService.rename(DataService.model.categories["1"],"Test"); */
-           this.setMoods(DataService.model);
+           this.setMoods(this.services.data.model);
+          
             setTimeout(()=>{this.setSelectedCategory(0);},0)
         });
     }
@@ -64,6 +64,7 @@ class Home extends React.Component{
         this.setState({
             data:loadedTabs
         });
+        console.log(JSON.parse(JSON.stringify(this.state.data)),JSON.parse(JSON.stringify(this.data)))
 
         this.data = loadedTabs;
 

@@ -17,6 +17,7 @@ export class TabGroup extends React.Component{
 
         this.openAll = this.openAll.bind(this);
         this.delete = this.delete.bind(this);
+        this.removeItem = this.removeItem.bind(this);
     }
 
     /**
@@ -51,13 +52,13 @@ export class TabGroup extends React.Component{
      */
     filter(params){
         let filteredTabs = [];
-        
         let source = (this.props.context == "saved")? this.props.tabGroup.tabs : this.props.tabGroup;
+
+        //console.log(source,params) 
         if (source != undefined) {
             filteredTabs = source.filter(
-                tab=>tab.title.toLowerCase().indexOf(params.values[0].toLowerCase()) != -1);
+                tab => params.filter(tab));
         }
-
         return filteredTabs;
     }
 
@@ -66,13 +67,15 @@ export class TabGroup extends React.Component{
      * @param {number} tabID Identifier of the tab
      */
     removeItem(tabID){
-        let index = this.props.tabGroup.findIndex(tab=>tab.id == tabID);
+        let index = this.props.tabGroup.tabs.findIndex(tab=>tab.id == tabID);
 
-        if(index == -1){
-            console.error("Cannot find a tab with the given id : "+tabID);
-        }else{
-            this.props.tabGroup.splice(index,1);
-            console.warn("Needs to remove it from the storage")
+        if(index != -1){
+            if(this.props.tabGroup.tabs.length == 1){
+                this.delete();
+            }else{
+                this.props.tabGroup.tabs.splice(index,1);
+                this.props.saveData();
+            }
         }
     }
 
@@ -96,7 +99,7 @@ export class TabGroup extends React.Component{
 
         //Create the tab list
         let tabList = filteredTabs.map(
-            (tab)=> <Tab key={tab.id} dto={tab} context={this.props.context}/>);
+            (tab)=> <Tab key={tab.id} tab={tab} delete={()=>{this.removeItem(tab.id)}} context={this.props.context}/>);
 
         let date = new Date(filteredTabs[0].lastAccessed);
         let areSavedTabs = this.props.context == "saved";
@@ -124,8 +127,8 @@ export class TabGroup extends React.Component{
                         <Button onClick={this.delete}>Delete</Button>
                     
                         <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown">
-                            <Dropdown.Item eventKey="1">Change category</Dropdown.Item>
-                            <Dropdown.Item eventKey="2">Split</Dropdown.Item>
+                            <Dropdown.Item eventKey="1">Move to category</Dropdown.Item>
+                            <Dropdown.Item eventKey="2">Split on match</Dropdown.Item>
                         </DropdownButton>
                     </ButtonGroup>
                     }

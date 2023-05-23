@@ -58,7 +58,7 @@ export class CurrentTabsPanel extends Component{
                 },
                 "tabs": tabGroups
             };
-            category.tabGroups.push(newTabGroup);
+            category.tabGroups.unshift(newTabGroup);
 
             //Save the model
             _this.props.saveData();
@@ -70,11 +70,17 @@ export class CurrentTabsPanel extends Component{
             for (let i = 0; i < tabs.length; i++) {
                 tabList.push(new TabModel(tabs[i]));
             }
+
+            //Filter the list
+            let toSave = tabList.filter(
+                    tab => _this.props.filter.filter(tab));
+
+
             //Remove saved tabs
-            Browser.tabs.remove(tabList.map(tab=>parseInt(tab.id)),null);
+            Browser.tabs.remove(toSave.map(tab=>parseInt(tab.id)),null);            
             
             //Callback
-            save(tabList,_this);
+            save(toSave,_this);
         }
         // Get the open tabs
         Browser.tabs.query({currentWindow: true, active: false},(tabs)=>ReadTabs(tabs,this));
@@ -97,8 +103,11 @@ export class CurrentTabsPanel extends Component{
      * @returns Rendered content
      */
     render(){
-        if(this.props.data.categories == undefined)
-            return;
+        console.log(this.props.data)
+        if(this.props.data.categories == undefined){
+                return;
+            }
+
         // Dropdown needs access to the DOM of the Menu to measure it
         const CustomMenu = React.forwardRef(
             ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
@@ -144,7 +153,7 @@ export class CurrentTabsPanel extends Component{
                 <h2><span>Current Tabs</span> <span className="badge badge-secondary">{this.state.currentTabs.length}</span></h2>
                 <TabGroup context="current" 
                           filter={this.props.filter} 
-                          tabGroup={this.state.currentTabs} 
+                          tabGroup={this.state.currentTabs}
                           saveData={this.props.saveData}/>
 
                 <Dropdown as={ButtonGroup}>

@@ -64,6 +64,7 @@ export class CreateCategory extends Component{
             categories[newCategoryIndex] = category;
 
             this.props.saveData();
+            this.toggleEditionMode(false);
         }else{
             createAndToggle();
         }

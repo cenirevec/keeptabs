@@ -1,5 +1,5 @@
 import React from "react";
-import { timeSince } from "../../../public/api/shared.variables.mjs";
+import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
 
 export class Tab extends React.Component{  
     
@@ -9,7 +9,28 @@ export class Tab extends React.Component{
      */
     constructor(props){
         super(props)
-       // this.props = props.dto;
+       // this.props = props.tab;
+       this.onOpen = this.onOpen.bind(this);
+    }
+
+    /**
+     * On tab opening event handler
+     * @param {Event} event 
+     */
+    onOpen(event){
+        if (event && (event.which == 1 || event.button == 0 )) {
+            //Open the tab
+            Browser.tabs.create({url: this.props.tab.url});
+            //Remove tab from list
+            this.delete();
+        }
+    }
+
+    /**
+     * Remove tab from list
+     */
+    delete(){
+        this.props.delete();
     }
 
 
@@ -18,13 +39,13 @@ export class Tab extends React.Component{
      * @returns Rendered content
      */
     render(){
-        if(this.props.dto == undefined)
+        if(this.props.tab == undefined)
             return;
 
         let addedClasses = "";
-        const {url,title,lastAccessed} = this.props.dto;
+        const {url,title,lastAccessed} = this.props.tab;
 
-        let favicon = this.props.dto.favicon;
+        let favicon = this.props.tab.favicon;
         if(favicon == undefined || favicon == "" || favicon == null){
             addedClasses+="no-icon ";
             favicon='/media/ico-48.png';
@@ -34,7 +55,10 @@ export class Tab extends React.Component{
 
         return <li className="kt kt-component kt-component-tab list-group-item list-group-item-action">
             <img src={favicon} className={addedClasses} title="Click to select this link"/>
-            <a href={url} target="_blank">{title}</a>
+            {this.props.context == 'saved' &&
+                <a href={url} target="_blank" onMouseDown={this.onOpen}>{title}</a>}
+            {this.props.context == 'current' &&
+                <span>{title}</span>}
             <small>{timeSince(date)}</small>
         </li>;
     }

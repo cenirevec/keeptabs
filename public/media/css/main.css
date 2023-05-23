@@ -142,7 +142,6 @@ header img{
     z-index: 10;
     border-top: #729fcf80 1px solid;
     box-shadow: -1px 0px 11px -3px #106cf9;
-    /* box-shadow:  -4px 15px 0px #eeeeee, 0 -4px 15px 0px #eeeeee, 0 -4px 15px 0px #eeeeee, 0 -4px 15px 0px #eeeeee, 0 -4px 15px 0px #eeeeee; */
 }
 
 #contextual-bar *{
@@ -165,12 +164,13 @@ header img{
 
 }
 
-#searchbox input{
+#searchbox .searchbar{
     box-shadow: var(--default-shadow);
     opacity: 0.6;
+    background-color: var(--list-bg-color);
 }
 
-#searchbox input:hover, #searchbox input:focus{
+#searchbox .searchbar:hover, #searchbox .searchbar:focus{
     box-shadow: var(--default-shadow);
     opacity: 1;
 }
@@ -182,10 +182,41 @@ header img{
     }
 }
 
-#searchbox input{
+#searchbox .searchbar{
     font-size: 2em;
-    padding-left: 3vw;
     border-radius: 2em;
+}
+
+#searchbox .searchbar svg{
+    height: 35px;
+    width: 35px;
+}
+
+#searchbox .searchbar .p-inputtext{
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    border-radius: 50px;
+    padding: 0 1em;
+    color: var(--font-color) !important;
+}
+
+#searchbox.asValues{
+    border: dotted #80808042 4px;
+    border-radius: 32px;
+    padding: 2px;
+}
+
+#searchbox .actions{
+    text-align: right;
+    padding: 0 9px;
+    position: relative;
+    transform: translateY(-52px);
+    height: 0;
+}
+
+#searchbox .erase{
+    cursor: pointer;
 }
 
 footer{
@@ -193,16 +224,9 @@ footer{
     margin: 35px;
 }
 
-/* .kt-component-tabgroup:hover{
-    border-radius: 7px;
-    padding: 15px 15px;
-    box-shadow: 0px 0px 5px -3px black;
-} */
-
 .blue-background-class{
     border: var(--bs-primary) dotted 4px;
     background-color: #0d6efd50;    
-    /* color: white; */
     color: #000c;
     border-radius: 5px;
 }
@@ -287,4 +311,25 @@ h2 .tabs-count{
 
 .mood-name .badge:not(.selected){
     opacity: 0 !important;
+}
+
+
+.kt-component-chip{
+    background-color: #0d6efd30;
+    border: solid 2px #0d6efd20;
+    color: var(--font-color);
+    margin: 6px 0 10px 8px;
+    padding: 3px 10px ;
+    border-radius: 50px;
+    display: inline-block;
+}
+
+.kt-component-chip .closeBttn{
+    cursor: pointer;
+    margin-bottom: 4px;
+    margin-left: 3px
+}
+
+.kt-component-chip .closeBttn:hover{
+    color: #e11;
 }

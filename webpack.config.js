@@ -22,6 +22,14 @@ module.exports = {
         }
     }],
   },
+  optimization:{
+    splitChunks:{
+      cacheGroups:{
+        react:{ test: /[\\/]node_modules[\\/]((react).*)/, name:'react', chunks:'all'},
+        commons:{ test: /[\\/]node_modules[\\/]((?!react).*)/, name:'common', chunks:'all'}
+      }
+    }
+  },
   plugins: [new HtmlWebpackPlugin({
        template: './src/home.html',
        filename: 'home.html' 
