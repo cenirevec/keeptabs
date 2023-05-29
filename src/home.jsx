@@ -17,8 +17,6 @@ class Home extends React.Component{
     /** All the tabs arborescence */
     data = DataService.model;
 
-    services = new Services();
-
 
     /**
      * Constructor
@@ -35,7 +33,6 @@ class Home extends React.Component{
         this.setFilter = this.setFilter.bind(this);
         this.setSelectedCategory = this.setSelectedCategory.bind(this);
         this.saveData = this.saveData.bind(this);
-
         
         //document.body.addEventListener("dblclick",()=>{console.log("moods",this.moods)});
         //Tests sur les données
@@ -50,10 +47,10 @@ class Home extends React.Component{
         }); */
         /* this.services.data.save(() => {}); */
 
-        this.services.data.load(()=>{
+        Services.data.load(()=>{
             //console.log(this.services.data)
            /*  CategoryService.rename(DataService.model.categories["1"],"Test"); */
-           this.setMoods(this.services.data.model);
+           this.setMoods(Services.data.model);
           
             setTimeout(()=>{this.setSelectedCategory(0);},0)
         });
@@ -61,12 +58,13 @@ class Home extends React.Component{
 
     //Shared Methods
     setMoods(loadedTabs){
-        this.setState({
-            data:loadedTabs
-        });
-        console.log(JSON.parse(JSON.stringify(this.state.data)),JSON.parse(JSON.stringify(this.data)))
-
-        this.data = loadedTabs;
+        if(loadedTabs){
+            this.setState({
+                data:loadedTabs
+            });
+            
+            this.data = loadedTabs;
+        }
 
         if(this.state.selectedCategory == null){
             this.setState({
@@ -76,9 +74,11 @@ class Home extends React.Component{
     }
 
     saveData(){
-        this.services.data.save(()=>{
-            this.setMoods(DataService.model);
-        })
+        if(Services.data.model){
+            Services.data.save(()=>{
+                this.setMoods(Services.data.model);
+            })
+        }
     }
 
     setSelectedCategory(index){

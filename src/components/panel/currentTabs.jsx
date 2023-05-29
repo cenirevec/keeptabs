@@ -46,9 +46,10 @@ export class CurrentTabsPanel extends Component{
 
     /**
      * Save the currently opened tabs
-     * @param {string} category Name of the category in which store the currently opened tabs
+     * @param {string} category Object representing the categories and his tab groups
      */
     saveCurrentTabs(category){
+        //console.log("category",category)
         //Define function content
         let save =  function (tabGroups,_this){
             let newTabGroup = {
@@ -103,7 +104,6 @@ export class CurrentTabsPanel extends Component{
      * @returns Rendered content
      */
     render(){
-        console.log(this.props.data)
         if(this.props.data.categories == undefined){
                 return;
             }

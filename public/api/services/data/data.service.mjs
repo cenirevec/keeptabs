@@ -15,7 +15,7 @@ export class DataService{
                     "meta":{
                         expiration: 30*24*3600*1000,
                         name: "temporary",
-                        translationLabel: "TEMPORARY"
+                        translationLabel: "categories.names.temporary"
                     },
                     "tabGroups":[]
                 }
@@ -37,21 +37,23 @@ export class DataService{
      */
     save(callback){
         //Get a model to save
-        let data = (this.model == {} || this.model?.meta == undefined)? 
+        let modelToSave = (this.model == {} || this.model?.meta == undefined)? //If model not set or set wrongly
             this.defaultData: JSON.parse(JSON.stringify({model:this.model}));
         
         //Save function according to the chosen browser
         if(navigatorName == "Firefox"){
-            browser.storage.local.set(data);
-            if(callback != undefined)
-                callback();
+            browser.storage.local.set(modelToSave).then(()=>{
+                        if(callback != undefined)
+                            callback(this.model);
+                   })
+                   .catch((error)=>console.error(error))
         }else{
             if(navigatorName != "Chrome"){
-                console.warn("Ths browser have not been tested, stay prudent")
+                console.warn("This browser have not been tested, stay prudent")
             }
             if(callback == undefined)
                 callback = ()=>{};
-            chrome.storage.local.set(data,callback);
+            chrome.storage.local.set(modelToSave,callback);
         }
     }
 
@@ -86,8 +88,7 @@ export class DataService{
             chrome.storage.local.get("model",function(json){
                 //Check if the element exists
                 this.model = 
-                    (!Object.keys(json).length) ? this.defaultData.model : json.model;
-                
+                    (!(Object.keys(json).length) || !json ) ? this.defaultData.model : json?.model;
                 callback(this.model);
             });
         }

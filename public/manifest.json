@@ -5,14 +5,14 @@
     "browser_action": {
         "browser_style": true,
         "default_title": "KeepTabs",
-        "default_icon": "media/ico-48.png"
+        "default_icon": "media/ico-48-dev.png"
         
     },
     "description": "Tool to manage your browser workspace.",
     "homepage_url": "https://github.com/cenirevec/keeptabs",
     
     "icons": {
-      "48": "media/ico-48.png"
+      "48": "media/ico-48-dev.png"
     },
   
     "manifest_version": 2,
