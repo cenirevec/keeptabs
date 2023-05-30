@@ -123,11 +123,6 @@ header img{
     margin-bottom: 15px;
 }
 
-.time-ago{
-    margin: 0px 15px;
-    opacity: 0.7;
-}
-
 .hidden{
     display: none;
 }
@@ -262,14 +257,27 @@ h2 .tabs-count{
     margin-left: 10px;
 }
 
-.time-ago .tabs-count .badge{
+.tab-group-header .tabs-count .badge{
     position: relative;
     top: -2px;
 }
 
-.time-ago{
+.tab-group-header{
     display: grid;
-    grid-template-columns: auto max-content;
+    grid-template-columns: max-content auto max-content;
+    gap: 1rem;    
+    margin: 0px 15px;
+}
+
+
+.tab-group-header .kt-component-renamable{
+    font-size: 1.5rem;
+}
+
+.tab-group-header :not(.kt-component-renamable){
+    margin-top: auto;
+    opacity: 0.7;
+    margin-bottom: .15rem;
 }
 
 .kt-component-mood-navbar{
@@ -333,3 +341,5 @@ h2 .tabs-count{
 .kt-component-chip .closeBttn:hover{
     color: #e11;
 }
+
+

@@ -1,7 +1,7 @@
 import React,{Component} from "react";
 import { Nav, Badge, Button } from 'react-bootstrap';
 import { CreateCategory } from "./createCategory.jsx";
-import { Renamable } from "../shared/renamable.jsx";
+import { Renamable } from "../shared/renamable/renamable.jsx";
 
 class EditionInProgress{
   status = true;
