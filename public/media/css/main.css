@@ -3,7 +3,7 @@
 @import url(./variables.css);
 
 .list-group{
-    border-radius: 15px;
+    border-radius: 1rem;
 }
 
 .kt-panel-current .tabs{
@@ -27,11 +27,11 @@
 .tabs li img{
     width: 25px;
     border-radius: 5px;
-    margin-right: 15px;
+    margin-right: 1rem;
 }
 
 .tabs li small{
-    margin-left: 15px;
+    margin-left: 1rem;
     opacity: 0.5;
     white-space: nowrap;
 }
@@ -107,7 +107,7 @@ body{
 }
 
 .container{
-    margin: 15px;
+    margin: 1rem;
     min-width: calc(100vw - 30px);
 }
 
@@ -120,7 +120,7 @@ header{
 
 header img{
     height: 40px;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
 .hidden{
@@ -129,7 +129,7 @@ header img{
 
 #contextual-bar {
     display: block;
-    padding: 5px 15px;
+    padding: 5px 1rem;
     position: fixed;
     bottom: 1px;
     width: 100%;
@@ -251,6 +251,7 @@ footer{
 .kt-panel-current h2{
     font-size: calc(0.825rem + .9vw);
     margin-top: 20px;
+    margin-left: 1rem;
 }
 
 h2 .tabs-count{
@@ -266,12 +267,18 @@ h2 .tabs-count{
     display: grid;
     grid-template-columns: max-content auto max-content;
     gap: 1rem;    
-    margin: 0px 15px;
+    margin: 0px 1rem;
 }
 
 
 .tab-group-header .kt-component-renamable{
     font-size: 1.5rem;
+}
+
+.tab-group-header .kt-component-renamable input{
+	background-color: var(--renamable-background-color);
+	border-color: var(--renamable-border-color);
+	color: var(--font-color);
 }
 
 .tab-group-header :not(.kt-component-renamable){
@@ -294,7 +301,7 @@ h2 .tabs-count{
 
 .kt-component-moodgroup .empty{
     border: var(--transparent-border) dotted 5px;
-    margin: 25px 15px;
+    margin: 25px 1rem;
     padding: 2vw;
     min-height: 300px;
     display: inline-block;
@@ -321,6 +328,12 @@ h2 .tabs-count{
     opacity: 0 !important;
 }
 
+.mood-name .kt-component-renamable input{
+	background-color: #fff2;
+	border-color: #fff6;
+	color: white;
+}
+
 
 .kt-component-chip{
     background-color: #0d6efd30;
@@ -343,3 +356,18 @@ h2 .tabs-count{
 }
 
 
+.kt-component-renamable input{
+    border: dotted 3px;
+}
+
+.kt-panel-saved .kt-component-tab a{
+	color: var(--font-color);
+}
+
+.kt-panel-saved .kt-component-tab:hover{
+	background-color: var(--body-color) !important;
+}
+
+:is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{
+    margin: 5px 1rem;
+}

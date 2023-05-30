@@ -13,6 +13,9 @@
         --badge-secondary-color: var(--list-bg-color);
         --offcanvas-color: #111;
         --transparent-border: #fff5;
+
+        --renamable-background-color: #fff2;
+        --renamable-border-color: #fff6;
     }
 }
 @media (prefers-color-scheme: light) {
@@ -24,5 +27,8 @@
         --badge-secondary-color: #555;
         --offcanvas-color: white;
         --transparent-border: #0001;
+
+        --renamable-background-color: #0002;
+        --renamable-border-color: #0006;
     }
 }

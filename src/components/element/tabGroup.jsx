@@ -7,7 +7,7 @@ import { Services } from "../../services.jsx";
 
 export class TabGroup extends React.Component{  
 
-        /**
+    /**
      * Constructor
      * @param {Object} props Component's attributes
      */
