@@ -57,6 +57,13 @@ export class TabGroup extends React.Component{
     renameGroup(value){
         this.props.tabGroup.name = value;
         Services.data.save();
+        this.refresh();
+    }
+
+    refresh(){
+        this.setState({
+            tabs: this.props.tabGroup
+        });
     }
 
     /**
@@ -96,7 +103,7 @@ export class TabGroup extends React.Component{
      * Remove all tabs and delete this tabGroup
      */
     delete(event,filteredTabs){
-        if(this.props.tabGroup.tabs.length == filteredTabs.length){
+        if(!filteredTabs || this.props.tabGroup.tabs.length == filteredTabs.length){
             this.props.deleteFunction();
             this.props.onUpdate();
         }else{
@@ -132,26 +139,28 @@ export class TabGroup extends React.Component{
             (tab)=> <Tab key={tab.id} tab={tab} delete={()=>{this.removeItem(tab.id)}} context={this.props.context}/>);
 
         // Define the date of the tabgroup (currently by pick the date of the first element)
-        let date = new Date(filteredTabs[0].lastAccessed); 
+        let date = new Date(this.props.tabGroup.meta?.lastAccessed ?? filteredTabs[0].lastAccessed); 
         let areSavedTabs = this.props.context == "saved";
 
         let className = "kt kt-component kt-component-tabgroup tabs";
         className += areSavedTabs ? " col-lg-6":"";
 
+        this.props.tabGroup.name = this.props.tabGroup.name ?? "";
+
         return <div className={className}>
                     {/* Show the number of tabs and when it as been saved */}
                     {areSavedTabs && 
                         <div>
-                            <p className="tab-group-header" onClick={this.tabGroupTitle?.current?.enableEdition}>
+                            <span className="tab-group-header" onClick={this.tabGroupTitle?.current?.enableEdition}>
                                 <Renamable  ref={this.tabGroupTitle} 
-                                            value={this.props.tabGroup.name ?? ""} 
+                                            value={this.props.tabGroup.name} 
                                             onSubmit={(value)=>{this.renameGroup(value)}}></Renamable>
                                 <span className="time-ago" >{timeSince(date)} ago</span>
                                 <span className="tabs-count">
                                     <Badge pill bg="secondary">{filteredTabs.length}</Badge>
                                     <span>tabs</span>
                                 </span>
-                            </p>
+                            </span>
                         </div>
                     }
 

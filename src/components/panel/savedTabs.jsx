@@ -170,8 +170,9 @@ export class SavedTabsPanel extends React.Component{
                 data={this.props.data}
                 selected={categoryIndex}/>
             {   this.props.data && this.props.data.categories[categoryIndex] != undefined &&
-                <MoodGroup name={categoryName} 
-                tabGroups={this.props.data.categories[categoryIndex].tabGroups}
+                <MoodGroup //name={categoryName} 
+                category={this.props.data.categories[categoryIndex]}
+               // tabGroups={this.props.data.categories[categoryIndex].tabGroups}
                 onUpdate={(tabGroups)=>{this.updateMood(categoryIndex,tabGroups)}}
                 saveData={this.props.saveData}
                 filter={this.props.filter}/>

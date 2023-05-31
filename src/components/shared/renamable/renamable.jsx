@@ -27,8 +27,16 @@ export class Renamable extends React.Component{
         this.setValue = this.setValue.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
+
         // Reference to the input
         this.textInput = React.createRef();
+    }
+
+    componentDidUpdate(newProps){
+        if(!this.state.edition && newProps.value != this.state.value){
+            this.setState({value: newProps.value});
+        }
     }
 
     enableEdition(){
@@ -38,6 +46,8 @@ export class Renamable extends React.Component{
         //Preselect the text
         setTimeout((_self = this)=>{
             _self.textInput.current.select();
+            // When the user clicks outside of the input
+            document.body.onclick = this.handleOutsideClick
         },0)
     }
 
@@ -53,11 +63,18 @@ export class Renamable extends React.Component{
     }
 
     handleSubmit(event){
-        if(this.callbacks.onSubmit && this.state.valid)
+        this.setState({edition: false});
+        if(this.callbacks.onSubmit && this.state.valid){
             this.callbacks.onSubmit(this.state.value);
+        }
+        
+        if(event) event.preventDefault();
+    }
 
-        this.setState({edition: false})
-        event.preventDefault();
+    handleOutsideClick(event){
+        console.log(event)
+        document.body.onclick = null;
+        this.handleSubmit();
     }
 
     /**

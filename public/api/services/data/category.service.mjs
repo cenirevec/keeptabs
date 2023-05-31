@@ -1,8 +1,8 @@
-import DataService from "./data.service.mjs";
+import { Services } from "../../../../src/services.jsx";
 
 export class CategoryService {
 
-    model = DataService.model;
+    model = null;
 
     defaultTabGroupData = {
         "meta": {
@@ -15,13 +15,15 @@ export class CategoryService {
     defaultCategoryData = {
         "meta":{
             name: "newCategory",
-            expiration: 30*24*3600*1000
+            expiration: 30*24*3600*1000,
+            hidden: 14*24*3600*1000
         },
         "tabGroups":[]
     }
 
-    constructor(){
+    constructor(allServices){
         this.create = this.create.bind(this);
+        this.model = allServices.data.model;
     }
 
     get(categoryId){
@@ -45,7 +47,7 @@ export class CategoryService {
      */
     rename(category,newName){
         category.meta.name = newName;
-        DataService.save();
+        Services.data.save();
     }
 
     /**
@@ -60,7 +62,7 @@ export class CategoryService {
         category.meta.name = name;
         //Add the category to the object
         this.model.categories[id] = category;
-        DataService.save();
+        Services.data.save();
     }
 
     /**
@@ -69,7 +71,7 @@ export class CategoryService {
      */
     delete(id){
         delete this.model.categories[id];
-        DataService.save();
+        Services.data.save();
     }
 }
 

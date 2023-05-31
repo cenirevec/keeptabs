@@ -43,7 +43,6 @@
 .tabs button{
     white-space: nowrap;
     width: 100%;
-    margin-top: 5px;
 }
 
 .tabs li.disappear{
@@ -114,6 +113,7 @@ body{
 header h1, .kt-component-tabgroup{
     display: inline-block;
 }
+
 header{
     margin: 5px;
 }
@@ -155,8 +155,14 @@ header img{
 }
 
 #searchbox{
-    margin: auto auto 25px auto;
-
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--searchbox-backdrop);
+    backdrop-filter: blur(7px);
+    padding: 1.25rem 0 0.1rem;
+    border-bottom: var(--body-color) 2px solid;
+    margin: 0 -25px;
 }
 
 #searchbox .searchbar{
@@ -171,7 +177,8 @@ header img{
 }
 
 @media screen and (min-width: 700px) {
-    #searchbox{
+    #searchbox .searchbar{
+        margin: auto auto 25px auto;
         min-width: 700px;
         width:75vw;
     }
@@ -268,6 +275,7 @@ h2 .tabs-count{
     grid-template-columns: max-content auto max-content;
     gap: 1rem;    
     margin: 0px 1rem;
+    min-height: 2.25rem
 }
 
 
@@ -370,4 +378,20 @@ h2 .tabs-count{
 
 :is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{
     margin: 5px 1rem;
+}
+
+.kt-component-tabgroup{
+    margin-bottom: 1rem;
+}
+
+.kt-component-moodgroup .hiddenSeparator{
+    text-align: center;
+}
+
+.kt-component-moodgroup .accordion{
+    margin-top: 1rem;
+}
+
+.kt-component-moodgroup .accordion-button{
+    background-color: var(--body-color);
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form , Button, InputGroup } from "react-bootstrap";
-import DataService from "../../../public/api/services/data/data.service.mjs";
+import { Services } from "../../services.jsx";
 
 export class CreateCategory extends Component{  
 
@@ -9,7 +9,8 @@ export class CreateCategory extends Component{
     defaultCategoryData = {
         "meta":{
             name: "newCategory",
-            expiration: null
+            expiration: null,
+            hidden: 2635200000 // a month
         },
         "tabGroups":[]
     }
@@ -36,7 +37,7 @@ export class CreateCategory extends Component{
         event.preventDefault();
 
         let category = null;
-        let categories = DataService.model.categories;
+        let categories = Services.data.model.categories;
         let newCategoryIndex = 0;
 
         for(let categoryIndex in categories){
