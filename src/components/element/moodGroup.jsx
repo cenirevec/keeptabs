@@ -58,12 +58,16 @@ export class MoodGroup extends React.Component{
             Services.data.save();
         }
 
-
+        // Check if the tab has to be hidden
         let checkHidden = (tabGroup)=>{
             if(!this.props.category.meta.hidden) return false;
 
             return (Date.now() - tabGroup.meta.lastAccessed) > this.props.category.meta.hidden;
         }
+
+        //Withdraw the empty tabGroups
+        this.props.category.tabGroups = 
+            this.props.category.tabGroups.filter((tabGroup)=> tabGroup.tabs.length > 0);
 
         //Delete expired tab groups
         if(this.props.category.meta.expiration){
@@ -116,7 +120,6 @@ export class MoodGroup extends React.Component{
                             <small>You can add the current tabs by clicking on the <Button className="disabled">Save</Button> button</small>
                         </div>
                     }
-
                     { hiddenTabgroupList.length > 0 &&
                         <Accordion>
                             <AccordionHeader>

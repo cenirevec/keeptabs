@@ -72,7 +72,6 @@ export class Renamable extends React.Component{
     }
 
     handleOutsideClick(event){
-        console.log(event)
         document.body.onclick = null;
         this.handleSubmit();
     }

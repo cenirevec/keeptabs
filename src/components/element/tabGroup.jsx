@@ -32,9 +32,11 @@ export class TabGroup extends React.Component{
         const {category,id} = this.props;
         let filteredTabs = this.filter(this.props.filter);
         let tokenForDeletion = [];
-        filteredTabs.forEach(tab => {
+        filteredTabs.forEach((tab,index) => {
             //Open the tab
-            Browser.tabs.create({url: tab.url});
+            setTimeout(()=>{
+                Browser.tabs.create({url: tab.url});
+            },(100*index))
             //Prepare for deletion
             tokenForDeletion.push(this.props.tabGroup.tabs.findIndex(tabInGroup => tabInGroup == tab));
         });
@@ -44,7 +46,7 @@ export class TabGroup extends React.Component{
 
         //Delete the tabgroup if all tabs have been openned and/or deleted
         if(this.props.tabGroup.tabs.length == 0){
-            this.delete();
+          this.delete();
         }
         //Save the modification
         Services.data.save();
