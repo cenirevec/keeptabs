@@ -42,6 +42,7 @@ export class Renamable extends React.Component{
     enableEdition(){
         // Switch to edition mode
         this.setState({edition: true});
+        console.log("editionEnabled",this.state.value)
 
         //Preselect the text
         setTimeout((_self = this)=>{
@@ -63,12 +64,14 @@ export class Renamable extends React.Component{
     }
 
     handleSubmit(event){
-        this.setState({edition: false});
-        if(this.callbacks.onSubmit && this.state.valid){
-            this.callbacks.onSubmit(this.state.value);
+        if(this.state.edition){
+            this.setState({edition: false});
+            if(this.callbacks.onSubmit && this.state.valid){
+                this.callbacks.onSubmit(this.state.value);
+            }
+            
+            if(event) event.preventDefault();
         }
-        
-        if(event) event.preventDefault();
     }
 
     handleOutsideClick(event){

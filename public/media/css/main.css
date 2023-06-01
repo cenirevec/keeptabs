@@ -363,6 +363,9 @@ h2 .tabs-count{
     color: #e11;
 }
 
+.kt-component-renamable{
+    display: inline-flex;
+}
 
 .kt-component-renamable input{
     border: dotted 3px;

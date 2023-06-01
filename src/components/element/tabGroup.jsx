@@ -29,14 +29,13 @@ export class TabGroup extends React.Component{
      * Open all the tabs in this group
      */
     openAll(options){
-        const {category,id} = this.props;
         let filteredTabs = this.filter(this.props.filter);
         let tokenForDeletion = [];
         filteredTabs.forEach((tab,index) => {
             //Open the tab
             setTimeout(()=>{
                 Browser.tabs.create({url: tab.url});
-            },(100*index))
+            },(100*index) + 100)
             //Prepare for deletion
             tokenForDeletion.push(this.props.tabGroup.tabs.findIndex(tabInGroup => tabInGroup == tab));
         });
