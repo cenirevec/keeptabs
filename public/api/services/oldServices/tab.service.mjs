@@ -469,7 +469,7 @@ export class TabService{
                     //
                     let description = document.createElement("p");
                     description.className = "time-ago";
-                                        
+                    
                     let date = new Date(array[0].lastAccessed);
                     
                     description.innerHTML = timeSince(date) + " ago";

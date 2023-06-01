@@ -1,7 +1,8 @@
 import React,{Component} from "react";
 import { Nav, Badge, Button } from 'react-bootstrap';
 import { CreateCategory } from "./createCategory.jsx";
-import { Renamable } from "../shared/renamable.jsx";
+import { Renamable } from "../shared/renamable/renamable.jsx";
+import { Services } from "../../services.jsx";
 
 class EditionInProgress{
   status = true;
@@ -29,7 +30,8 @@ export class MoodNavBar extends Component{
         this.state = {
             moodLengths: this.props.moodLengths,  //Defines the number of tabs on each category 
             selected: this.props.selected,  //Defines the name of the selected category 
-            edition: new EditionInProgress()
+            edition: new EditionInProgress(),
+            forceRefreshState: true
         };
         //Function bindings
         this.createCategory = this.createCategory.bind(this);
@@ -61,8 +63,20 @@ export class MoodNavBar extends Component{
      * @param {*} newName Name to give
      */
     renameItem(category,newName){
-      category.meta.name = newName;
-      this.props.saveData();
+      if(category?.meta?.name){
+        category.meta.name = newName;
+        this.refresh();
+        Services.data.save();
+      }
+    }
+    
+    /**
+     * Refresh component
+     */
+    refresh(){
+      this.setState({
+        forceRefreshState: !this.state.forceRefreshState
+      })
     }
 
     /**
@@ -79,16 +93,18 @@ export class MoodNavBar extends Component{
       
       Object.keys(this.props.data.categories).forEach(index=>{
         const category = this.props.data.categories[index];
-        const categoryName = category.meta.name;
         const length = getCategorySize(category);
 
+        //category.meta.name = category.meta.name ?? "";
         navbarItems.push(
           <Nav.Item key={index} 
                     onClick={() => {this.selectCategory(index)}} 
                     onDoubleClick={()=>{this.renameItem(index)}}>
             <Nav.Link eventKey={index}>
               <span className="mood-name">
-                <Renamable value={categoryName} onSubmit={(newName)=>this.renameItem(category,newName)}></Renamable>
+                <Renamable value={category.meta.name} 
+                           onSubmit={(newName)=>this.renameItem(category,newName)}
+                ></Renamable>
               </span>
               {index == this.props.selected 
               &&   <Badge pill bg="light" text="primary" className="selected"> {length} </Badge>}

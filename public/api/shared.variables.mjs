@@ -17,7 +17,7 @@ function getNavigatorName() {
 
 export const navigatorName = getNavigatorName();
 export const Browser = (chrome != undefined)? chrome : browser;
-export const webexVersion = "0.3.7"
+export const webexVersion = "0.4.6"
 
 /**
  * Writing date in a "time ago" format

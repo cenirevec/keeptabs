@@ -3,7 +3,7 @@
 @import url(./variables.css);
 
 .list-group{
-    border-radius: 15px;
+    border-radius: 1rem;
 }
 
 .kt-panel-current .tabs{
@@ -27,11 +27,11 @@
 .tabs li img{
     width: 25px;
     border-radius: 5px;
-    margin-right: 15px;
+    margin-right: 1rem;
 }
 
 .tabs li small{
-    margin-left: 15px;
+    margin-left: 1rem;
     opacity: 0.5;
     white-space: nowrap;
 }
@@ -43,7 +43,6 @@
 .tabs button{
     white-space: nowrap;
     width: 100%;
-    margin-top: 5px;
 }
 
 .tabs li.disappear{
@@ -107,25 +106,21 @@ body{
 }
 
 .container{
-    margin: 15px;
+    margin: 1rem;
     min-width: calc(100vw - 30px);
 }
 
 header h1, .kt-component-tabgroup{
     display: inline-block;
 }
+
 header{
     margin: 5px;
 }
 
 header img{
     height: 40px;
-    margin-bottom: 15px;
-}
-
-.time-ago{
-    margin: 0px 15px;
-    opacity: 0.7;
+    margin-bottom: 1rem;
 }
 
 .hidden{
@@ -134,7 +129,7 @@ header img{
 
 #contextual-bar {
     display: block;
-    padding: 5px 15px;
+    padding: 5px 1rem;
     position: fixed;
     bottom: 1px;
     width: 100%;
@@ -160,8 +155,14 @@ header img{
 }
 
 #searchbox{
-    margin: auto auto 25px auto;
-
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--searchbox-backdrop);
+    backdrop-filter: blur(7px);
+    padding: 1.25rem 0 0.1rem;
+    border-bottom: var(--body-color) 2px solid;
+    margin: 0 -25px;
 }
 
 #searchbox .searchbar{
@@ -176,7 +177,8 @@ header img{
 }
 
 @media screen and (min-width: 700px) {
-    #searchbox{
+    #searchbox .searchbar{
+        margin: auto auto 25px auto;
         min-width: 700px;
         width:75vw;
     }
@@ -256,20 +258,41 @@ footer{
 .kt-panel-current h2{
     font-size: calc(0.825rem + .9vw);
     margin-top: 20px;
+    margin-left: 1rem;
 }
 
 h2 .tabs-count{
     margin-left: 10px;
 }
 
-.time-ago .tabs-count .badge{
+.tab-group-header .tabs-count .badge{
     position: relative;
     top: -2px;
 }
 
-.time-ago{
+.tab-group-header{
     display: grid;
-    grid-template-columns: auto max-content;
+    grid-template-columns: max-content auto max-content;
+    gap: 1rem;    
+    margin: 0px 1rem;
+    min-height: 2.25rem
+}
+
+
+.tab-group-header .kt-component-renamable{
+    font-size: 1.5rem;
+}
+
+.tab-group-header .kt-component-renamable input{
+	background-color: var(--renamable-background-color);
+	border-color: var(--renamable-border-color);
+	color: var(--font-color);
+}
+
+.tab-group-header :not(.kt-component-renamable){
+    margin-top: auto;
+    opacity: 0.7;
+    margin-bottom: .15rem;
 }
 
 .kt-component-mood-navbar{
@@ -286,7 +309,7 @@ h2 .tabs-count{
 
 .kt-component-moodgroup .empty{
     border: var(--transparent-border) dotted 5px;
-    margin: 25px 15px;
+    margin: 25px 1rem;
     padding: 2vw;
     min-height: 300px;
     display: inline-block;
@@ -313,6 +336,12 @@ h2 .tabs-count{
     opacity: 0 !important;
 }
 
+.mood-name .kt-component-renamable input{
+	background-color: #fff2;
+	border-color: #fff6;
+	color: white;
+}
+
 
 .kt-component-chip{
     background-color: #0d6efd30;
@@ -332,4 +361,40 @@ h2 .tabs-count{
 
 .kt-component-chip .closeBttn:hover{
     color: #e11;
+}
+
+.kt-component-renamable{
+    display: inline-flex;
+}
+
+.kt-component-renamable input{
+    border: dotted 3px;
+}
+
+.kt-panel-saved .kt-component-tab a{
+	color: var(--font-color);
+}
+
+.kt-panel-saved .kt-component-tab:hover{
+	background-color: var(--body-color) !important;
+}
+
+:is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{
+    margin: 5px 1rem;
+}
+
+.kt-component-tabgroup{
+    margin-bottom: 1rem;
+}
+
+.kt-component-moodgroup .hiddenSeparator{
+    text-align: center;
+}
+
+.kt-component-moodgroup .accordion{
+    margin-top: 1rem;
+}
+
+.kt-component-moodgroup .accordion-button{
+    background-color: var(--body-color);
 }

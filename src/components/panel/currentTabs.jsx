@@ -169,7 +169,7 @@ export class CurrentTabsPanel extends Component{
         } else {
             return <section className="kt kt-panel kt-panel-current kt-panel-current-empty">
                 <p>There is no tab openned</p>
-                <small>You can choose among the saved one or click on Open All to restore an older browsing session</small>
+                <small>You can choose among the saved ones or click on Open All to restore an older browsing session</small>
             </section>
         }
     }
