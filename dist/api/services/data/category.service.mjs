@@ -23,11 +23,20 @@ export class CategoryService {
 
     constructor(allServices){
         this.create = this.create.bind(this);
-        this.model = allServices.data.model;
+        this.model = allServices.data.model.model;
     }
 
     get(categoryId){
         return this.model.categories[categoryId];
+    }
+
+    getByName(name){
+        //console.log("getByName",this.model)
+        let categories = Object.keys(this.model.categories)
+                               .map(categoryid=>this.model.categories[categoryid])
+                               //this.model.categories[0]//
+                               //console.log("categories,this.model",categories,this.model);
+        return categories.find(category => category.meta.name == name);
     }
 
     /**
@@ -54,7 +63,7 @@ export class CategoryService {
      * Create a category
      * @param {string} name Name of the category
      */
-    create(name){
+    create(name,save = true){
         //Get an unique id
         let id = this.generateCategoryId();
         //Create a new category object
@@ -62,7 +71,8 @@ export class CategoryService {
         category.meta.name = name;
         //Add the category to the object
         this.model.categories[id] = category;
-        Services.data.save();
+        if(save) Services.data.save();
+        return category;
     }
 
     /**

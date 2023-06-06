@@ -52,10 +52,13 @@ export class CurrentTabsPanel extends Component{
         //console.log("category",category)
         //Define function content
         let save =  function (tabGroups,_this){
+            let creationDate = Date.now();
             let newTabGroup = {
                 "meta": {
-                    "lastAccessed": Date.now(),
-                    "name": null
+                    "lastAccessed": creationDate,
+                    "created": creationDate,
+                    "name": null,
+                    "deleteOnOpening": "true"
                 },
                 "tabs": tabGroups
             };

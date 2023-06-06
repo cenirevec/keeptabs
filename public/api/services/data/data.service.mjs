@@ -1,4 +1,12 @@
+import { Services } from "../../../../src/services.jsx";
+import { currentDataVersion } from "../../shared.variables.mjs";
 import { navigatorName } from "../../shared.variables.mjs";
+
+export class DataUploadMethodEnum{
+    MERGE = 'merge';
+    ADD = 'add';
+    REPLACE = 'replace';
+}
 
 export class DataService{
 
@@ -28,6 +36,9 @@ export class DataService{
     constructor(){
         this.load = this.load.bind(this);
         this.save = this.save.bind(this);
+
+        this.download = this.download.bind(this);
+        this.clear = this.clear.bind(this);
     }
 
     /**
@@ -58,7 +69,8 @@ export class DataService{
     }
 
     patch(){
-
+        console.log(content)
+        return content;
     }
 
     /**
@@ -109,6 +121,88 @@ export class DataService{
         }
     }
 
+    /**
+     * Upload saved tabs from a file
+     * @param {Object} content Content of the save
+     * @param {DataUploadMethodEnum} method Indicates how to add the data
+     */
+    upload(content,method = DataUploadMethodEnum.MERGE){
+        if(currentDataVersion != content?.meta?.version){
+            //content = this.patch(content);
+        }
+
+        switch (method) {
+            case DataUploadMethodEnum.MERGE:
+                let importedCategories = Object.keys(content.categories).map(categoryid=>content.categories[categoryid]); 
+                importedCategories.forEach(category=>{
+                    this.mergeWithCategory(category);
+                    console.log(this.model,Services.data.model)
+                    console.log("this.model.categories[0].tabGroups",this.model.categories["0"].tabGroups)
+                })
+                //Services.data.save();
+                
+                break;
+            case DataUploadMethodEnum.REPLACE:
+                this.model = content;
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Download the saved tabs
+     */
+    download(){
+        var data = JSON.stringify(this.model);
+        var a = document.createElement("a");
+        var file = new Blob([data], {type: 'application/json'});
+        a.href = URL.createObjectURL(file);
+
+        function addLeadingZeros(n) {
+            if (n <= 9) {
+              return "0" + n;
+            }
+            return n
+          }
+
+        let currentDatetime = new Date()
+        //console.log(currentDatetime.toString());
+        let formattedDate = currentDatetime.getFullYear() + "-" + addLeadingZeros(currentDatetime.getMonth() + 1) + "-" + addLeadingZeros(currentDatetime.getDate()) + " " + addLeadingZeros(currentDatetime.getHours()) + ":" + addLeadingZeros(currentDatetime.getMinutes()) + ":" + addLeadingZeros(currentDatetime.getSeconds())
+        //console.log(formattedDate);
+
+        a.download = `keeptabs-data_${formattedDate}.json`;
+        a.click();
+    }
+
+    /**
+     * Merge categories
+     * @param {Object} toMerge Category from the file to merge or add
+     */
+    mergeWithCategory(toMerge){
+        //console.log(toMerge);
+        //Check if the category exists
+        if(toMerge?.meta?.name){
+            let category = Services.category.getByName(toMerge?.meta?.name);
+            if (category) {
+                toMerge.tabGroups.forEach(tabGroup=>{
+                    //console.log(tabGroup,category)
+                    //Add all tabgroups
+                    category.tabGroups.push(tabGroup)
+                })
+                //category.tabGroups = category.tabGroups.concat(toMerge.tabGroups);
+                //OK //console.log("toMerge.tabGroups",toMerge.tabGroups)
+                //Services.data.save();
+            } else {
+                //If not
+                category = Services.category.create(toMerge.meta.name,false);
+                category.tabGroups = toMerge.tabGroups;
+               // console.log(category,toMerge)
+            }
+        }else{
+            console.error("The file data has been corrupted")
+        }
+    }
 }
 
 export class DataOperationService{

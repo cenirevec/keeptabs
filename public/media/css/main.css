@@ -325,7 +325,7 @@ h2 .tabs-count{
 .kt-component-tab img.no-icon{
     opacity: 0.1;
 }
-
+/* 
 .mood-name:hover .badge:not(.selected){
     opacity: 1 !important;
 
@@ -334,6 +334,11 @@ h2 .tabs-count{
 
 .mood-name .badge:not(.selected){
     opacity: 0 !important;
+} */
+
+.kt-component-mood-navbar .nav-link .badge:not(.selected){
+    color: #0d6efd !important;
+    background-color: #0d6efd33 !important;
 }
 
 .mood-name .kt-component-renamable input{

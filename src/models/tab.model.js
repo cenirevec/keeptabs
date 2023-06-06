@@ -6,7 +6,7 @@ export class TabModel {
     /** URL of the tab */
     url = "";
     /** Domain name */
-    domainName = "";
+    domain = "";
     /** Tab's title */
     title = "";
     /** Tab's icon */
@@ -17,7 +17,7 @@ export class TabModel {
     constructor(tab){
         this.id = tab.id;
         this.url = tab.url;
-        this.domainName = this.getDomainName(tab);
+        this.domain = this.getDomainName(tab);
         this.title = tab.title;
         this.favicon = (tab.favicon != undefined)?tab.favicon : tab.favIconUrl;
         this.lastAccessed = 
