@@ -47,6 +47,8 @@ class Home extends React.Component{
         }); */
         /* this.services.data.save(() => {}); */
 
+        Services.main = this;
+
         Services.data.load(()=>{
             //console.log(this.services.data)
            /*  CategoryService.rename(DataService.model.categories["1"],"Test"); */
@@ -73,6 +75,10 @@ class Home extends React.Component{
         }
     }
 
+
+    /**
+     * @deprecated
+     */
     saveData(){
         if(Services.data.model){
             Services.data.save(()=>{
@@ -94,13 +100,17 @@ class Home extends React.Component{
      */
     setFilter(filter){
         this.searchFilter.values = filter.values;
+        //Refresh this component
         this.forceUpdate();
     }
 
-/*     //TO BE DEFINED
-    refreshModel(changes){
-        TabService.refresh(changes)
-    } */
+    /**
+     * Refresh the component
+     */
+    refresh(){
+        this.forceUpdate();
+    }
+
 
     //Private Methods
 

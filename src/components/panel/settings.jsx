@@ -1,7 +1,10 @@
 import React, {useState} from "react";
 import { webexVersion } from "../../../public/api/shared.variables.mjs";
-import { Button, ListGroup, ListGroupItem, Offcanvas } from "react-bootstrap";
+import { Accordion, Button, ListGroup, ListGroupItem, Offcanvas } from "react-bootstrap";
 import { Services } from "../../services.jsx"
+import AccordionItem from "react-bootstrap/esm/AccordionItem.js";
+import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
+import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
 
 export function SettingsPanel() {
     const [show, setShow] = useState(false);
@@ -13,12 +16,21 @@ export function SettingsPanel() {
       var file = event.target.files[0]; // Get the first file selected
 
       var reader = new FileReader(); // Create a FileReader object
+
+      /**
+       * Function to acknowledge import progression
+       * @param {ProgressionStatus} status Importation status
+       */
+      const onProgress = (status)=>{
+        console.log(status)
+      }
     
       reader.onload = function(e) {
         try {
           var content = JSON.parse(e.target.result);
 
-          Services.data.upload(content);
+          Services.data.upload(content,onProgress);
+          Services.main.refresh();
         } catch (error) {
           console.error(error,"JSON file cannot be parsed");
         }
@@ -36,7 +48,7 @@ export function SettingsPanel() {
                         Settings
         </Button>
   
-        <Offcanvas show={show} onHide={handleClose} placement="end">
+        <Offcanvas className="settings" show={show} onHide={handleClose} placement="end">
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Settings</Offcanvas.Title>
           </Offcanvas.Header>
@@ -47,9 +59,9 @@ export function SettingsPanel() {
                 <ListGroupItem action >
                   Import data 
                   <input type="file" accept=".json" onChange={handleFileUpload}></input>
-                  <small>Importation succeded</small>
+{/*                   <small>Importation succeded</small>
                   <small>Importation failed</small>
-                  <small>Importation 36%</small>
+                  <small>Importation 36%</small> */}
                   </ListGroupItem>
                 <ListGroupItem action onClick={Services.data.download}>
                   Export data</ListGroupItem>
@@ -71,17 +83,27 @@ export function SettingsPanel() {
               <ListGroupItem variant="info">Enable this function will enable an algorithm to manage website overload</ListGroupItem>
             </ListGroup> */}
 
-            <h5>Development tools</h5>
-            <ListGroup>
-             {/*  <Button variant="outline-danger">Remove a Tab</Button> */}
-              {/* <Button variant="secondary">Refresh</Button> */}
-              <ListGroupItem>Refresh</ListGroupItem>
-              <ListGroupItem action onClick={()=>{console.log(Services)}}> Get Services</ListGroupItem>
-              <ListGroupItem action onClick={()=>{console.log(Services.data.model)}}> Get Data model</ListGroupItem>
-              <ListGroupItem action onClick={()=>{console.log(Services.data.model.categories)}}> Get Data model categories</ListGroupItem>
-            </ListGroup>
-
             <small id="manifest-version" className="text text-secondary">version {webexVersion} (dev)</small>
+
+
+            <Accordion>
+              <AccordionItem>
+                <AccordionHeader> <h5>Development tools</h5></AccordionHeader>
+                <AccordionBody>
+                  <ListGroup>
+                  {/*  <Button variant="outline-danger">Remove a Tab</Button> */}
+                    {/* <Button variant="secondary">Refresh</Button> */}
+                    <ListGroupItem action onClick={()=>{Services.main?.refresh()}}>Refresh</ListGroupItem>
+                    <ListGroupItem action onClick={()=>{console.log(Services)}}> Get Services</ListGroupItem>
+                    <ListGroupItem action onClick={()=>{console.log(Services.data.model)}}> Get Data model</ListGroupItem>
+                    <ListGroupItem action onClick={()=>{console.log(Services.data.model.categories)}}> Get Data model categories</ListGroupItem>
+                  </ListGroup>
+                </AccordionBody>
+              </AccordionItem>
+            </Accordion>
+            
+
+
           </Offcanvas.Body>
         </Offcanvas>
       </>

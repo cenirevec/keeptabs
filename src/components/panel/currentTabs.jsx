@@ -37,9 +37,14 @@ export class CurrentTabsPanel extends Component{
     getCurrentTabs(){
         // Get the currently openned tabs
         Browser.tabs.query({currentWindow: true, active: false},(tabs,_this = this)=>{
-            let currentTabs = tabs.map(tab=>{
-                return new TabModel(tab);
-            });
+            let currentTabs = {
+                meta: {
+                    name: "<current>"
+                },
+                tabs: tabs.map(tab=>{
+                    return new TabModel(tab);
+                })
+            }
             _this.setState({currentTabs:currentTabs});
         });  
     }
@@ -150,10 +155,10 @@ export class CurrentTabsPanel extends Component{
             categories.push(<Dropdown.Item key={index} onClick={()=>this.saveCurrentTabs(category)}>{category.meta.name}</Dropdown.Item>);
         })
         
-        if (this.state.currentTabs.length > 0) {
+        if (this.state.currentTabs.tabs.length > 0) {
             // Return the current tabs panel
             return <section className="kt kt-panel kt-panel-current">
-                <h2><span>Current Tabs</span> <span className="badge badge-secondary">{this.state.currentTabs.length}</span></h2>
+                <h2><span>Current Tabs</span> <span className="badge badge-secondary">{this.state.currentTabs.tabs.length}</span></h2>
                 <TabGroup context="current" 
                           filter={this.props.filter} 
                           tabGroup={this.state.currentTabs}

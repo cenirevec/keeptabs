@@ -56,9 +56,14 @@ export class Tab extends React.Component{
         return <li className="kt kt-component kt-component-tab list-group-item list-group-item-action">
             <img src={favicon} className={addedClasses} title="Click to select this link"/>
             {this.props.context == 'saved' &&
-                <a href={url} target="_blank" onMouseDown={this.onOpen}>{title}</a>}
+                <a href={url} 
+                   target="_blank" 
+                   onMouseDown={this.onOpen}
+                   title={title}
+                   >{title}</a>}
             {this.props.context == 'current' &&
-                <span>{title}</span>}
+                <span title={title}
+                >{title}</span>}
             <small>{timeSince(date)}</small>
         </li>;
     }

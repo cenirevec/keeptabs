@@ -7,6 +7,10 @@ class AllServices{
     data = new DataService();
     category = new CategoryService(this);
     tabs = new TabService();
+    /**
+     * Reference to the main component
+     */
+    main;
 
     constructor(){
         

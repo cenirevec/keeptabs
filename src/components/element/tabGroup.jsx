@@ -56,7 +56,7 @@ export class TabGroup extends React.Component{
      * @param {String} value Name to give to the tab group
      */
     renameGroup(value){
-        this.props.tabGroup.name = value;
+        this.props.tabGroup.meta.name = value;
         Services.data.save();
         this.refresh();
     }
@@ -74,7 +74,7 @@ export class TabGroup extends React.Component{
      */
     filter(params){
         let filteredTabs = [];
-        let source = (this.props.context == "saved")? this.props.tabGroup.tabs : this.props.tabGroup;
+        let source = this.props.tabGroup.tabs;
 
         if (source != undefined) {
             filteredTabs = source.filter(
@@ -146,7 +146,7 @@ export class TabGroup extends React.Component{
         let className = "kt kt-component kt-component-tabgroup tabs";
         className += areSavedTabs ? " col-lg-6":"";
 
-        this.props.tabGroup.name = this.props.tabGroup.name ?? "";
+        this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
 
         return <div className={className}>
                     {/* Show the number of tabs and when it as been saved */}
@@ -154,7 +154,7 @@ export class TabGroup extends React.Component{
                         <div>
                             <span className="tab-group-header" onClick={this.tabGroupTitle?.current?.enableEdition}>
                                 <Renamable  ref={this.tabGroupTitle} 
-                                            value={this.props.tabGroup.name} 
+                                            value={this.props.tabGroup.meta.name} 
                                             onSubmit={(value)=>{this.renameGroup(value)}}></Renamable>
                                 <span className="time-ago" >{timeSince(date)} ago</span>
                                 <span className="tabs-count">

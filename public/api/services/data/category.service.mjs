@@ -31,11 +31,8 @@ export class CategoryService {
     }
 
     getByName(name){
-        //console.log("getByName",this.model)
-        let categories = Object.keys(this.model.categories)
-                               .map(categoryid=>this.model.categories[categoryid])
-                               //this.model.categories[0]//
-                               //console.log("categories,this.model",categories,this.model);
+        let categories = Object.keys(Services.data.model.categories)
+                               .map(categoryid=>Services.data.model.categories[categoryid])
         return categories.find(category => category.meta.name == name);
     }
 
@@ -70,7 +67,9 @@ export class CategoryService {
         let category = JSON.parse(JSON.stringify(this.defaultCategoryData));
         category.meta.name = name;
         //Add the category to the object
-        this.model.categories[id] = category;
+        Services.data.model.categories[id] = category;
+        this.model = Services.data.model;
+       
         if(save) Services.data.save();
         return category;
     }
