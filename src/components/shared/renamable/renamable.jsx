@@ -42,7 +42,6 @@ export class Renamable extends React.Component{
     enableEdition(){
         // Switch to edition mode
         this.setState({edition: true});
-        console.log("editionEnabled",this.state.value)
 
         //Preselect the text
         setTimeout((_self = this)=>{

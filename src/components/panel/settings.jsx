@@ -5,40 +5,44 @@ import { Services } from "../../services.jsx"
 import AccordionItem from "react-bootstrap/esm/AccordionItem.js";
 import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
 import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
+import { SettingOption } from "../element/settingOption.jsx";
+import { LoadingMode } from "../../../public/api/defaultData.mjs";
 
 export function SettingsPanel() {
     const [show, setShow] = useState(false);
+
+    const options = [
+        { name: 'Differed', value: LoadingMode.DIFFERED },
+        { name: 'Lazy', value: LoadingMode.LAZY }
+    ];
   
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+      setShow(false);
+      
+      // Save the settings data
+      Services.data.save();
+    };
     const handleShow = () => setShow(true);
 
-    const handleFileUpload = (event) =>{
-      var file = event.target.files[0]; // Get the first file selected
-
-      var reader = new FileReader(); // Create a FileReader object
-
-      /**
-       * Function to acknowledge import progression
-       * @param {ProgressionStatus} status Importation status
-       */
-      const onProgress = (status)=>{
-        console.log(status)
-      }
-    
-      reader.onload = function(e) {
-        try {
-          var content = JSON.parse(e.target.result);
-
-          Services.data.upload(content,onProgress);
-          Services.main.refresh();
-        } catch (error) {
-          console.error(error,"JSON file cannot be parsed");
-        }
-      };
-    
-      reader.readAsText(file); 
+    const onOptionUpdate = (source,optionToChange,value) => {
+      source[optionToChange] = value;
     }
-  
+
+    const handleFileUpload = (result,file) =>{
+          /**
+           * Function to acknowledge import progression
+           * @param {ProgressionStatus} status Importation status
+           */
+          const onProgress = (status)=>{
+            console.log(status)
+          }
+
+          Services.data.upload(result,onProgress);
+          Services.main.refresh();
+    }
+
+    let tabOptions = Services.data.model?.meta?.settings?.loading;
+
     return (
       <>
         <Button id="settings-btn" variant="outline-primary" onClick={handleShow}>
@@ -47,22 +51,44 @@ export function SettingsPanel() {
                         </svg>
                         Settings
         </Button>
-  
+        
+      
         <Offcanvas className="settings" show={show} onHide={handleClose} placement="end">
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Settings</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
+
+            <h5>Tabs</h5>
+            <ListGroup>
+              <ListGroupItem action>
+                <SettingOption type="options" 
+                  value={tabOptions?.mode} 
+                  onChange={(value)=>{onOptionUpdate(tabOptions,"mode",value)}}
+                  options={options}> Loading mode </SettingOption>
+              </ListGroupItem>
+              <ListGroupItem action>
+                <SettingOption type="number" 
+                  value={tabOptions?.interval} 
+                  onChange={(value)=>{onOptionUpdate(tabOptions,"interval",value)}}
+                  min="0" max="1000" step="25"> 
+                  Opening rate (ms) 
+                </SettingOption>
+              </ListGroupItem>
+              <ListGroupItem action>
+                <SettingOption type="checkbox" 
+                  value={tabOptions?.makeOpenedTabActive} 
+                  onChange={(value)=>{onOptionUpdate(tabOptions,"makeOpenedTabActive",value)}}
+                  > Make last opened tab active </SettingOption>
+              </ListGroupItem>
+            </ListGroup>
+            <br></br>
             <h5>Storage</h5>
             <ListGroup>
               <ListGroup>
                 <ListGroupItem action >
-                  Import data 
-                  <input type="file" accept=".json" onChange={handleFileUpload}></input>
-{/*                   <small>Importation succeded</small>
-                  <small>Importation failed</small>
-                  <small>Importation 36%</small> */}
-                  </ListGroupItem>
+                  <SettingOption type="upload" onUpload={handleFileUpload}> Import data </SettingOption>
+                </ListGroupItem>
                 <ListGroupItem action onClick={Services.data.download}>
                   Export data</ListGroupItem>
               </ListGroup>
@@ -76,12 +102,6 @@ export function SettingsPanel() {
                 }}>Clear all data</ListGroupItem>
               </ListGroup>
             </ListGroup>
-            <br></br>
-           {/*  <h5>Performances</h5>
-            <ListGroup>
-              <ListGroupItem>Load all tabs at a same time <b>OFF</b></ListGroupItem>
-              <ListGroupItem variant="info">Enable this function will enable an algorithm to manage website overload</ListGroupItem>
-            </ListGroup> */}
 
             <small id="manifest-version" className="text text-secondary">version {webexVersion} (dev)</small>
 

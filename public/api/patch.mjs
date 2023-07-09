@@ -1,10 +1,20 @@
+import { defaultData } from "./defaultData.mjs";
+
 export const PatchListPath = {
     OBJECT_FOREACH : "#"
 }
 
 const patchList = {
-    versions: ["1.0.0","2.0.0", "2.0.2"], //Versions prises en charge
+    versions: ["1.0.0","2.0.0", "2.0.2", "2.0.3"], //Versions prises en charge
     patchs: [
+        {
+            path: "meta",
+            operations: {
+                "3": (meta) => {
+                    meta.settings = defaultData.settings
+                }
+            }
+        },
         {
             path: "categories",
             children: [

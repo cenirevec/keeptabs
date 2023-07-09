@@ -442,3 +442,467 @@ h2 .tabs-count{
 .kt-component-moodgroup .accordion-button{
     background-color: var(--body-color);
 }
+
+
+.kt-component-setting-option{
+    display: flex;
+}
+
+@import url(./bootstrap/bootstrap.min.css);
+
+@import url(./variables.css);
+
+.list-group{
+    border-radius: 1rem;
+}
+
+.kt-panel-current .tabs{
+    display: block;
+}
+
+.kt-panel-current-empty{
+    text-align: center;
+    font-size: 1.4em;
+    margin: 7vh 7vw;
+    opacity: 0.5;
+    user-select: none;
+}
+
+.kt-panel-current-empty p{
+    margin: 0;
+    font-size: 1.7em;
+    font-weight: bold;
+}
+
+.tabs li img{
+    width: 25px;
+    border-radius: 5px;
+    margin: auto 0;
+}
+
+.tabs li small{
+    margin: auto 0;
+    opacity: 0.5;
+    white-space: nowrap;
+}
+
+.tabs a{
+    text-decoration: none;
+}
+
+.tabs button{
+    white-space: nowrap;
+    width: 100%;
+}
+
+.tabs li.disappear{
+    display: none;
+}
+
+.tabs li.unselected{
+    opacity: 0.3;
+}
+
+.tabs li img{
+    cursor: pointer;
+}
+
+.tabs li.unselected img:hover{
+    filter: drop-shadow(2px 0px 6px rgb(82, 123, 212));
+}
+
+.tabs li img:hover{
+    filter: drop-shadow(2px 0px 3px rgb(183, 195, 235));
+}
+
+#loaded .tabs,section{
+    margin-bottom: 25px;
+}
+
+.kt-component-mood-navbar .mood-name{
+    text-transform: capitalize;
+    margin-right: 10px;
+}
+
+@font-face {
+    font-family: "Josephin";
+    src: url(../Josephin.ttf);
+}
+
+h1{
+    font-family: "Josephin";
+    padding: 5px 0px 0px 25px;
+}
+
+*{
+    font-family: var(--default-font);
+}
+
+*{
+    user-select: none;
+}
+
+/* li, li *{
+    user-select: all;
+} */
+
+body{
+    background-color: var(--body-color);
+    color: var(--font-color);
+}
+
+.badge-secondary{
+    background-color: var(--badge-secondary-color);
+}
+
+.container{
+    margin: 1rem;
+    min-width: calc(100vw - 30px);
+}
+
+header h1, .kt-component-tabgroup{
+    display: inline-block;
+}
+
+header{
+    margin: 5px;
+}
+
+header img{
+    height: 40px;
+    margin-bottom: 1rem;
+}
+
+.hidden{
+    display: none;
+}
+
+#contextual-bar {
+    display: block;
+    padding: 5px 1rem;
+    position: fixed;
+    bottom: 1px;
+    width: 100%;
+    background-color: #eeeeee;
+    z-index: 10;
+    border-top: #729fcf80 1px solid;
+    box-shadow: -1px 0px 11px -3px #106cf9;
+}
+
+#contextual-bar *{
+    margin-right: 5px;
+}
+
+
+#settings-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#settings-btn svg{
+    margin-right: 0.5rem;
+    margin-bottom: 2px;
+    transition: transform 0.5s cubic-bezier(.55,.06,.68,.19);
+}
+
+#settings-btn:hover svg{
+    transform: rotateZ(360deg);
+}
+
+br{
+    margin: 0.5rem;
+}
+
+.settings .list-group-item-danger{
+    background: #ff818147 !important;
+    color: #a70303 !important;
+    transition: background 0.5s cubic-bezier(.55,.06,.68,.19);
+    font-weight: bold;
+}
+
+.settings .list-group-item-danger:hover{
+    background: red !important;
+    color: white !important;
+}
+
+.floatting-btn{
+    margin: 5px 0px;
+}
+
+#searchbox{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--searchbox-backdrop);
+    backdrop-filter: blur(7px);
+    padding: 1.25rem 0 0.1rem;
+    border-bottom: var(--body-color) 2px solid;
+    margin: 0 -25px;
+}
+
+#searchbox .searchbar{
+    box-shadow: var(--default-shadow);
+    opacity: 0.6;
+    background-color: var(--list-bg-color);
+}
+
+#searchbox .searchbar:hover, #searchbox .searchbar:focus{
+    box-shadow: var(--default-shadow);
+    opacity: 1;
+}
+
+@media screen and (min-width: 700px) {
+    #searchbox .searchbar{
+        margin: auto auto 25px auto;
+        min-width: 700px;
+        width:75vw;
+    }
+}
+
+#searchbox .searchbar{
+    font-size: 2em;
+    border-radius: 2em;
+}
+
+#searchbox .searchbar svg{
+    height: 35px;
+    width: 35px;
+}
+
+#searchbox .searchbar .p-inputtext{
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    border-radius: 50px;
+    padding: 0 1em;
+    color: var(--font-color) !important;
+}
+
+#searchbox.asValues{
+    border: dotted #80808042 4px;
+    border-radius: 32px;
+    padding: 2px;
+}
+
+#searchbox .actions{
+    text-align: right;
+    padding: 0 9px;
+    position: relative;
+    transform: translateY(-52px);
+    height: 0;
+}
+
+#searchbox .erase{
+    cursor: pointer;
+}
+
+footer{
+    text-align: center;
+    margin: 35px;
+}
+
+.blue-background-class{
+    border: var(--bs-primary) dotted 4px;
+    background-color: #0d6efd50;    
+    color: #000c;
+    border-radius: 5px;
+}
+
+.btn-group, :not(.btn-group) .btn{
+    box-shadow: var(--button-shadow);
+}
+
+.list-group{
+    box-shadow: var(--default-shadow);
+}
+
+.list-group-item:not(.list-group-item-info):not(.list-group-item-danger){
+    background-color: var(--list-bg-color) !important;
+    color: var(--list-font-color) !important;
+}
+
+.offcanvas{
+    background-color: var(--offcanvas-color);
+    color: #333 1px solid
+}
+
+.offcanvas .btn-close{
+    background-color: white;
+}
+
+.kt-panel-current h2{
+    font-size: calc(0.825rem + .9vw);
+    margin-top: 20px;
+    margin-left: 1rem;
+}
+
+h2 .tabs-count{
+    margin-left: 10px;
+}
+
+.tab-group-header .tabs-count .badge{
+    position: relative;
+    top: -2px;
+}
+
+.tab-group-header{
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+    gap: 1rem;    
+    margin: 0px 1rem;
+    min-height: 2.25rem
+}
+
+
+.tab-group-header .kt-component-renamable{
+    font-size: 1.5rem;
+}
+
+.tab-group-header .kt-component-renamable input{
+	background-color: var(--renamable-background-color);
+	border-color: var(--renamable-border-color);
+	color: var(--font-color);
+}
+
+.tab-group-header :not(.kt-component-renamable){
+    margin-top: auto;
+    opacity: 0.7;
+    margin-bottom: .15rem;
+}
+
+.kt-component-mood-navbar{
+    margin: 20px 50px;
+}
+
+.kt-panel-footer{
+    text-align: center;
+    border-top: 1px solid #8080806b;
+    padding: 20px 20px 0 20px;
+}
+
+/*Components*/
+
+.kt-component-moodgroup .empty{
+    border: var(--transparent-border) dotted 5px;
+    margin: 25px 1rem;
+    padding: 2vw;
+    min-height: 300px;
+    display: inline-block;
+    font-size: 1.2em;
+}
+
+.kt-component-moodgroup .empty p{
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.kt-component-tab{
+    display: flex;
+    gap: 1rem;
+}
+
+.kt-component-tab a{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    min-height: 1.2rem;
+    white-space: nowrap;
+}
+
+.kt-component-tab img.no-icon{
+    opacity: 0.1;
+}
+
+/* 
+.mood-name:hover .badge:not(.selected){
+    opacity: 1 !important;
+
+    color: red !important
+}
+
+.mood-name .badge:not(.selected){
+    opacity: 0 !important;
+} */
+
+.kt-component-mood-navbar .nav-link .badge:not(.selected){
+    color: #0d6efd !important;
+    background-color: #0d6efd33 !important;
+}
+
+.mood-name .kt-component-renamable input{
+	background-color: #fff2;
+	border-color: #fff6;
+	color: white;
+}
+
+
+.kt-component-chip{
+    background-color: #0d6efd30;
+    border: solid 2px #0d6efd20;
+    color: var(--font-color);
+    margin: 6px 0 10px 8px;
+    padding: 3px 10px ;
+    border-radius: 50px;
+    display: inline-block;
+}
+
+.kt-component-chip .closeBttn{
+    cursor: pointer;
+    margin-bottom: 4px;
+    margin-left: 3px
+}
+
+.kt-component-chip .closeBttn:hover{
+    color: #e11;
+}
+
+.kt-component-renamable{
+    display: inline-flex;
+}
+
+.kt-component-renamable input{
+    border: dotted 3px;
+}
+
+.kt-panel-saved .kt-component-tab a{
+	color: var(--font-color);
+}
+
+.kt-panel-saved .kt-component-tab:hover{
+	background-color: var(--body-color) !important;
+}
+
+:is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{
+    margin: 5px 1rem;
+}
+
+.kt-component-tabgroup{
+    margin-bottom: 1rem;
+}
+
+.kt-component-moodgroup .hiddenSeparator{
+    text-align: center;
+}
+
+.kt-component-moodgroup .accordion{
+    margin-top: 1rem;
+}
+
+.kt-component-moodgroup .accordion-button{
+    background-color: var(--body-color);
+}
+
+
+.kt-component-setting-option{
+    display: flex;
+}
+
+.kt-component-setting-option .form-label{
+    flex: 1;
+    margin: auto;
+}
+
+.kt-component-setting-option.number input{
+    width: 100px;
+}

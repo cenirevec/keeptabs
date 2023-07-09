@@ -20,7 +20,7 @@ export class Tab extends React.Component{
     onOpen(event){
         if (event && (event.which == 1 || event.button == 0 )) {
             //Open the tab
-            Browser.tabs.create({url: this.props.tab.url});
+            Browser.tabs.create({url: this.props.tab.url, active: false});
             //Remove tab from list
             this.delete();
         }

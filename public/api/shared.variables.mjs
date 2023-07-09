@@ -20,7 +20,7 @@ export const Browser = (chrome != undefined)? chrome : browser;
 export const webexVersion = "0.4.6"
 //               |!\ CAUTION |!\ 
 // Ensure to update all functions producing data according to the modifications of the version
-export const currentDataVersion = "2.0.2" 
+export const currentDataVersion = "2.0.3" 
 /**
  * Writing date in a "time ago" format
  * @param {*} date 

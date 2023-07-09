@@ -4,6 +4,7 @@ import { Tab } from "./tab.jsx";
 import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
 import { Renamable } from "../shared/renamable/renamable.jsx";
 import { Services } from "../../services.jsx";
+import { LoadingMode } from "../../../public/api/defaultData.mjs";
 
 export class TabGroup extends React.Component{  
 
@@ -31,14 +32,41 @@ export class TabGroup extends React.Component{
     openAll(options){
         let filteredTabs = this.filter(this.props.filter);
         let tokenForDeletion = [];
+
+        let loadingType = LoadingMode.DIFFERED;
+
         filteredTabs.forEach((tab,index) => {
-            //Open the tab
-            setTimeout(()=>{
-                Browser.tabs.create({url: tab.url});
-            },(100*index) + 100)
+            //Open all the tab in lazyMode
+            if(loadingType == LoadingMode.LAZY){
+                Browser.tabs.create({url: tab.url, discarded:true, active:false});
+            }
+
             //Prepare for deletion
             tokenForDeletion.push(this.props.tabGroup.tabs.findIndex(tabInGroup => tabInGroup == tab));
         });
+
+        if(loadingType == LoadingMode.DIFFERED){
+            timeStamp = Date.now();
+
+            let openNext = (index) => {
+                // Load the next tab
+                loadNext = (result)=>{
+                    index += 1;
+                    if(index < filteredTabs.length){
+                        setTimeout(()=>{
+                            openNext(index)}, 0)
+                    }
+                };
+
+                // Open a tab
+                browser.tabs.create(
+                    {url: filteredTabs[index].url, active:false})
+                .then(loadNext,loadNext);
+            };
+
+            openNext(0);
+        }
+
         //Remove openned tabs
         this.props.tabGroup.tabs = this.props.tabGroup.tabs.filter(
             (tab,index)=> tokenForDeletion.indexOf(index) == -1);

@@ -1,4 +1,5 @@
 import { Services } from "../../../../src/services.jsx";
+import { defaultModel } from "../../defaultData.mjs";
 import patchList, { PatchListPath } from "../../patch.mjs";
 import { currentDataVersion } from "../../shared.variables.mjs";
 import { navigatorName } from "../../shared.variables.mjs";
@@ -28,26 +29,7 @@ export class DataService {
 
     mutex = {}
 
-    defaultData = {
-        model:
-        {
-            meta: {
-                version: "2.0.0"
-            },
-            categories: {
-                "0": {
-                    "meta": {
-                        expiration: 30 * 24 * 3600 * 1000,
-                        name: "temporary",
-                        translationLabel: "categories.names.temporary"
-                    },
-                    "tabGroups": []
-                }
-            }
-        }
-    }
-
-    model = JSON.parse(JSON.stringify(this.defaultData))
+    model = JSON.parse(JSON.stringify(defaultModel))
 
     constructor() {
         this.load = this.load.bind(this);
@@ -65,7 +47,7 @@ export class DataService {
     save(callback) {
         //Get a model to save
         let modelToSave = (this.model == {} || this.model?.meta == undefined) ? //If model not set or set wrongly
-            this.defaultData : JSON.parse(JSON.stringify({ model: this.model }));
+        defaultModel : JSON.parse(JSON.stringify({ model: this.model }));
 
         //Save function according to the chosen browser
         if (navigatorName == "Firefox") {
@@ -94,13 +76,12 @@ export class DataService {
                 .map((value, index) => index)
                 .filter((value, index) => index > currentVersionId);
 
-                //console.log(modelCopy?.meta?.version,versionsToLoad,patchList.versions)
             // Function to apply to a level of the tree
             let applyTabGroupsPatch = (patchBranch, levelObject) => {
                 let operationList = []
                 // Creating the list of operation to perform by comparing the current version and the saved data version
                 versionsToLoad.forEach(versionId => {
-                    console.log("patch.applyTabGroupsPatch",patchBranch.operations)
+                    //console.debug("patch.applyTabGroupsPatch",patchBranch.operations)
                     if (patchBranch.operations[versionId]) {
                         operationList.push(patchBranch.operations[versionId]);
                     }
@@ -164,6 +145,8 @@ export class DataService {
             }
             // Run the recursive function
             goFurther(patchList, modelCopy);
+
+            modelCopy.meta.version = patchList.versions[patchList.versions.length -1];
             return modelCopy;
         } catch (error) {
             console.error("Something wrong happened during the patch of the data. Previous data has been restored", error)
@@ -186,8 +169,13 @@ export class DataService {
             promise.then(json => {
                 //Check if the element exists
                 this.model =
-                    (!Object.keys(json).length) ? this.defaultData.model : json.model;
-
+                    (!Object.keys(json).length) ? defaultModel.model : json.model;
+                //Patch the data according to the version
+                if (currentDataVersion != this.model?.meta?.version) {
+                    this.model = this.patch(this.model);
+                    this.save();
+                }
+                
                 callback(this.model);
             })
         } else {
@@ -198,7 +186,13 @@ export class DataService {
             chrome.storage.local.get("model", function (json) {
                 //Check if the element exists
                 this.model =
-                    (!(Object.keys(json).length) || !json) ? this.defaultData.model : json?.model;
+                    (!(Object.keys(json).length) || !json) ? defaultModel.model : json?.model;
+                //Patch the data according to the version
+                if (currentDataVersion != this.model?.meta?.version) {
+                    this.model = this.patch(this.model);
+                    this.save();
+                }
+
                 callback(this.model);
             });
         }
@@ -232,9 +226,6 @@ export class DataService {
 
         switch (method) {
             case DataUploadMethodEnum.MERGE:
-                /* status.description = "Merging"
-                onProgressHandler(status); */
-
                 let importedCategories = Object.keys(content.categories).map(categoryid => content.categories[categoryid]);
                 importedCategories.forEach(category => {
                     this.mergeWithCategory(category);
@@ -242,15 +233,8 @@ export class DataService {
                 Services.data.save();
                 break;
             case DataUploadMethodEnum.REPLACE:
-                /* status.description = "Replacing"
-                status.total = 1;
-                onProgressHandler(status); */
-
                 this.model = content;
                 Services.data.save();
-
-                /* status.increment();
-                onProgressHandler(status); */
                 break;
             default:
                 break;
