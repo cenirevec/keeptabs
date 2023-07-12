@@ -4,6 +4,7 @@ import { TabGroup } from "../element/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
 import { CreateCategory } from "../element/createCategory.jsx";
 import { Browser } from "../../../public/api/shared.variables.mjs";
+import { CategoryList } from "../element/categoryList.jsx";
 
 
 export class CurrentTabsPanel extends Component{  
@@ -113,8 +114,9 @@ export class CurrentTabsPanel extends Component{
      */
     render(){
         if(this.props.data.categories == undefined){
-                return;
-            }
+            return;
+        }
+        
 
         // Dropdown needs access to the DOM of the Menu to measure it
         const CustomMenu = React.forwardRef(
@@ -165,7 +167,9 @@ export class CurrentTabsPanel extends Component{
                           saveData={this.props.saveData}/>
 
                 <Dropdown as={ButtonGroup}>
-                    <Button variant="primary" onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>Save</Button>
+                    <Button variant="primary" 
+                        onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
+                        Save in {this.props.selectedCategory.meta.name}</Button>
 
                     <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
 

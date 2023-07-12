@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { HeaderPanel } from "./components/panel/header.jsx";
 import { CurrentTabsPanel } from "./components/panel/currentTabs.jsx";
 import { SavedTabsPanel } from "./components/panel/savedTabs.jsx";
 import { FooterPanel } from "./components/panel/footer.jsx";
 import { SearchBarPanel } from "./components/panel/searchBar.jsx";
-import { searchBarParameters } from "./models/searchFilter.model"
+import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
 import { Services } from "./services.jsx";
 
@@ -13,7 +13,7 @@ class Home extends React.Component{
     
     //Shared Variables
     /** Parameters in the searchbar */
-    searchFilter = new searchBarParameters();
+    searchFilter = new searchParameters();
     /** All the tabs arborescence */
     data = DataService.model;
 

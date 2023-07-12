@@ -1,4 +1,4 @@
-export class searchBarParameters{
+export class searchParameters{
     /** Values entered in the searchbar */
     values = [''];
     /** The list of options the searchbar can set */

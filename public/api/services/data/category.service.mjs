@@ -2,8 +2,6 @@ import { Services } from "../../../../src/services.jsx";
 
 export class CategoryService {
 
-    model = null;
-
     defaultTabGroupData = {
         "meta": {
             "lastAccessed": new Date().valueOf(),
@@ -21,15 +19,24 @@ export class CategoryService {
         "tabGroups":[]
     }
 
-    constructor(allServices){
+    constructor(){
         this.create = this.create.bind(this);
-        this.model = allServices.data.model.model;
     }
 
+    /**
+     * Get a category by its index
+     * @param {*} categoryId Index of the category
+     * @returns 
+     */
     get(categoryId){
-        return this.model.categories[categoryId];
+        return Services.data?.model?.categories[categoryId];
     }
 
+    /**
+     * Get a category by its name
+     * @param {*} name Name of the category
+     * @returns 
+     */
     getByName(name){
         let categories = Object.keys(Services.data.model.categories)
                                .map(categoryid=>Services.data.model.categories[categoryid])
@@ -41,7 +48,7 @@ export class CategoryService {
      * @returns A new category id
      */
     generateCategoryId(){
-        let ids = Object.keys(this.model.categories);
+        let ids = Object.keys(Services.data?.model?.categories);
         return parseInt(ids[ids.length -1]) + 1;
     }
 
@@ -54,6 +61,7 @@ export class CategoryService {
     rename(category,newName){
         category.meta.name = newName;
         Services.data.save();
+        Services.emitSignal("categoryListChange");
     }
 
     /**
@@ -63,14 +71,16 @@ export class CategoryService {
     create(name,save = true){
         //Get an unique id
         let id = this.generateCategoryId();
+
         //Create a new category object
         let category = JSON.parse(JSON.stringify(this.defaultCategoryData));
         category.meta.name = name;
+
         //Add the category to the object
         Services.data.model.categories[id] = category;
-        this.model = Services.data.model;
        
         if(save) Services.data.save();
+       // Services.emitSignal("categoryListChange");
         return category;
     }
 
@@ -79,7 +89,7 @@ export class CategoryService {
      * @param {*} id 
      */
     delete(id){
-        delete this.model.categories[id];
+        delete Services.data?.model?.categories[id];
         Services.data.save();
     }
 }

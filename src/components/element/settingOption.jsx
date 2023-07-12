@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonGroup, Button, FormCheck, FormControl, FormLabel, InputGroup } from "react-bootstrap";
+import { ButtonGroup, Button, FormCheck, FormControl, FormLabel, InputGroup, FormSelect } from "react-bootstrap";
 import FormRange from "react-bootstrap/esm/FormRange";
 
 export class SettingOption extends React.Component{
@@ -79,6 +79,7 @@ export class SettingOption extends React.Component{
                                aria-label={this.props.children}></FormCheck>
                 </div>
             case "number":
+            case "duration":
                 let props = {
                     value: this.state.value,
                     min: this.props.min,
@@ -97,6 +98,13 @@ export class SettingOption extends React.Component{
                     <FormControl id="number" type="number" {...props}
                         aria-label={this.props.children}
                         required></FormControl>
+                    {this.props.type == "duration" &&
+                        <FormSelect aria-label="Default select example">
+                            <option value="86400000">day(s)</option>
+                            <option value="604800000">week(s)</option>
+                            <option value="18748800000">month(s)</option>
+                        </FormSelect>
+                    }
                 </div>
             case "options":
                 let btnList = this.props.options.map((item)=>
@@ -123,8 +131,10 @@ export class SettingOption extends React.Component{
                     </div>
             default:
                 return <InputGroup className="kt kt-component-setting-option">
-                    <InputGroup.Checkbox aria-label="Checkbox for following text input"></InputGroup.Checkbox>
-                    <span className="kt kt-component-setting-option-label">Bonjour</span>
+                                            <FormLabel>{this.props.children}</FormLabel>
+                        <FormControl type="text" 
+                            onChange={(event)=>{this.onFileUpload(event,this.props.onUpload);}}
+                        ></FormControl>
                 </InputGroup>
         }
     }

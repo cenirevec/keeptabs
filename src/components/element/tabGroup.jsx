@@ -5,6 +5,7 @@ import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
 import { Renamable } from "../shared/renamable/renamable.jsx";
 import { Services } from "../../services.jsx";
 import { LoadingMode } from "../../../public/api/defaultData.mjs";
+import { MoveToMenu } from "./moveToMenu.jsx";
 
 export class TabGroup extends React.Component{  
 
@@ -33,12 +34,15 @@ export class TabGroup extends React.Component{
         let filteredTabs = this.filter(this.props.filter);
         let tokenForDeletion = [];
 
-        let loadingType = LoadingMode.DIFFERED;
+        let loadingType = Services.data.getSetting("loading.mode");
+        let lastIsActive = Services.data.getSetting("loading.makeOpenedTabActive")
+
+        let timeStamp;
 
         filteredTabs.forEach((tab,index) => {
             //Open all the tab in lazyMode
             if(loadingType == LoadingMode.LAZY){
-                Browser.tabs.create({url: tab.url, discarded:true, active:false});
+                Browser.tabs.create({url: tab.url, discarded:true, active:lastIsActive});
             }
 
             //Prepare for deletion
@@ -47,20 +51,22 @@ export class TabGroup extends React.Component{
 
         if(loadingType == LoadingMode.DIFFERED){
             timeStamp = Date.now();
+            let interval = Services.data.getSetting("loading.interval");
 
             let openNext = (index) => {
                 // Load the next tab
-                loadNext = (result)=>{
+                let loadNext = (result)=>{
                     index += 1;
                     if(index < filteredTabs.length){
                         setTimeout(()=>{
-                            openNext(index)}, 0)
+                            openNext(index)}
+                        , interval)
                     }
                 };
 
                 // Open a tab
                 browser.tabs.create(
-                    {url: filteredTabs[index].url, active:false})
+                    {url: filteredTabs[index].url, active:lastIsActive})
                 .then(loadNext,loadNext);
             };
 
@@ -202,7 +208,7 @@ export class TabGroup extends React.Component{
                     {areSavedTabs && 
                     <ButtonGroup>
                         <Button onClick={this.openAll}>Open all</Button>
-                        <Button onClick={console.log}>Move to</Button>
+                        <MoveToMenu tabGroup={this.props.tabGroup} category={this.props.category}></MoveToMenu>
                         <Button onClick={(event)=>{this.delete(event,filteredTabs)}}>Delete</Button>
                     
                         <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown">

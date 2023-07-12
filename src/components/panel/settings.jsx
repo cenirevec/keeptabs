@@ -61,21 +61,21 @@ export function SettingsPanel() {
 
             <h5>Tabs</h5>
             <ListGroup>
-              <ListGroupItem action>
+              <ListGroupItem>
                 <SettingOption type="options" 
                   value={tabOptions?.mode} 
                   onChange={(value)=>{onOptionUpdate(tabOptions,"mode",value)}}
                   options={options}> Loading mode </SettingOption>
               </ListGroupItem>
-              <ListGroupItem action>
+              <ListGroupItem>
                 <SettingOption type="number" 
                   value={tabOptions?.interval} 
                   onChange={(value)=>{onOptionUpdate(tabOptions,"interval",value)}}
                   min="0" max="1000" step="25"> 
-                  Opening rate (ms) 
+                  Time before loading the next tab in ms 
                 </SettingOption>
               </ListGroupItem>
-              <ListGroupItem action>
+              <ListGroupItem>
                 <SettingOption type="checkbox" 
                   value={tabOptions?.makeOpenedTabActive} 
                   onChange={(value)=>{onOptionUpdate(tabOptions,"makeOpenedTabActive",value)}}
@@ -98,10 +98,12 @@ export function SettingsPanel() {
                 <ListGroupItem variant="danger" action onClick={()=>{
                   Services.data.clear();
                   //@todo Add confirmation modal
+                  //Services.main?.refresh();
                   location.reload();
                 }}>Clear all data</ListGroupItem>
               </ListGroup>
             </ListGroup>
+            
 
             <small id="manifest-version" className="text text-secondary">version {webexVersion} (dev)</small>
 

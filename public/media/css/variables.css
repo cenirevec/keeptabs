@@ -13,11 +13,16 @@
         --badge-secondary-color: var(--list-bg-color);
         --offcanvas-color: #111;
         --transparent-border: #fff5;
+        
 
         --renamable-background-color: #fff2;
         --renamable-border-color: #fff6;
 
         --searchbox-backdrop: linear-gradient(#000 39%,#0005 100%);
+
+        --popover-header-bg-color: #141414;
+        --popover-body-bg-color: var(--popover-header-bg-color);
+        --popover-bg-color: #222
     }
 }
 @media (prefers-color-scheme: light) {
@@ -34,5 +39,9 @@
         --renamable-border-color: #0006;
 
         --searchbox-backdrop: linear-gradient(#eee 39%,#eee5 100%);
+
+        --popover-header-bg-color: #eee;
+        --popover-body-bg-color: var(--popover-header-bg-color);
+        --popover-bg-color: var(--list-bg-color)
     }
 }

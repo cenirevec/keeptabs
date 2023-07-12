@@ -1,8 +1,9 @@
 import React,{Component} from "react";
-import { Nav, Badge, Button } from 'react-bootstrap';
+import { Nav, Badge} from 'react-bootstrap';
 import { CreateCategory } from "./createCategory.jsx";
 import { Renamable } from "../shared/renamable/renamable.jsx";
 import { Services } from "../../services.jsx";
+import { CategoryMenu } from "./categoryMenu.jsx";
 
 class EditionInProgress{
   status = true;
@@ -97,10 +98,10 @@ export class MoodNavBar extends Component{
 
         //category.meta.name = category.meta.name ?? "";
         navbarItems.push(
-          <Nav.Item key={index} 
+          <Nav.Item  className={this.props.selected == index ? "selected": "not-selected"} key={index}>
+            <Nav.Link eventKey={index} 
                     onClick={() => {this.selectCategory(index)}} 
                     onDoubleClick={()=>{this.renameItem(index)}}>
-            <Nav.Link eventKey={index}>
               <span className="mood-name">
                 <Renamable value={category.meta.name} 
                            onSubmit={(newName)=>this.renameItem(category,newName)}
@@ -111,6 +112,7 @@ export class MoodNavBar extends Component{
               {index != this.props.selected 
               &&   <Badge pill> {length} </Badge>}
             </Nav.Link>
+            <CategoryMenu category={category} categoryId={index} renameItem={this.renameItem}></CategoryMenu>
           </Nav.Item>
         );
       })

@@ -199,17 +199,51 @@ export class DataService {
     }
 
     /**
+     * Get a setting
+     * @param {*} reference JSON Path to find the setting
+     * @returns 
+     */
+    getSetting(reference){
+        let leaf = this.model.meta.settings;
+        reference.split(".").forEach((key)=>{
+            if(leaf[key] != undefined){
+                leaf = leaf[key];
+            }else{
+                console.error("A wrong reference to setting option has been given.\n key value:"+key+" is not found")
+            }
+        })
+        return leaf;
+    }
+
+    /**
+     * Set a setting
+     * @param {*} reference JSON Path to find the setting
+     * @returns 
+     */
+    setSetting(reference,value){
+        let leaf = this.model.meta.settings;
+        let referenceArray = reference.split(".");
+        referenceArray.forEach((key,index)=>{
+            if(leaf[key]){
+                if(index < referenceArray.length -1){
+                    leaf = leaf[key];
+                }else{
+                    leaf[key] = value;
+                }
+            }else{
+                console.error("A wrong reference to setting option has been given")
+            }
+        })
+        return leaf;
+    }
+
+    /**
      * Clearing all the moods and their content
      */
     clear() {
-        if (navigatorName == "Firefox") {
-            browser.storage.local.clear();
-        } else {
-            if (navigatorName != "Chrome") {
-                console.warn("Ths browser have not been tested, stay prudent")
-            }
-            chrome.storage.local.clear(null);
-        }
+        Services.data.model = JSON.parse(JSON.stringify(defaultModel))
+        Services.data.save();
+        console.log("cleared");
     }
 
     /**
@@ -281,6 +315,7 @@ export class DataService {
                 //If not
                 category = Services.category.create(toMerge.meta.name, false);
                 category.tabGroups = toMerge.tabGroups;
+                category.meta = toMerge.meta;
             }
         } else {
             console.error("The file data has been corrupted")

@@ -82,7 +82,7 @@ export class MoodGroup extends React.Component{
             (tabGroup,index)=> 
             <TabGroup key={index} 
                       id={index} 
-                      category={this.props.category.meta.name} 
+                      category={this.props.category} 
                       saveData={this.props.saveData}
                       onUpdate={this.props.onUpdate}
                       deleteFunction={()=>{this.removeTabGroup(index)}}

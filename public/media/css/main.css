@@ -878,7 +878,7 @@ h2 .tabs-count{
 }
 
 .kt-component-tabgroup{
-    margin-bottom: 1rem;
+    margin-bottom: .15rem;
 }
 
 .kt-component-moodgroup .hiddenSeparator{
@@ -896,6 +896,7 @@ h2 .tabs-count{
 
 .kt-component-setting-option{
     display: flex;
+    gap: 0.5rem;
 }
 
 .kt-component-setting-option .form-label{
@@ -905,4 +906,69 @@ h2 .tabs-count{
 
 .kt-component-setting-option.number input{
     width: 100px;
+}
+
+.kt-component-mood-navbar{
+    --popover-width: 25px;
+}
+
+.kt-component-mood-navbar{
+    padding-right: var(--popover-width);
+}
+
+.kt-component-mood-navbar .nav-item{
+    display: flex;
+}
+
+.kt-component-mood-navbar .nav-link{
+    padding-right: calc(var(--popover-width));
+}
+
+.kt-component-mood-navbar .category-popover-icon {
+    margin-left: calc( -1 * var(--popover-width) - 25px );
+    padding-left: 27px;
+    box-shadow: none;
+    transform: translateY(-.5px);
+}
+  
+.kt-component-mood-navbar .selected .category-popover-icon {
+    color: white;
+}
+  
+.kt-component-mood-navbar .not-selected .category-popover-icon {
+    color: var(--bs-primary);
+}
+
+
+.kt-popover-menu{
+    background-color: var(--popover-bg-color);
+    color: var(--font-color) !important;
+}
+
+.kt-popover-menu .popover-header{
+    text-align: center;
+    background-color: var(--popover-header-bg-color);
+}
+
+.kt-popover-menu .popover-body{
+    padding: 0.5em;
+    color: var(--font-color) !important;
+}
+
+.kt-popover-menu .bs-popover-auto[data-popper-placement^="bottom"] > .popover-arrow::after, .bs-popover-bottom > .popover-arrow::after {
+    border-bottom-color:  var(--popover-header-bg-color);
+}
+
+.kt-popover-menu .bs-popover-auto[data-popper-placement^="bottom"] .popover-header::before, .bs-popover-bottom .popover-header::before {
+    border-bottom: none;
+}
+
+.kt-popover-menu .list-group.withSettings .list-group-item{
+    padding: .25em .5em;
+    overflow: hidden;
+    background-color: #fff1 !important; 
+}
+
+.kt-popover-menu .list-group-item:not(.list-group-item-info):not(.list-group-item-danger){
+    background-color: #fff1 !important; 
 }
