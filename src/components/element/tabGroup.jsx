@@ -181,6 +181,10 @@ export class TabGroup extends React.Component{
         className += areSavedTabs ? " col-lg-6":"";
 
         this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
+        
+
+        let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`
+        console.trace(tabGroupKey);
 
         return <div className={className}>
                     {/* Show the number of tabs and when it as been saved */}
@@ -188,6 +192,7 @@ export class TabGroup extends React.Component{
                         <div>
                             <span className="tab-group-header" onClick={this.tabGroupTitle?.current?.enableEdition}>
                                 <Renamable  ref={this.tabGroupTitle} 
+                                            key={tabGroupKey}
                                             value={this.props.tabGroup.meta.name} 
                                             onSubmit={(value)=>{this.renameGroup(value)}}></Renamable>
                                 <span className="time-ago" >{timeSince(date)} ago</span>
@@ -208,7 +213,11 @@ export class TabGroup extends React.Component{
                     {areSavedTabs && 
                     <ButtonGroup>
                         <Button onClick={this.openAll}>Open all</Button>
-                        <MoveToMenu tabGroup={this.props.tabGroup} category={this.props.category}></MoveToMenu>
+                        <MoveToMenu 
+                            tabGroup={this.props.tabGroup} 
+                            filteredTabs={filteredTabs}
+                            category={this.props.category}
+                            ></MoveToMenu>
                         <Button onClick={(event)=>{this.delete(event,filteredTabs)}}>Delete</Button>
                     
                         <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown">

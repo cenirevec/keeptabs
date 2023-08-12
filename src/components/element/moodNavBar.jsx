@@ -55,7 +55,6 @@ export class MoodNavBar extends Component{
     createCategory(name){
       //@todo
       //this.props.addMood(name);
-      console.log(name)
     }
 
     /**

@@ -7,6 +7,7 @@ import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
 import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
 import { SettingOption } from "../element/settingOption.jsx";
 import { LoadingMode } from "../../../public/api/defaultData.mjs";
+import ConfirmationModal from "../element/confirmationModal.jsx";
 
 export function SettingsPanel() {
     const [show, setShow] = useState(false);
@@ -100,6 +101,7 @@ export function SettingsPanel() {
                   //@todo Add confirmation modal
                   //Services.main?.refresh();
                   location.reload();
+
                 }}>Clear all data</ListGroupItem>
               </ListGroup>
             </ListGroup>

@@ -951,8 +951,13 @@ h2 .tabs-count{
 }
 
 .kt-popover-menu .popover-body{
-    padding: 0.5em;
     color: var(--font-color) !important;
+    padding: 0;
+}
+
+.kt-popover-menu .popover-body .list-group{
+    max-height: 200px;
+    overflow: auto;
 }
 
 .kt-popover-menu .bs-popover-auto[data-popper-placement^="bottom"] > .popover-arrow::after, .bs-popover-bottom > .popover-arrow::after {

@@ -52,29 +52,30 @@ export class CategoryList extends React.Component{
                                  .map((id)=>{return {category: Services.data.model.categories[id],id}})
                                  .filter((item)=>
                                     !this.state.filter ? true:
-                                    item.category?.meta?.name?.startsWith(this.state.filter))
+                                    item.category?.meta?.name?.toLowerCase().startsWith(this.state.filter.toLowerCase()))
                                  .map((item)=>
                                     <ListGroupItem key={item.id} action 
                                         onClick={()=>{this.onSelect(item)}}>
                                         {item.category?.meta?.name}
                                     </ListGroupItem>)
 
-        return <ListGroup>
+        return <div>
             <FormControl
-                        autoFocus
                         className="mx-3 my-2 w-auto"
                         placeholder="Type to filter..."
                         onChange={(e) => this.setValue(e.target.value)}
                         onKeyDown={this.createByKeyboard}
                         value={this.state.filter}
                     />
-            {categoryList}
-            {   this.state.filter.length > 0 && !Services.category.getByName(this.state.filter) &&
-                <ListGroupItem variant="info" 
-                    onClick={this.onCreate}
-                    key="_categoryList_CREATE" action
-                    >+ Create '{this.state.filter}'</ListGroupItem>
-            }
-        </ListGroup>
+            <ListGroup>
+                {categoryList}
+                {   this.state.filter.length > 0 && !Services.category.getByName(this.state.filter) &&
+                    <ListGroupItem variant="info" 
+                        onClick={this.onCreate}
+                        key="_categoryList_CREATE" action
+                        >+ Create '{this.state.filter}'</ListGroupItem>
+                }
+            </ListGroup>
+        </div>
     }
 }
