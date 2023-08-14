@@ -199,45 +199,6 @@ export class DataService {
     }
 
     /**
-     * Get a setting
-     * @param {*} reference JSON Path to find the setting
-     * @returns 
-     */
-    getSetting(reference){
-        let leaf = this.model.meta.settings;
-        reference.split(".").forEach((key)=>{
-            if(leaf[key] != undefined){
-                leaf = leaf[key];
-            }else{
-                console.error("A wrong reference to setting option has been given.\n key value:"+key+" is not found")
-            }
-        })
-        return leaf;
-    }
-
-    /**
-     * Set a setting
-     * @param {*} reference JSON Path to find the setting
-     * @returns 
-     */
-    setSetting(reference,value){
-        let leaf = this.model.meta.settings;
-        let referenceArray = reference.split(".");
-        referenceArray.forEach((key,index)=>{
-            if(leaf[key]){
-                if(index < referenceArray.length -1){
-                    leaf = leaf[key];
-                }else{
-                    leaf[key] = value;
-                }
-            }else{
-                console.error("A wrong reference to setting option has been given")
-            }
-        })
-        return leaf;
-    }
-
-    /**
      * Clearing all the moods and their content
      */
     clear() {
@@ -319,6 +280,95 @@ export class DataService {
             }
         } else {
             console.error("The file data has been corrupted")
+        }
+    }
+
+       // ---------------- SETTINGS ------------- //
+
+    /**
+     * Get a setting
+     * @param {*} reference JSON Path to find the setting
+     * @returns 
+     */
+    getSetting(reference){
+        let leaf = this.model.meta.settings;
+        reference.split(".").forEach((key)=>{
+            if(leaf[key] != undefined){
+                leaf = leaf[key];
+            }else{
+                console.error("A wrong reference to setting option has been given.\n key value:"+key+" is not found")
+            }
+        })
+        return leaf;
+    }
+
+    /**
+     * Set a setting
+     * @param {*} reference JSON Path to find the setting
+     * @returns 
+     */
+    setSetting(reference,value){
+        let leaf = this.model.meta.settings;
+        let referenceArray = reference.split(".");
+        referenceArray.forEach((key,index)=>{
+            if(leaf[key]){
+                if(index < referenceArray.length -1){
+                    leaf = leaf[key];
+                }else{
+                    leaf[key] = value;
+                }
+            }else{
+                console.error("A wrong reference to setting option has been given")
+            }
+        })
+        return leaf;
+    }
+
+    // --------------- MANAGE ALIASES ------------ //
+
+    /**
+     * Check if an alias exists
+     * @param {string} alias Given alias 
+     */
+    hasAlias(alias){
+        return Services.data.model.meta.shortcuts[alias] !== null;
+    }
+
+    /**
+     * Get the list of filter associated to an alias
+     * @param {string} alias Given alias 
+     */
+    getValuesForAlias(alias){
+        return Services.data.model.meta.shortcuts[alias]?.value ?? [];
+    }
+    
+    /**
+     * Set a list of filter associated to an alias
+     * @param {string} alias Given alias 
+     */
+    setValuesForAlias(alias, values){
+        Services.data.model.meta.shortcuts[alias].value = values;
+        Services.data.save();
+    }
+
+    /**
+     * Remove an alias for the aliases list
+     * @param {string} alias Given alias 
+     */
+    removeAlias(alias){
+        delete Services.data.model.meta.shortcuts[alias];
+        Services.data.save();
+    }
+
+    /**
+     * Rename an alias
+     * @param {string} oldAlias old alias name
+     * @param {string} newAlias new alias name
+     */
+    renameAlias(oldAlias, newAlias){
+        if(this.hasAlias(oldAlias)){
+            Services.data.model.meta.shortcuts[newAlias].value = this.getValuesForAlias(oldAlias);
+            this.removeAlias(oldAlias);
         }
     }
 }

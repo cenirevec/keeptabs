@@ -28,15 +28,16 @@ export class SearchBarPanel extends Component{
     /**
      * Use search algorithm to filter the tabs
      * @param {*} expression 
-     */
+     *
     search(expression){
-        var searchAlgorithm = new SearchAlgorithm();
+       /*  var searchAlgorithm = new SearchAlgorithm();
 
         searchAlgorithm.init(TabService.loadedTabs.main);
         searchAlgorithm.search(expression);        
 
-        TabService.renderSavedTabs();
-    }
+        TabService.renderSavedTabs(); *
+        console.log(expression)
+    }*/
 
     /**
      * Set a value
@@ -61,8 +62,8 @@ export class SearchBarPanel extends Component{
     addValue(event){
         if(event.keyCode == 13){
             this.clearSearchbar()
-            this.params.values.push(event.target.value);
-            //console.log(this.params.values)
+            this.params.addValue(event.target.value)
+            
             this.updateFilter();
         }
     }

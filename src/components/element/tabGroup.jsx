@@ -184,7 +184,7 @@ export class TabGroup extends React.Component{
         
 
         let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`
-        console.trace(tabGroupKey);
+        //console.trace(tabGroupKey);
 
         return <div className={className}>
                     {/* Show the number of tabs and when it as been saved */}

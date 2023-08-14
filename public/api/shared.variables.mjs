@@ -20,7 +20,7 @@ export const Browser = (chrome != undefined)? chrome : browser;
 export const webexVersion = "0.4.6"
 //               |!\ CAUTION |!\ 
 // Ensure to update all functions producing data according to the modifications of the version
-export const currentDataVersion = "2.0.3" 
+export const currentDataVersion = "2.0.4" 
 /**
  * Writing date in a "time ago" format
  * @param {*} date 
@@ -102,3 +102,9 @@ export function timeSince(date) {
     })
     return arr;
   }
+
+
+export const CommonRegExps = {
+  SEARCH_ALIASES: /^!?:[a-zA-Z0-9]*/gim,
+  SEARCH_NEGATION: /^!.*/
+}

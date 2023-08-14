@@ -8,9 +8,11 @@ import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
 import { SettingOption } from "../element/settingOption.jsx";
 import { LoadingMode } from "../../../public/api/defaultData.mjs";
 import ConfirmationModal from "../element/confirmationModal.jsx";
+import { SearchAliasesModal } from "../modal/searchAliasesModal.jsx";
 
 export function SettingsPanel() {
     const [show, setShow] = useState(false);
+    const [showAliasesModal, setShowAliasesModal] = useState(false);
 
     const options = [
         { name: 'Differed', value: LoadingMode.DIFFERED },
@@ -28,6 +30,7 @@ export function SettingsPanel() {
     const onOptionUpdate = (source,optionToChange,value) => {
       source[optionToChange] = value;
     }
+
 
     const handleFileUpload = (result,file) =>{
           /**
@@ -82,6 +85,17 @@ export function SettingsPanel() {
                   onChange={(value)=>{onOptionUpdate(tabOptions,"makeOpenedTabActive",value)}}
                   > Make last opened tab active </SettingOption>
               </ListGroupItem>
+            </ListGroup>
+            <br></br>
+            <h5>Searchbar</h5>
+            <ListGroup>
+              <ListGroupItem action onClick={()=>setShowAliasesModal(true)}>
+                Open search aliases panel
+              </ListGroupItem>
+{/*               <SearchAliasesModal
+                 visible={showAliasesModal.toString()}
+                 setVisible={setShowAliasesModal}
+                 ></SearchAliasesModal> */}
             </ListGroup>
             <br></br>
             <h5>Storage</h5>

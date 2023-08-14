@@ -5,13 +5,16 @@ export const PatchListPath = {
 }
 
 const patchList = {
-    versions: ["1.0.0","2.0.0", "2.0.2", "2.0.3"], //Versions prises en charge
+    versions: ["1.0.0","2.0.0", "2.0.2", "2.0.3","2.0.4"], //Versions prises en charge
     patchs: [
         {
             path: "meta",
             operations: {
                 "3": (meta) => {
                     meta.settings = defaultData.settings
+                },
+                "4": (meta) => {
+                    meta.shortcuts = defaultData.shortcuts
                 }
             }
         },
