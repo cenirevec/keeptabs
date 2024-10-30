@@ -19,13 +19,6 @@ export const defaultData = {
     },
 
     shortcuts: {
-        p: {
-            value: [
-                "furaffinity.net",
-                "e621.net",
-                "e-hentai.org"
-            ]
-        },
         searchEngine: {
             value: [
                 "www.qwant.com",
@@ -36,6 +29,11 @@ export const defaultData = {
         }
     },
 
+    icons: {
+        "unknown": "./media/ico-48.png",
+        "settings": "./media/ico-48.png",
+        "keeptabs": "./media/ico-48.png",
+    }
 }
 
 // Default model data
@@ -45,6 +43,10 @@ export const defaultModel = {
             version: currentDataVersion,
             settings: defaultData.settings,
             shortcuts: defaultData.shortcuts
+        },
+        icons:{
+            references: [],
+            default: defaultData.icons
         },
         categories: {
             "0": {

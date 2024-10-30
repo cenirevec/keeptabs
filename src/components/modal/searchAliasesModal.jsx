@@ -1,49 +1,115 @@
 import React, { Component } from "react"
-import { Modal, ModalDialog } from "react-bootstrap"
+import { Modal, Button, Table } from "react-bootstrap"
+import { Renamable } from "../shared/renamable/renamable.jsx";
+import { Services } from "../../services.jsx";
 
-export class SearchAliasesModal extends React.Component{
+export class SearchAliasesModal extends React.Component {
+
+    aliases = {};
 
     constructor(props) {
         super(props)
 
+        this.handleClose = this.handleClose.bind(this);
+
+        this.onAddAlias = this.onAddAlias.bind(this);
+        this.onAliasChange = this.onAliasChange.bind(this);
+        this.onValueChange = this.onValueChange.bind(this);
+
+        this.state = {
+            aliases: Services.data.getAliases()
+        }
     }
 
+    componentDidMount() {
+        this.aliases = Services.data.getAliases();
+    }
+
+    refresh() {
+        this.setState({
+            aliases: Services.data.getAliases()
+        })
+    }
+
+    handleClose() {
+        this.props.setVisible(false);
+    }
+
+    onAliasChange(alias, newAlias) {
+        Services.data.renameAlias(alias, newAlias);
+        this.refresh();
+    }
+
+    onValueChange(alias, value) {
+        Services.data.setValuesForAlias(alias, value.split(","));
+        this.refresh();
+    }
+
+    onAddAlias(alias){
+        if(alias && alias.length === 0){
+            if(Services.data.hasAlias(alias)){
+
+            }else{
+                if(alias[0] === ":"){
+                    alias = alias.slice(1);
+                }
+                Services.data.addAlias(alias);
+                setTimeout(()=>{
+                    this.refresh();
+                },0)
+            }
+        }
+    }
 
     render() {
-        
-        return <Modal header="Alias for search" show={this.props.visible} style={{ width: '50vw' }} onHide={() => this.props.setVisible(false)}>
-            <p className="mb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p className="mb-5">
-                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid
-                ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
-            </p>
-            <p className="mb-5">
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod
-                maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae
-                non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-            </p>
-            <p className="mb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p className="mb-5">
-                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid
-                ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
-            </p>
-            <p className="mb-5">
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod
-                maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae
-                non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-            </p>
+
+        let aliasesList = Object.keys(this.aliases).map((key, index) => {
+            return <tr key={key}>
+                <td>{index + 1}</td>
+                <td>:<Renamable onSubmit={(newAlias) => this.onAliasChange(key, newAlias)}
+                    value={key}></Renamable></td>
+                <td><Renamable placeholder="Add filters..."
+                    onSubmit={(newValue) => this.onValueChange(key, newValue)}
+                    value={this.aliases[key].value.toLocaleString()}></Renamable></td>
+            </tr>
+        })
+
+        return <Modal show={this.props.visible} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Aliases for searchbar</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Alias</th>
+                            <th>Filter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {aliasesList}
+                        <tr key="newItem">
+                            <td></td>
+                            <td key="newAlias">:<Renamable value="" onSubmit={this.onAddAlias}
+                                placeholder="Add an alias...">
+                            </Renamable>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                    Close
+                </Button>
+                {/*                 <Button variant="primary" onClick={this.handleClose}>
+                    Save Changes
+                </Button> */}
+            </Modal.Footer>
         </Modal>
     }
 }

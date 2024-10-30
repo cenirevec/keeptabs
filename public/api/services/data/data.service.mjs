@@ -1,3 +1,4 @@
+import { IconReferencer } from "../../../../src/models/iconReferencer.model.js";
 import { Services } from "../../../../src/services.jsx";
 import { defaultModel } from "../../defaultData.mjs";
 import patchList, { PatchListPath } from "../../patch.mjs";
@@ -31,7 +32,9 @@ export class DataService {
 
     model = JSON.parse(JSON.stringify(defaultModel))
 
-    constructor() {
+    constructor(services) {
+        this.services = services;
+
         this.load = this.load.bind(this);
         this.save = this.save.bind(this);
 
@@ -47,7 +50,7 @@ export class DataService {
     save(callback) {
         //Get a model to save
         let modelToSave = (this.model == {} || this.model?.meta == undefined) ? //If model not set or set wrongly
-        defaultModel : JSON.parse(JSON.stringify({ model: this.model }));
+            defaultModel : JSON.parse(JSON.stringify({ model: this.model }));
 
         //Save function according to the chosen browser
         if (navigatorName == "Firefox") {
@@ -58,7 +61,7 @@ export class DataService {
                 .catch((error) => console.error(error))
         } else {
             if (navigatorName != "Chrome") {
-                console.warn("This browser have not been tested, stay prudent")
+                console.warn("This browser have not been tested, stay prudent");
             }
             if (callback == undefined)
                 callback = () => { };
@@ -67,8 +70,9 @@ export class DataService {
     }
 
     patch(model) {
+        let modelCopy;
         try {
-            let modelCopy = JSON.parse(JSON.stringify(model));
+            modelCopy = JSON.parse(JSON.stringify(model));
 
             //Initializing version info
             let currentVersionId = patchList.versions.findIndex(version => version == modelCopy?.meta?.version ?? "1.0.0")
@@ -77,7 +81,10 @@ export class DataService {
                 .filter((value, index) => index > currentVersionId);
 
             // Function to apply to a level of the tree
-            let applyTabGroupsPatch = (patchBranch, levelObject) => {
+            function runOperation (patchBranch, levelObject) {
+                //Return if there are no operation to run
+                if (!patchBranch?.operations) return;
+
                 let operationList = []
                 // Creating the list of operation to perform by comparing the current version and the saved data version
                 versionsToLoad.forEach(versionId => {
@@ -94,6 +101,7 @@ export class DataService {
                             try {
                                 operationToPerform(levelObject);
                             } catch (error) {
+                                console.error(levelObject);
                                 console.error("An operation has not been correctly defined", operationToPerform, error)
                             }
                         }
@@ -112,43 +120,112 @@ export class DataService {
                 }
             }
 
-            // Recursive function to read the patch JSON tree
-            let goFurther = (patchBranch, modelPath, arrayIndex = 0, level = 1) => {
-                // Initialize next recursion variable
-                let nextModelPath = modelPath;
+            // // Recursive function to read the patch JSON tree
+            // let goFurther = (patchBranch, modelPath, level = 1) => {
+            //     // Initialize next recursion variable
+            //     let nextModelPath = modelPath;
+            //     console.log(patchBranch,modelPath,patchBranch.path)
+                
 
-                if (patchBranch.path) {
-                    // Define which object to use for the next recursion
-                    let path = patchBranch.path;
-                    if (path == PatchListPath.OBJECT_FOREACH) {
-                        path = arrayIndex;
+            //     if (patchBranch.path) {
+            //         // Define which object to use for the next recursion
+            //         let path = patchBranch.path;
+            //         //Create the property indicated by the path if necessary
+            //         if (modelPath[path] == undefined) {
+            //             modelPath[path] = new Object();
+            //         }
+
+            //         nextModelPath = modelPath[path];
+            //         //console.log(patchBranch)
+
+            //         //Make patches to the saved data model
+            //         if (patchBranch?.operations) {
+            //             runOperation(patchBranch, nextModelPath);
+            //         }
+            //         // Run functions on the children objects
+            //         if (patchBranch?.forEach){
+            //             //console.log("for each")
+            //             Object.keys(nextModelPath).forEach(keys => {
+            //                 let children = nextModelPath[keys];
+            //                 //console.log(patchBranch,children,nextModelPath)
+            //                 runOperation(patchBranch.forEach, children);
+            //                 if(patchBranch.forEach?.forEach){
+            //                     let grandchildren = children[patchBranch.forEach.forEach.path]; //children[patchBranch.forEach];
+            //                     //console.log(children,grandchildren,patchBranch.forEach.forEach.path)
+            //                     goFurther(patchBranch.forEach, grandchildren, level + 1);
+            //                 }
+            //             })
+            //         }
+            //     }
+
+            //     // PREPARE ITERATION : Check if the code can be repeated
+            //     // When we are at the root of the file
+            //     if (patchBranch.hasOwnProperty("patchs")) {
+            //         goFurther(patchBranch.patchs, nextModelPath, level + 1)
+            //     }
+            //     /** When the branch has many properties to check or update */
+            //     else if (Array.isArray(patchBranch)) {
+            //         patchBranch.forEach((childPathBranch) =>
+            //             goFurther(childPathBranch, nextModelPath, level + 1));
+            //     }
+            // }
+            
+            function goFurther(patches,model){
+                //Traitement du patch
+                if(Array.isArray(patches)){
+                    patches.forEach(_patch=>{
+                        let _model = model[_patch.path];
+                        //model.visited += "case 1" +_patch.path;
+                        //Create the model branch if doesn't exists
+                        if(!_model){
+                            model[_patch.path] = {};
+                            _model = model[_patch.path];
+                        }
+                        // Run the operation as defined in patches file
+                        runOperation(_patch, _model);
+                        
+                        // Go to the next step
+                        goFurther(_patch,_model);
+                    })
+                }
+                else if(patches.forEach || patches.children){
+                    
+                    let _patch = (patches.forEach) ? patches.forEach: patches.children;
+                    
+                    if (patches.forEach) {
+                        Object.keys(model).forEach(key=>{
+                            // Model used in next iteration
+                            let _model = model[key];
+                            // Run the operation as defined in patches file
+                            runOperation(_patch, _model);
+
+                            // Go to the next step
+                            goFurther(_patch,_model);
+                        })
+
+                    } else {
+                       // Go to the next step
+                       goFurther(_patch,model);
                     }
-                    nextModelPath = modelPath[path];
-
-                    //Make patches to the saved data model
-                    if (patchBranch?.operations) {
-                        applyTabGroupsPatch(patchBranch, nextModelPath);
-                    }
+                   // model.visited += "case 2";
                 }
-
-                // Check if the function can be repeated
-                if (patchBranch.hasOwnProperty("patchs")) {
-                    goFurther(patchBranch.patchs, nextModelPath, 0, level + 1)
-                }
-                else if (patchBranch.hasOwnProperty("children")) {
-                    goFurther(patchBranch.children, nextModelPath, 0, level + 1)
-                }
-                else if (Array.isArray(patchBranch)) {
-                    patchBranch.forEach((childPathBranch, arrayIndex) =>
-                        goFurther(childPathBranch, nextModelPath, arrayIndex, level + 1));
+                else{
+                    // Run the operation as defined in patches file
+                    runOperation(patches, model);
+                    //
+                    //model.visited += "case 3";
                 }
             }
-            // Run the recursive function
-            goFurther(patchList, modelCopy);
 
-            modelCopy.meta.version = patchList.versions[patchList.versions.length -1];
+            // ENTRY POINT !!!!
+            // Run the recursive function
+            goFurther(patchList.patchs, modelCopy);
+
+            modelCopy.meta.version = patchList.versions[patchList.versions.length - 1];
+            console.debug("Patched version", JSON.parse(JSON.stringify(modelCopy)))
             return modelCopy;
         } catch (error) {
+            console.log(modelCopy)
             console.error("Something wrong happened during the patch of the data. Previous data has been restored", error)
             return model;
         }
@@ -175,7 +252,9 @@ export class DataService {
                     this.model = this.patch(this.model);
                     this.save();
                 }
-                
+                // Define a icon referencer to register icons when they appears
+                this.services.setIconReferencer();
+
                 callback(this.model);
             })
         } else {
@@ -192,6 +271,9 @@ export class DataService {
                     this.model = this.patch(this.model);
                     this.save();
                 }
+                // Define a icon referencer to register icons when they appears
+                let referencer = new IconReferencer(this.model.icons);
+                this.services.setIconReferencer(referencer);
 
                 callback(this.model);
             });
@@ -224,7 +306,11 @@ export class DataService {
                 let importedCategories = Object.keys(content.categories).map(categoryid => content.categories[categoryid]);
                 importedCategories.forEach(category => {
                     this.mergeWithCategory(category);
-                })
+                });
+
+                this.mergeIconReferences(content.icons);
+
+                //Services.main.reload();
                 Services.data.save();
                 break;
             case DataUploadMethodEnum.REPLACE:
@@ -283,20 +369,28 @@ export class DataService {
         }
     }
 
-       // ---------------- SETTINGS ------------- //
+    /**
+     * Icon referencer
+     * @param {IconReferencer} toMerge icon referencer to merge
+     */
+    mergeIconReferences(toMerge){
+        this.model.icons = toMerge;
+    }
+
+    // ---------------- SETTINGS ------------- //
 
     /**
      * Get a setting
      * @param {*} reference JSON Path to find the setting
      * @returns 
      */
-    getSetting(reference){
+    getSetting(reference) {
         let leaf = this.model.meta.settings;
-        reference.split(".").forEach((key)=>{
-            if(leaf[key] != undefined){
+        reference.split(".").forEach((key) => {
+            if (leaf[key] != undefined) {
                 leaf = leaf[key];
-            }else{
-                console.error("A wrong reference to setting option has been given.\n key value:"+key+" is not found")
+            } else {
+                console.error("A wrong reference to setting option has been given.\n key value:" + key + " is not found")
             }
         })
         return leaf;
@@ -307,17 +401,17 @@ export class DataService {
      * @param {*} reference JSON Path to find the setting
      * @returns 
      */
-    setSetting(reference,value){
+    setSetting(reference, value) {
         let leaf = this.model.meta.settings;
         let referenceArray = reference.split(".");
-        referenceArray.forEach((key,index)=>{
-            if(leaf[key]){
-                if(index < referenceArray.length -1){
+        referenceArray.forEach((key, index) => {
+            if (leaf[key]) {
+                if (index < referenceArray.length - 1) {
                     leaf = leaf[key];
-                }else{
+                } else {
                     leaf[key] = value;
                 }
-            }else{
+            } else {
                 console.error("A wrong reference to setting option has been given")
             }
         })
@@ -330,23 +424,41 @@ export class DataService {
      * Check if an alias exists
      * @param {string} alias Given alias 
      */
-    hasAlias(alias){
-        return Services.data.model.meta.shortcuts[alias] !== null;
+    hasAlias(alias) {
+        return Services.data.model.meta.shortcuts[alias] !== undefined;
     }
+
+    /**
+     * Get all the of aliases
+     * @param {string} alias Given alias 
+     */
+    getAliases() {
+        return Services.data.model.meta.shortcuts;
+    }
+
 
     /**
      * Get the list of filter associated to an alias
      * @param {string} alias Given alias 
      */
-    getValuesForAlias(alias){
+    getValuesForAlias(alias) {
         return Services.data.model.meta.shortcuts[alias]?.value ?? [];
     }
-    
+
+    /**
+    * Create an alias
+    * @param {string} alias Given alias 
+    */
+    addAlias(alias) {
+        Services.data.model.meta.shortcuts[alias] = { value: [] }
+        Services.data.save();
+    }
+
     /**
      * Set a list of filter associated to an alias
      * @param {string} alias Given alias 
      */
-    setValuesForAlias(alias, values){
+    setValuesForAlias(alias, values) {
         Services.data.model.meta.shortcuts[alias].value = values;
         Services.data.save();
     }
@@ -355,7 +467,7 @@ export class DataService {
      * Remove an alias for the aliases list
      * @param {string} alias Given alias 
      */
-    removeAlias(alias){
+    removeAlias(alias) {
         delete Services.data.model.meta.shortcuts[alias];
         Services.data.save();
     }
@@ -365,11 +477,15 @@ export class DataService {
      * @param {string} oldAlias old alias name
      * @param {string} newAlias new alias name
      */
-    renameAlias(oldAlias, newAlias){
-        if(this.hasAlias(oldAlias)){
-            Services.data.model.meta.shortcuts[newAlias].value = this.getValuesForAlias(oldAlias);
+    renameAlias(oldAlias, newAlias) {
+        if (this.hasAlias(oldAlias) && !this.hasAlias(newAlias)) {
+            Services.data.model.meta.shortcuts[newAlias] = {
+                value: this.getValuesForAlias(oldAlias)
+            }
             this.removeAlias(oldAlias);
+            return true;
         }
+        return false;
     }
 }
 

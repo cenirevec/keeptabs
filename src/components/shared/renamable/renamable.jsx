@@ -18,7 +18,7 @@ export class Renamable extends React.Component{
             this.callbacks.onChange = props.onChange;
         
         this.state = {
-            value: props.value,
+            value: props.value ?? "",
             edition: false,
             valid: true
         }
@@ -83,9 +83,11 @@ export class Renamable extends React.Component{
      * @returns 
      */
     render(){
-        //console.log(this.props.showSubmitButton)
+        let innerText = (this.state.value?.length === 0)?
+            this.props.placeholder: this.state.value;
+
         return <span className="kt-component-renamable" onDoubleClick={this.enableEdition}>
-            {!this.state.edition && this.state.value}
+            {!this.state.edition && innerText}
             {this.state.edition &&
                 <form  className="kt-component-renamable" onSubmit={this.handleSubmit}>
                     <input ref={this.textInput} type="text" value={this.state.value} onChange={this.setValue}/>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
+import { Services } from "../../services.jsx";
 
 export class Tab extends React.Component{  
     
@@ -45,10 +46,11 @@ export class Tab extends React.Component{
         let addedClasses = "";
         const {url,title,lastAccessed} = this.props.tab;
 
-        let favicon = this.props.tab.favicon;
-        if(favicon == undefined || favicon == "" || favicon == null){
-            addedClasses+="no-icon ";
-            favicon='/media/ico-48.png';
+        let favicon;
+        if(this.props.tab.faviconId != undefined){
+            favicon = Services.favicons.getURLByFaviconId(this.props.tab.faviconId);
+        }else{
+            favicon = this.props.tab.faviconUrl;
         }
 
         let date = new Date(lastAccessed);
