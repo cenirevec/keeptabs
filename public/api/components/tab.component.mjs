@@ -61,11 +61,10 @@ export class Tab{
         this.target.key = this.id;
         this.target.identifier = this.getIdentifier();
 
-        if(this.target.innerHTML == ""){
+        if(!this.target.hasChildNodes()){
 
             let img = document.createElement("img");
             let link = document.createElement("a");
-            let options;
             let lastAccessed = document.createElement("small");
 
         
@@ -104,8 +103,6 @@ export class Tab{
             this.target.appendChild(lastAccessed);
         }
         
-
-        //el.innerHTML=`<img src="${this.favicon}"><a href="${this.url}">${this.title}</a><small>last:${this.lastAccessed}</small>`
         return this.target;
     }
 
@@ -131,11 +128,13 @@ export class Tab{
             let tab = tabs.reduce((previous, current) => {
               return previous.lastAccessed > current.lastAccessed ? previous : current;
             });
-            // previous tab
-            //console.log(tab);
           });
 
-        this.target.innerHTML = "";
+        //Withdraw all children
+        Array.from(this.target.children).forEach(childNode=>{
+            this.target.removeChild(childNode)
+        })
+
         this.render(context);
     }
 
