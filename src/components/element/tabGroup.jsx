@@ -4,6 +4,8 @@ import { Tab } from "./tab.jsx";
 import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
 import { Renamable } from "../shared/renamable/renamable.jsx";
 import { Services } from "../../services.jsx";
+import { LoadingMode } from "../../../public/api/defaultData.mjs";
+import { MoveToMenu } from "./moveToMenu.jsx";
 
 export class TabGroup extends React.Component{  
 
@@ -31,14 +33,46 @@ export class TabGroup extends React.Component{
     openAll(options){
         let filteredTabs = this.filter(this.props.filter);
         let tokenForDeletion = [];
+
+        let loadingType = Services.data.getSetting("loading.mode");
+        let lastIsActive = Services.data.getSetting("loading.makeOpenedTabActive")
+
+        let timeStamp;
+
         filteredTabs.forEach((tab,index) => {
-            //Open the tab
-            setTimeout(()=>{
-                Browser.tabs.create({url: tab.url});
-            },(100*index) + 100)
+            //Open all the tab in lazyMode
+            if(loadingType == LoadingMode.LAZY){
+                Browser.tabs.create({url: tab.url, discarded:true, active:lastIsActive});
+            }
+
             //Prepare for deletion
             tokenForDeletion.push(this.props.tabGroup.tabs.findIndex(tabInGroup => tabInGroup == tab));
         });
+
+        if(loadingType == LoadingMode.DIFFERED){
+            timeStamp = Date.now();
+            let interval = Services.data.getSetting("loading.interval");
+
+            let openNext = (index) => {
+                // Load the next tab
+                let loadNext = (result)=>{
+                    index += 1;
+                    if(index < filteredTabs.length){
+                        setTimeout(()=>{
+                            openNext(index)}
+                        , interval)
+                    }
+                };
+
+                // Open a tab
+                browser.tabs.create(
+                    {url: filteredTabs[index].url, active:lastIsActive})
+                .then(loadNext,loadNext);
+            };
+
+            openNext(0);
+        }
+
         //Remove openned tabs
         this.props.tabGroup.tabs = this.props.tabGroup.tabs.filter(
             (tab,index)=> tokenForDeletion.indexOf(index) == -1);
@@ -56,7 +90,7 @@ export class TabGroup extends React.Component{
      * @param {String} value Name to give to the tab group
      */
     renameGroup(value){
-        this.props.tabGroup.name = value;
+        this.props.tabGroup.meta.name = value;
         Services.data.save();
         this.refresh();
     }
@@ -74,7 +108,7 @@ export class TabGroup extends React.Component{
      */
     filter(params){
         let filteredTabs = [];
-        let source = (this.props.context == "saved")? this.props.tabGroup.tabs : this.props.tabGroup;
+        let source = this.props.tabGroup.tabs;
 
         if (source != undefined) {
             filteredTabs = source.filter(
@@ -146,7 +180,11 @@ export class TabGroup extends React.Component{
         let className = "kt kt-component kt-component-tabgroup tabs";
         className += areSavedTabs ? " col-lg-6":"";
 
-        this.props.tabGroup.name = this.props.tabGroup.name ?? "";
+        this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
+        
+
+        let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`
+        //console.trace(tabGroupKey);
 
         return <div className={className}>
                     {/* Show the number of tabs and when it as been saved */}
@@ -154,7 +192,8 @@ export class TabGroup extends React.Component{
                         <div>
                             <span className="tab-group-header" onClick={this.tabGroupTitle?.current?.enableEdition}>
                                 <Renamable  ref={this.tabGroupTitle} 
-                                            value={this.props.tabGroup.name} 
+                                            key={tabGroupKey}
+                                            value={this.props.tabGroup.meta.name} 
                                             onSubmit={(value)=>{this.renameGroup(value)}}></Renamable>
                                 <span className="time-ago" >{timeSince(date)} ago</span>
                                 <span className="tabs-count">
@@ -174,7 +213,11 @@ export class TabGroup extends React.Component{
                     {areSavedTabs && 
                     <ButtonGroup>
                         <Button onClick={this.openAll}>Open all</Button>
-                        <Button onClick={console.log}>Move to</Button>
+                        <MoveToMenu 
+                            tabGroup={this.props.tabGroup} 
+                            filteredTabs={filteredTabs}
+                            category={this.props.category}
+                            ></MoveToMenu>
                         <Button onClick={(event)=>{this.delete(event,filteredTabs)}}>Delete</Button>
                     
                         <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
+import { Services } from "../../services.jsx";
 
 export class Tab extends React.Component{  
     
@@ -20,7 +21,7 @@ export class Tab extends React.Component{
     onOpen(event){
         if (event && (event.which == 1 || event.button == 0 )) {
             //Open the tab
-            Browser.tabs.create({url: this.props.tab.url});
+            Browser.tabs.create({url: this.props.tab.url, active: false});
             //Remove tab from list
             this.delete();
         }
@@ -45,10 +46,11 @@ export class Tab extends React.Component{
         let addedClasses = "";
         const {url,title,lastAccessed} = this.props.tab;
 
-        let favicon = this.props.tab.favicon;
-        if(favicon == undefined || favicon == "" || favicon == null){
-            addedClasses+="no-icon ";
-            favicon='/media/ico-48.png';
+        let favicon;
+        if(this.props.tab.faviconId != undefined){
+            favicon = Services.favicons.getURLByFaviconId(this.props.tab.faviconId);
+        }else{
+            favicon = this.props.tab.faviconUrl;
         }
 
         let date = new Date(lastAccessed);
@@ -56,9 +58,14 @@ export class Tab extends React.Component{
         return <li className="kt kt-component kt-component-tab list-group-item list-group-item-action">
             <img src={favicon} className={addedClasses} title="Click to select this link"/>
             {this.props.context == 'saved' &&
-                <a href={url} target="_blank" onMouseDown={this.onOpen}>{title}</a>}
+                <a href={url} 
+                   target="_blank" 
+                   onMouseDown={this.onOpen}
+                   title={title}
+                   >{title}</a>}
             {this.props.context == 'current' &&
-                <span>{title}</span>}
+                <span title={title}
+                >{title}</span>}
             <small>{timeSince(date)}</small>
         </li>;
     }

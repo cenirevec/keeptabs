@@ -1,4 +1,6 @@
 import { Browser } from "../../public/api/shared.variables.mjs";
+import { Services } from "../services.jsx";
+
 
 export class TabModel {
     /** Identifier of the tab */
@@ -6,20 +8,37 @@ export class TabModel {
     /** URL of the tab */
     url = "";
     /** Domain name */
-    domainName = "";
+    domain = "";
     /** Tab's title */
     title = "";
     /** Tab's icon */
     favicon = "";
+    /** Tab's icon ID */
+    faviconId = "";
     /** Last access timestamp */
     lastAccessed = 0;
 
     constructor(tab){
         this.id = tab.id;
         this.url = tab.url;
-        this.domainName = this.getDomainName(tab);
+        this.domain = this.getDomainName(tab);
         this.title = tab.title;
-        this.favicon = (tab.favicon != undefined)?tab.favicon : tab.favIconUrl;
+        
+        let faviconUrl = (tab.favicon != undefined)? tab.favicon : tab.favIconUrl;
+        let faviconId;
+
+        if(Services.favicons){
+            faviconId = Services.favicons?.getFaviconIdByURL(faviconUrl);
+        }
+        else{
+            if(faviconUrl.startsWith("chrome://")){
+                faviconUrl =  "./media/ico-48.png";
+            }
+            
+            this.favicon = faviconUrl;
+        }
+
+        this.faviconId = faviconId ?? 0;
         this.lastAccessed = 
             (tab.lastAccessed != undefined)? tab.lastAccessed : Date.now();
     }

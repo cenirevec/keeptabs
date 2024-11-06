@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { InputText } from 'primereact/inputtext';
-import { searchBarParameters } from "../../models/searchFilter.model";
+import { searchParameters } from "../../models/searchFilter.model";
 import Chip from "../element/chip.jsx";
 
 export class SearchBarPanel extends Component{
     /** Parameters linked to the searchbar */
-    params = new searchBarParameters();
+    params = new searchParameters();
 
         /**
      * Constructor
@@ -13,26 +13,31 @@ export class SearchBarPanel extends Component{
      */
     constructor(props){
         super(props);
+
+        this.state ={
+            searchbarContent : ""
+        };
         
         this.setValue = this.setValue.bind(this);
         this.addValue = this.addValue.bind(this);
         this.removeValue = this.removeValue.bind(this);
         //this.updateFilter = this.updateFilter.bind(this);
-        this.clear = this.clear.bind(this)
+        this.clear = this.clear.bind(this);
     }
 
     /**
      * Use search algorithm to filter the tabs
      * @param {*} expression 
-     */
+     *
     search(expression){
-        var searchAlgorithm = new SearchAlgorithm();
+       /*  var searchAlgorithm = new SearchAlgorithm();
 
         searchAlgorithm.init(TabService.loadedTabs.main);
         searchAlgorithm.search(expression);        
 
-        TabService.renderSavedTabs();
-    }
+        TabService.renderSavedTabs(); *
+        console.log(expression)
+    }*/
 
     /**
      * Set a value
@@ -40,7 +45,9 @@ export class SearchBarPanel extends Component{
      */
     setValue(value){
         let lastIndex = this.params.values.length -1;
-
+        this.setState({
+            searchbarContent: value
+        })
         this.params.values[lastIndex] = value;
         this.updateFilter();
     }
@@ -49,21 +56,14 @@ export class SearchBarPanel extends Component{
      * Update the searchbar filter in the other components
      */
     updateFilter(){
-        //console.log(this.params.values)
-        /* this.params = this.params.values.map((value)=>{
-            if (!value) {
-                value = ''
-            }
-            return value;
-        }) */
         this.props.onFilter(this.params);
     }
 
     addValue(event){
         if(event.keyCode == 13){
-            event.target.value = '';
-            this.params.values.push(event.target.value);
-            //console.log(this.params.values)
+            this.clearSearchbar()
+            this.params.addValue(event.target.value)
+            
             this.updateFilter();
         }
     }
@@ -75,7 +75,14 @@ export class SearchBarPanel extends Component{
 
     clear(){
         this.params.clearValues();
+        this.clearSearchbar();
         this.updateFilter();
+    }
+
+    clearSearchbar(){
+        this.setState({
+            searchbarContent: ""
+        })
     }
 
     /**
@@ -99,7 +106,8 @@ export class SearchBarPanel extends Component{
                 </div>
             </div>
             <div className="searchbar">
-                <InputText 
+                <InputText
+                        value={this.state.searchbarContent}
                         placeholder="Search" 
                         onChange={(e) => this.setValue(e.target.value)} 
                         onKeyDown={this.addValue}/>

@@ -1,3 +1,4 @@
+// Opens a keeptabs instance when the keeptabs button is clicked
 if(chrome != undefined && chrome.action != undefined){
     chrome.action.onClicked.addListener(() => {
         chrome.tabs.create({"url": "/home.html"});
@@ -7,10 +8,3 @@ if(chrome != undefined && chrome.action != undefined){
         browser.tabs.create({"url": "/home.html"});
     });
 }
-
-//console.log(chrome.windows.WINDOW_ID_CURRENT)
-
-//{tabId,currentWindow}
-
-
-//console.log(browser)

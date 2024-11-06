@@ -36,41 +36,14 @@ export class CreateCategory extends Component{
     createCategory(event){
         event.preventDefault();
 
-        let category = null;
-        let categories = Services.data.model.categories;
-        let newCategoryIndex = 0;
-
-        for(let categoryIndex in categories){
-            if(categories[categoryIndex].meta.name == this.state.name){
-                category = categories[categoryIndex];
-            }
-            if(categoryIndex == newCategoryIndex){
-                newCategoryIndex++;
-            }
+        let category = Services.category.create(this.state.name);
+        if(this.props.onCreated){
+            this.props.onCreated(category);
         }
-
-        //Create the category and quit edition mode
-        let createAndToggle = ()=>{
-            const {onCreated} = this.props;
-            if(onCreated)
-                onCreated(category);
-
-            this.toggleEditionMode(false);
-        }
-
-        //  Check that the category doesnt exists yet
-        if(category == null){
-            category = {...this.defaultCategoryData};
-            category.meta.name = this.state.name;
-            categories[newCategoryIndex] = category;
-
-            this.props.saveData();
-            this.toggleEditionMode(false);
-        }else{
-            createAndToggle();
-        }
+        this.toggleEditionMode(false);
+        Services.main?.refresh();
     }
-
+    
     setName(name){
         this.setState({
             name: name
@@ -113,6 +86,7 @@ export class CreateCategory extends Component{
                         <Form.Control placeholder="Add..."
                                     aria-describedby="add-category-input"
                                     value={this.state.name}
+                                    autoFocus
                                     onChange={(e)=>this.setName(e.target.value)}
                         ></Form.Control>
                         <Button onClick={this.createCategory}
