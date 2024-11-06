@@ -82,7 +82,7 @@ export class Tab{
 
             if(context != "current" || (!this.selected && TabService.mode.selection))
                 link.href = this.url;
-            link.innerHTML = this.title;
+                link.innerText = this.title;
 
             if (!TabService.mode.selection) {
                 link.target = "_blank";
@@ -97,7 +97,7 @@ export class Tab{
                 })
             }
             
-            lastAccessed.innerHTML = timeSince(new Date(this.lastAccessed));
+            lastAccessed.innerText = timeSince(new Date(this.lastAccessed));
 
             this.target.appendChild(img);
             this.target.appendChild(link);
