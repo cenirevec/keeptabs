@@ -1,3 +1,4 @@
+import BackgroundService from "../public/api/services/data/background.service.mjs";
 import CategoryService from "../public/api/services/data/category.service.mjs";
 import DataService from "../public/api/services/data/data.service.mjs";
 import TabService from "../public/api/services/data/tabs.services.mjs";
@@ -9,6 +10,7 @@ class AllServices{
     data = new DataService(this);
     category = new CategoryService();
     tabs = new TabService();
+    background = new BackgroundService();
 
     /**
      * Signal observers

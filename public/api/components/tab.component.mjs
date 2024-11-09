@@ -5,8 +5,8 @@ import { Browser, getClosestParentByClass } from "../shared.variables.mjs";
 var rootURL = window.location.href.split("/home.html")[0];
 
 var Imgs = {
-    extension : rootURL + "/media/ico-48.png",
-    default : rootURL + "/media/ico-48.png"
+    extension : rootURL + "/media/ico.png",
+    default : rootURL + "/media/ico.png"
 }
 
 var uniqueId = 0;
@@ -90,9 +90,8 @@ export class Tab{
                     let tabID = event.target.parentNode.key;
                     let tabGroupID = parseInt(getClosestParentByClass(event.target,"tab-group-container").id.split('gid')[1]);
                     let moodID = getClosestParentByClass(event.target,"group-by-moodID").id;
-                    //console.log(moodID,tabGroupID,tabID)
+
                     TabService.removeTabFromLoadedTabsByID(moodID,tabGroupID,tabID);
-                    //window.focus();
                 })
             }
             
@@ -214,7 +213,9 @@ export class Tab{
         } else {
             options = (options == undefined || options == null)? {}:options;
             options["url"] = this.url;
+            options["windowId"] = 1;
 
+            //console.log(Browser.tabs.getCurrent());
             Browser.tabs.create(options);
             return true;
         }

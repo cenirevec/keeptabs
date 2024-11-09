@@ -17,7 +17,7 @@ function getNavigatorName() {
 
 export const navigatorName = getNavigatorName();
 export const Browser = (chrome != undefined)? chrome : browser;
-export const webexVersion = "0.5.0"
+export const webexVersion = "0.5.1"
 //               |!\ CAUTION |!\ 
 // Ensure to update all functions producing data according to the modifications of the version
 export const currentDataVersion = "2.1.0" 

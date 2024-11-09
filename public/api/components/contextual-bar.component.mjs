@@ -28,25 +28,25 @@ export class ContextualBar{
         //Button to unselect all
         this.buttons.unselectBttn = document.createElement("button");
         this.buttons.unselectBttn.className = "btn btn-primary";
-        this.buttons.unselectBttn.innerHTML = "Unselect All";
+        this.buttons.unselectBttn.innerText = "Unselect All";
         this.target.appendChild(this.buttons.unselectBttn);
         
         //Button to select all
         this.buttons.selectBttn = document.createElement("button");
         this.buttons.selectBttn.className = "btn btn-primary";
-        this.buttons.selectBttn.innerHTML = "Select All";
+        this.buttons.selectBttn.innerText = "Select All";
         this.target.appendChild(this.buttons.selectBttn);
 
         //Button to remove all
         this.buttons.removeBttn = document.createElement("button");
         this.buttons.removeBttn.className = "btn btn-danger";
-        this.buttons.removeBttn.innerHTML = "Remove All";
+        this.buttons.removeBttn.innerText = "Remove All";
         this.target.appendChild(this.buttons.removeBttn);
 
         //Button to open all
         this.buttons.openAllBttn = document.createElement("button");
         this.buttons.openAllBttn.className = "btn btn-success";
-        this.buttons.openAllBttn.innerHTML = "Open All";
+        this.buttons.openAllBttn.innerText = "Open All";
         this.target.appendChild(this.buttons.openAllBttn);
         
         this.hideAllbuttons();

@@ -30,9 +30,9 @@ export const defaultData = {
     },
 
     icons: {
-        "unknown": "./media/ico-48.png",
-        "settings": "./media/ico-48.png",
-        "keeptabs": "./media/ico-48.png",
+        "unknown": "./media/ico.png",
+        "settings": "./media/ico.png",
+        "keeptabs": "./media/ico.png",
     }
 }
 

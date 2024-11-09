@@ -8,11 +8,10 @@ import { SearchBarPanel } from "./components/panel/searchBar.jsx";
 import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
 import { Services } from "./services.jsx";
-import { Browser } from "../public/api/shared.variables.mjs";
 
 
-class Home extends React.Component{
-    
+class Home extends React.Component {
+
     //Shared Variables
     /** Parameters in the searchbar */
     searchFilter = new searchParameters();
@@ -26,7 +25,7 @@ class Home extends React.Component{
      * Constructor
      * @param {Object} props Component's attributes
      */
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -37,39 +36,36 @@ class Home extends React.Component{
         this.setFilter = this.setFilter.bind(this);
         this.setSelectedCategory = this.setSelectedCategory.bind(this);
         this.saveData = this.saveData.bind(this);
-        this.ping = this.subscribe.bind(this);
         this.getMap = this.getMap.bind(this);
         this.reload = this.reload.bind(this);
         this.reloadOtherInstances = this.reloadOtherInstances.bind(this);
-        
 
-        // Test the background script
-        this.subscribe().then(value=>console.log(`your id is ${value}`,this.instanceId))
+
 
         Services.main = this;
 
-        Services.data.load(()=>{
+        Services.data.load(() => {
             this.setMoods(Services.data.model);
-            setTimeout(()=>{this.setSelectedCategory(0);},0)
+            setTimeout(() => { this.setSelectedCategory(0); }, 0)
         });
 
         // Refresh the window when the user come to it again
-        document.addEventListener("focus",this.reload);
+        document.addEventListener("focus", this.reload);
     }
 
     //Shared Methods
-    setMoods(loadedTabs){
-        if(loadedTabs){
+    setMoods(loadedTabs) {
+        if (loadedTabs) {
             this.setState({
-                data:loadedTabs
+                data: loadedTabs
             });
-            
+
             this.data = loadedTabs;
         }
 
-        if(this.state.selectedCategory == null){
+        if (this.state.selectedCategory == null) {
             this.setState({
-                selectedCategory:  loadedTabs.categories[0]
+                selectedCategory: loadedTabs.categories[0]
             });
         }
     }
@@ -78,16 +74,16 @@ class Home extends React.Component{
     /**
      * @deprecated
      */
-    saveData(){
-        if(Services.data.model){
-            Services.data.save(()=>{
+    saveData() {
+        if (Services.data.model) {
+            Services.data.save(() => {
                 this.setMoods(Services.data.model);
-                
+
             })
         }
     }
 
-    setSelectedCategory(index){
+    setSelectedCategory(index) {
         let category = this.data.categories[index];
         this.setState({
             selectedCategory: category
@@ -98,7 +94,7 @@ class Home extends React.Component{
      * Set search bar filter
      * @param filter Updated filter
      */
-    setFilter(filter){
+    setFilter(filter) {
         this.searchFilter.values = filter.values;
         //Refresh this component
         this.forceUpdate();
@@ -107,127 +103,73 @@ class Home extends React.Component{
     /**
      * Refresh the component
      */
-    refresh(){
+    refresh() {
         this.forceUpdate();
     }
 
     /***
      * Reload data and refresh
      */
-    reload(){
-        Services.data.load(()=>{
+    reload() {
+        Services.data.load(() => {
             this.setMoods(Services.data.model);
-          
-            setTimeout(()=>{this.setSelectedCategory(0);},0)
+            //setTimeout(()=>{this.setSelectedCategory(0);},0)
         });
         this.forceUpdate();
     }
 
+    /**
+     * Reload other instances 
+     * @returns 
+     */
     reloadOtherInstances() {
-        return new Promise((resolve, reject) => {
-          browser.runtime.sendMessage({
-            dst: "server",
-            src: Services.main.instanceId,
-            actionId: "reload",
-            content: null
-          }).then((response) => {
-            resolve(response);
-          }, (error) => {
-            onError(error);
-            reject(error);
-          })
-        });
+        return Services.background.reloadOtherInstances();
     }
 
 
     //Private Methods
 
     /**
-     * Ping the back-end to get the tab identifier
-     * @returns Tab identifer
-     */
-    subscribe() {
-        console.log("Subscribing...")
-        return new Promise((resolve, reject) => {
-            browser.runtime.sendMessage({
-                dst: "server",
-                actionId: "hello",
-                content: null
-            }).then((response) => {
-                this.instanceId = response.identifier;
-                resolve(response.identifier);
-            }, (error) => {
-                onError(error);
-                reject(error);
-            })
-        });
-    }
-
-    /**
      * Acknowledge the back-end 
      * @returns Tab identifer
      */
     acknowledge() {
-        return new Promise((resolve, reject) => {
-            browser.runtime.sendMessage({
-                dst: "server",
-                src: this.instanceId,
-                actionId: "acknowledge",
-                content: null
-            }).then((response) => {
-                resolve(response.code);
-            }, (error) => {
-                onError(error);
-                reject(error);
-            })
-        });
+        return Services.background.acknowledge();
     }
 
-        /**
-     * Acknowledge the back-end 
-     * @returns Tab identifer
-     */
+    /**
+ * Acknowledge the back-end 
+ * @returns Tab identifer
+ */
     getMap() {
-        return new Promise((resolve, reject) => {
-            browser.runtime.sendMessage({
-                dst: "server",
-                src: this.instanceId,
-                actionId: "getMap",
-                content: null
-            }).then((response) => {
-                resolve(response);
-            }, (error) => {
-                onError(error);
-                reject(error);
-            })
-        });
+        return Services.background.getMap();
     }
 
     /**
      * React rendering functions
      * @returns Rendered content
      */
-    render(){
-        return(
+    render() {
+        return (
             <div className="container">
                 <HeaderPanel />
-                <CurrentTabsPanel 
-                    filter={this.searchFilter} 
-                    data={this.state.data} 
+                <CurrentTabsPanel
+                    filter={this.searchFilter}
+                    data={this.state.data}
                     selectedCategory={this.state.selectedCategory}
-                    saveData={this.saveData}/>
-                    
-                <SearchBarPanel 
+                    saveData={this.saveData} />
+
+                <SearchBarPanel
                     filter={this.searchFilter}
                     onFilter={this.setFilter}
-                    />
-                    
-                <SavedTabsPanel 
-                    filter={this.searchFilter} 
+                />
+
+                <SavedTabsPanel
+                    filter={this.searchFilter}
                     data={this.data}
                     saveData={this.saveData}
                     setSelectedCategory={this.setSelectedCategory}
-                    setMoods={this.setMoods}/>
+                    setMoods={this.setMoods} />
                 <FooterPanel />
             </div>
         )
@@ -245,19 +187,15 @@ root.render(<Home />);
  * @param {*} sendResponse Callback response to give
  */
 function handleContentScriptMessage(message, sender, sendResponse) {
-    //console.debug("Receiving...",message.dst)
-    if(message.dst !== "all_instances" && (Services.main.instanceId != undefined && message.dst != Services.main.instanceId)) return;
-    //console.debug("Doing...",message.actionId)
+    if (message.dst !== "all_instances" &&
+        (Services.background.instanceId != undefined && message.dst != Services.background.instanceId))
+        return;
+
     switch (message.actionId) {
         case "acknowledge":
-            //console.debug("Acknowleging...")
             Services.main.acknowledge().then(console.log);
             break;
-        case "log":
-            console.log(message.content)
-            break;
         case "reload":
-            //console.log("Reloading...")
             Services.main.reload()
             break;
     }

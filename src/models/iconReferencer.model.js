@@ -6,9 +6,9 @@ export class IconReferencer{
 
     // Extension related icon references
     default = {
-        "unknown": "./media/ico-48.png",
-        "settings": "./media/ico-48.png",
-        "keeptabs": "./media/ico-48.png",
+        "unknown": "./media/ico.png",
+        "settings": "./media/ico.png",
+        "keeptabs": "./media/ico.png",
     }
 
     // Constructor

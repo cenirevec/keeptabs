@@ -1,91 +1,67 @@
-
 //Functions about tab identification
 let InstanceCtrl = {
+    /**
+* Send a command to the background scripts
+* @param {string} actionId Id of the action to run in the backend
+* @param {Object|any} content Content of the request
+* @param {Function} callback Function to execute when the backend answers
+* @param {"server"|"all_instances"} dst Destination
+* @returns 
+*/
+    "_do": (actionId, dst, callback, content,) => {
+        if (callback == undefined) {
+            callback = (response, resolve) => {
+                resolve(200);
+            }
+        }
+        return new Promise((resolve, reject) => {
+            browser.runtime.sendMessage({
+                src: "server", dst, actionId, content
+            }).then((response) => {
+                callback(response, resolve);
+            }, (error) => {
+                console.error(error);
+                reject(error);
+            })
+        });
+    },
+
     "data": {
         "instances": new Map()
     },
     // Ping back an instance and give it an UID
     "subscribe": (sender, sendResponse) => {
         let uid = InstanceCtrl.generateUid(sender);
-        InstanceCtrl.data.instances.set(uid,{alive:true,lastChecked: Date.now(), lastUpdated: Date.now()})
-        sendResponse({ greeting: "I send you your identifier", identifier: uid});
+        InstanceCtrl.data.instances.set(uid, { alive: true, lastChecked: Date.now(), lastUpdated: Date.now() })
+        sendResponse({ greeting: "I send you your identifier", identifier: uid });
     },
     // Generate an unique ID
     "generateUid": (sender) => {
         return `w${sender.tab.windowId}i${sender.tab.id}`;
     },
-    "acknowledge": (sender,sendResponse) => {
+    "acknowledge": (_, sendResponse) => {
         console.log("Ack received...")
         sendResponse({ code: "200 OK" });
     },
 
     "checkIfAlive": (instanceUID) => {
-        return new Promise((resolve, reject) => {
-            browser.runtime.sendMessage({
-                dst: instanceUID,
-                src: "server",
-                actionId: "acknowledge",
-                content: null
-            }).then((response) => {
-                console.log(response)
-                instanceInfo = InstanceCtrl.data.instances.get(instanceUID);
-                console.log(instanceInfo)
-                resolve(200);
-            }, (error) => {
-                console.error(error);
-                reject(error);
-            })
-        });
+        return InstanceCtrl._do("acknowledge",instanceUID,(_,resolve) => {
+            instanceInfo = InstanceCtrl.data.instances.get(instanceUID);
+            resolve(200);
+        })
     },
 
-    "logData": (instanceUID,log) => {
-        return new Promise((resolve, reject) => {
-            browser.runtime.sendMessage({
-                dst: instanceUID,
-                src: "server",
-                actionId: "log",
-                content: log
-            }).then((response) => {
-                console.log(response)
-                resolve(200);
-            }, (error) => {
-                console.error(error);
-                reject(error);
-            })
-        });
+    "console_log": (instanceUID, content) => {
+        if (["info", "debug", "log", "error"].indexOf(content.level) == -1) {
+            content.level = "log";
+        };
+
+        //Log the message
+        console[content.level](`[${instanceUID}]  ${content.message}`);
     },
 
     "reload": () => {
-        // InstanceCtrl.data.instances.forEach((_,instanceUID)=>{
-        //     return new Promise((resolve, reject) => {
-        //         browser.runtime.sendMessage({
-        //             dst: instanceUID,
-        //             src: "server",
-        //             actionId: "reload",
-        //             content: null
-        //         }).then((response) => {
-        //             console.log(response)
-        //             resolve(200);
-        //         }, (error) => {
-        //             console.error(error);
-        //             reject(error);
-        //         })
-        //     });
-        // })
-        return new Promise((resolve, reject) => {
-            browser.runtime.sendMessage({
-                dst: "all_instances",
-                src: "server",
-                actionId: "reload",
-                content: null
-            }).then((response) => {
-                console.log(response)
-                resolve(200);
-            }, (error) => {
-                console.error(error);
-                reject(error);
-            })
-        });
+        return InstanceCtrl._do("reload","all_instances");
     },
 
     "getMap": (sendResponse) => {
@@ -101,7 +77,7 @@ let InstanceCtrl = {
  * @param {*} sendResponse Callback response to give
  */
 function handleContentScriptMessage(message, sender, sendResponse) {
-    if(message.dst != "server") return;
+    if (message.dst != "server") return;
 
     switch (message.actionId) {
         case "hello":
@@ -114,15 +90,18 @@ function handleContentScriptMessage(message, sender, sendResponse) {
             InstanceCtrl.checkIfAlive(message.src);
             break;
         case "checkall":
-            InstanceCtrl.data.instances.forEach((_,instanceUID)=>{
+            InstanceCtrl.data.instances.forEach((_, instanceUID) => {
                 InstanceCtrl.checkIfAlive(instanceUID);
-            });            
+            });
             break;
         case "getMap":
             InstanceCtrl.getMap(sendResponse);
             break;
         case "reload":
             InstanceCtrl.reload(sendResponse);
+            break;
+        case "console":
+            InstanceCtrl.console_log(message.src, message.content);
             break;
 
         default:

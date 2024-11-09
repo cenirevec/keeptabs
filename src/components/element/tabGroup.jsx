@@ -63,11 +63,27 @@ export class TabGroup extends React.Component{
                         , interval)
                     }
                 };
+                //Open the tab in case of error or not
+                let openTab = (windowId)=>{
+                    let options = {url: filteredTabs[index].url, active:lastIsActive};
+                    if(windowId) {
+                        options.windowId = windowId
+                    }
+                    browser.tabs.create(options).then(loadNext,loadNext);
+                }
 
-                // Open a tab
-                browser.tabs.create(
-                    {url: filteredTabs[index].url, active:lastIsActive})
-                .then(loadNext,loadNext);
+                //Create tabs where the user started the open all feature when possible
+                browser.tabs.getCurrent().then((current)=>{
+                    //Open the tab
+                    openTab(current.windowId);
+                },(error)=>{
+                    //Open the tab
+                    openTab();
+                    // When an error occurs
+                    console.error("Cannot get the current window id, will open when the user has currently the focus");
+
+                    //Send the error to the extension logs
+                });
             };
 
             openNext(0);
