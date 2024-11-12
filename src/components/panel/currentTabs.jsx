@@ -4,7 +4,6 @@ import { TabGroup } from "../element/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
 import { CreateCategory } from "../element/createCategory.jsx";
 import { Browser } from "../../../public/api/shared.variables.mjs";
-import { CategoryList } from "../element/categoryList.jsx";
 
 
 export class CurrentTabsPanel extends Component {
@@ -59,6 +58,14 @@ export class CurrentTabsPanel extends Component {
         });
     }
 
+    saveModel(){
+        if (Services.data.model) {
+            Services.data.save(() => {
+                this.setMoods(Services.data.model);
+            })
+        }
+    }
+
     /**
      * Save the currently opened tabs
      * @param {string} category Object representing the categories and his tab groups
@@ -78,7 +85,6 @@ export class CurrentTabsPanel extends Component {
                 "tabs": tabGroups
             };
             category.tabGroups.unshift(newTabGroup);
-
             //Save the model
             _this.props.saveData();
         }
@@ -150,7 +156,7 @@ export class CurrentTabsPanel extends Component {
                             )}
                         </ul>
                         <Dropdown.Divider />
-                        <CreateCategory saveData={this.props.saveData} onCreated={(name) => this.saveCurrentTabs(name)} />
+                        <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} />
                     </div>
                 );
             },

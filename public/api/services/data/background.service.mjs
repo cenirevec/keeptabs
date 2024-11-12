@@ -24,8 +24,6 @@ export class BackgroundService {
             }
         }
         return new Promise((resolve, reject) => {
-
-            console.log(this.instanceId)
             browser.runtime.sendMessage({
                 dst,
                 src: this.instanceId,

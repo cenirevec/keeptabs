@@ -19,6 +19,8 @@ class Home extends React.Component {
     data = DataService.model;
     /** Identifier of a KeepTabs instance */
     instanceId = undefined;
+    /** Selected category index */
+    selectedCategoryIndex = 0;
 
 
     /**
@@ -41,12 +43,11 @@ class Home extends React.Component {
         this.reloadOtherInstances = this.reloadOtherInstances.bind(this);
 
 
-
         Services.main = this;
 
         Services.data.load(() => {
             this.setMoods(Services.data.model);
-            setTimeout(() => { this.setSelectedCategory(0); }, 0)
+            setTimeout(() => { this.setSelectedCategory(this.selectedCategoryIndex); }, 0);
         });
 
         // Refresh the window when the user come to it again
@@ -78,12 +79,12 @@ class Home extends React.Component {
         if (Services.data.model) {
             Services.data.save(() => {
                 this.setMoods(Services.data.model);
-
             })
         }
     }
 
     setSelectedCategory(index) {
+        this.selectedCategoryIndex = index;
         let category = this.data.categories[index];
         this.setState({
             selectedCategory: category
@@ -113,7 +114,7 @@ class Home extends React.Component {
     reload() {
         Services.data.load(() => {
             this.setMoods(Services.data.model);
-            //setTimeout(()=>{this.setSelectedCategory(0);},0)
+            setTimeout(() => { this.setSelectedCategory(this.selectedCategoryIndex); }, 0);
         });
         this.forceUpdate();
     }

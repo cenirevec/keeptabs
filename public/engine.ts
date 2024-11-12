@@ -1,20 +1,29 @@
-//Functions about tab identification
-let InstanceCtrl = {
-    /**
-* Send a command to the background scripts
-* @param {string} actionId Id of the action to run in the backend
-* @param {Object|any} content Content of the request
-* @param {Function} callback Function to execute when the backend answers
-* @param {"server"|"all_instances"} dst Destination
-* @returns 
-*/
-    "_do": (actionId, dst, callback, content,) => {
+class InstanceController {
+
+    static data = {
+        "instances": new Map()
+    }
+
+    constructor() {
+
+    }
+
+    /** 
+    * Send a command to the background scripts
+    * @param {string} actionId Id of the action to run in the backend
+    * @param {Object|any} content Content of the request
+    * @param {Function} callback Function to execute when the backend answers
+    * @param {"server"|"all_instances"} dst Destination
+     * @returns 
+     */
+    static _do(actionId: string, dst: "server" | "all_instances" = "all_instances", callback?, content?) {
         if (callback == undefined) {
             callback = (response, resolve) => {
                 resolve(200);
             }
         }
         return new Promise((resolve, reject) => {
+            //@ts-ignore
             browser.runtime.sendMessage({
                 src: "server", dst, actionId, content
             }).then((response) => {
@@ -24,50 +33,57 @@ let InstanceCtrl = {
                 reject(error);
             })
         });
-    },
+    }
 
-    "data": {
-        "instances": new Map()
-    },
-    // Ping back an instance and give it an UID
-    "subscribe": (sender, sendResponse) => {
-        let uid = InstanceCtrl.generateUid(sender);
-        InstanceCtrl.data.instances.set(uid, { alive: true, lastChecked: Date.now(), lastUpdated: Date.now() })
+
+    /**
+     * Ping back an instance and give it an UID
+     * @param {*} sender 
+     * @param {*} sendResponse 
+     */
+    static subscribe(sender, sendResponse) {
+        let uid = this.generateUid(sender);
+        this.data.instances.set(uid, { alive: true, lastChecked: Date.now(), lastUpdated: Date.now() })
         sendResponse({ greeting: "I send you your identifier", identifier: uid });
-    },
+    }
+
     // Generate an unique ID
-    "generateUid": (sender) => {
+    static generateUid(sender) {
         return `w${sender.tab.windowId}i${sender.tab.id}`;
-    },
-    "acknowledge": (_, sendResponse) => {
+    }
+
+    static acknowledge(_, sendResponse) {
         console.log("Ack received...")
         sendResponse({ code: "200 OK" });
-    },
+    }
 
-    "checkIfAlive": (instanceUID) => {
-        return InstanceCtrl._do("acknowledge",instanceUID,(_,resolve) => {
-            instanceInfo = InstanceCtrl.data.instances.get(instanceUID);
+    static checkIfAlive(instanceUID: "server" | "all_instances") {
+        return this._do("acknowledge", instanceUID, (_, resolve) => {
+            //instanceInfo = this.data.instances.get(instanceUID);
             resolve(200);
         })
-    },
+    }
 
-    "console_log": (instanceUID, content) => {
+    static console_log(
+        instanceUID: "server" | "all_instances", 
+        content: any
+    ) {
         if (["info", "debug", "log", "error"].indexOf(content.level) == -1) {
             content.level = "log";
         };
 
         //Log the message
         console[content.level](`[${instanceUID}]  ${content.message}`);
-    },
+    }
 
-    "reload": () => {
-        return InstanceCtrl._do("reload","all_instances");
-    },
+    static reload() {
+        return this._do("reload");
+    }
 
-    "getMap": (sendResponse) => {
+    static getMap(sendResponse) {
         console.log("Ack received...")
-        sendResponse(InstanceCtrl.data.instances);
-    },
+        sendResponse(this.data.instances);
+    }
 }
 
 /**
@@ -81,27 +97,27 @@ function handleContentScriptMessage(message, sender, sendResponse) {
 
     switch (message.actionId) {
         case "hello":
-            InstanceCtrl.subscribe(sender, sendResponse);
+            InstanceController.subscribe(sender, sendResponse);
             break;
         case "acknowledge":
-            InstanceCtrl.acknowledge(sender, sendResponse);
+            InstanceController.acknowledge(sender, sendResponse);
             break;
         case "checkme":
-            InstanceCtrl.checkIfAlive(message.src);
+            InstanceController.checkIfAlive(message.src);
             break;
         case "checkall":
-            InstanceCtrl.data.instances.forEach((_, instanceUID) => {
-                InstanceCtrl.checkIfAlive(instanceUID);
+            InstanceController.data.instances.forEach((_, instanceUID) => {
+                InstanceController.checkIfAlive(instanceUID);
             });
             break;
         case "getMap":
-            InstanceCtrl.getMap(sendResponse);
+            InstanceController.getMap(sendResponse);
             break;
         case "reload":
-            InstanceCtrl.reload(sendResponse);
+            InstanceController.reload();
             break;
         case "console":
-            InstanceCtrl.console_log(message.src, message.content);
+            InstanceController.console_log(message.src, message.content);
             break;
 
         default:
@@ -109,10 +125,10 @@ function handleContentScriptMessage(message, sender, sendResponse) {
             break;
     }
 }
-
+//@ts-ignore
 browser.runtime.onMessage.addListener(handleContentScriptMessage);
 
-
+//@ts-ignore
 let promise = browser.storage.local.get("model");
 
 promise.then(json => {

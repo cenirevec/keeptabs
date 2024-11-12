@@ -35,10 +35,6 @@
     white-space: nowrap;
 }
 
-.tabs a{
-    text-decoration: none;
-}
-
 .tabs button{
     white-space: nowrap;
     width: 100%;
@@ -352,7 +348,7 @@ h2 .tabs-count{
     gap: 1rem;
 }
 
-.kt-component-tab a{
+.kt-component-tab :is(a,span){
     text-overflow: ellipsis;
     overflow: hidden;
     min-height: 1.2rem;
@@ -447,10 +443,6 @@ h2 .tabs-count{
     display: flex;
 }
 
-@import url(./bootstrap/bootstrap.min.css);
-
-@import url(./variables.css);
-
 .list-group{
     border-radius: 1rem;
 }
@@ -474,7 +466,7 @@ h2 .tabs-count{
 }
 
 .tabs li img{
-    width: 25px;
+    flex: 0 0 25px;
     border-radius: 5px;
     margin: auto 0;
 }
@@ -800,6 +792,7 @@ h2 .tabs-count{
 .kt-component-tab{
     display: flex;
     gap: 1rem;
+    cursor: pointer;
 }
 
 .kt-component-tab a{
@@ -866,10 +859,13 @@ h2 .tabs-count{
 
 .kt-panel-saved .kt-component-tab a{
 	color: var(--font-color);
+    opacity: 0.9;
 }
 
 .kt-panel-saved .kt-component-tab:hover{
 	background-color: var(--body-color) !important;
+    color: var(--font-color);
+    font-weight: bold;
 }
 
 :is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{

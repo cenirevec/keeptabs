@@ -66,10 +66,11 @@ export class TabGroup extends React.Component{
                 //Open the tab in case of error or not
                 let openTab = (windowId)=>{
                     let options = {url: filteredTabs[index].url, active:lastIsActive};
-                    if(windowId) {
-                        options.windowId = windowId
+                    if(windowId != undefined) {
+                        options.windowId = windowId;
                     }
                     browser.tabs.create(options).then(loadNext,loadNext);
+                    this.refresh();
                 }
 
                 //Create tabs where the user started the open all feature when possible
@@ -79,10 +80,12 @@ export class TabGroup extends React.Component{
                 },(error)=>{
                     //Open the tab
                     openTab();
+                    let errorMessage = "Cannot get the current window id, will open when the user has currently the focus";
                     // When an error occurs
-                    console.error("Cannot get the current window id, will open when the user has currently the focus");
+                    console.error(errorMessage);
 
                     //Send the error to the extension logs
+                    Services.background.catch(error);
                 });
             };
 
@@ -145,6 +148,7 @@ export class TabGroup extends React.Component{
                 this.delete();
             }else{
                 this.props.tabGroup.tabs.splice(index,1);
+                this.refresh();
                 Services.data.save();
             }
         }
@@ -197,10 +201,8 @@ export class TabGroup extends React.Component{
         className += areSavedTabs ? " col-lg-6":"";
 
         this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
-        
 
-        let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`
-        //console.trace(tabGroupKey);
+        let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`;
 
         return <div className={className}>
                     {/* Show the number of tabs and when it as been saved */}
