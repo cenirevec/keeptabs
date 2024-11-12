@@ -11,6 +11,7 @@ class AllServices{
     category = new CategoryService();
     tabs = new TabService();
     background = new BackgroundService();
+    webexManifest;
 
     /**
      * Signal observers

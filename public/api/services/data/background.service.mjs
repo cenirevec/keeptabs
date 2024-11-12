@@ -1,5 +1,3 @@
-import { Services } from "../../../../src/services.jsx";
-
 export class BackgroundService {
 
     /** Identifier of a KeepTabs instance */

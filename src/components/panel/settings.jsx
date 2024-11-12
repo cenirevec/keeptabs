@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { webexVersion } from "../../../public/api/shared.variables.mjs";
-import { Accordion, Button, ListGroup, ListGroupItem, Offcanvas } from "react-bootstrap";
+import React from "react";
+import { Accordion, ListGroup, ListGroupItem, Offcanvas } from "react-bootstrap";
 import { Services } from "../../services.jsx"
 import AccordionItem from "react-bootstrap/esm/AccordionItem.js";
 import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
 import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
 import { SettingOption } from "../element/settingOption.jsx";
 import { LoadingMode } from "../../../public/api/defaultData.mjs";
-import ConfirmationModal from "../element/confirmationModal.jsx";
 import { SearchAliasesModal } from "../modal/searchAliasesModal.jsx";
 
 export class SettingsPanel extends React.Component {
@@ -148,7 +146,7 @@ export class SettingsPanel extends React.Component {
             </ListGroup>
 
 
-            <small id="manifest-version" className="text text-secondary">version {webexVersion} (dev)</small>
+            <small id="manifest-version" className="text text-secondary">version {Services.data?.webexManifest?.version} (dev)</small>
 
 
             <Accordion>
