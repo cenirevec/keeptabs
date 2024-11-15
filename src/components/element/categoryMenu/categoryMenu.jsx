@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, ButtonGroup, ListGroup, ListGroupItem, OverlayTrigger, Popover } from "react-bootstrap";
-import { Renamable } from "../shared/renamable/renamable.jsx";
-import { SettingOption } from "./settingOption.jsx";
-import { Services } from "../../services.jsx";
-import ConfirmationModal from "./confirmationModal.jsx";
+import { Button, ListGroup, ListGroupItem, OverlayTrigger, Popover } from "react-bootstrap";
+import { Renamable } from "../../shared/renamable/renamable.jsx";
+import { SettingOption } from "../settingOption.jsx";
+import { Services } from "../../../services.jsx";
+import ConfirmationModal from "../confirmationModal.jsx";
+import './categoryMenu.css';
 
 export class CategoryMenu extends React.Component{
   

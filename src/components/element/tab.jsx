@@ -19,11 +19,12 @@ export class Tab extends React.Component {
      * @param {Event} event 
      */
     onOpen(event) {
-        if (event && (event.which == 1 || event.button == 0)) {
+        if (event && (event.which == 1 || event.which == 2 || event.button <= 1)) {
             //Open the tab
             Browser.tabs.create({ url: this.props.tab.url, active: true });
             //Remove tab from list
-            this.delete();
+            if(event.which == 1 || event.button == 0)
+                this.delete();
         }
     }
 

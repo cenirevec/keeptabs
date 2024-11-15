@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { TabModel } from "../../models/tab.model.js";
 import { TabGroup } from "../element/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
-import { CreateCategory } from "../element/createCategory.jsx";
+import { CreateCategory } from "../element/createCategory/createCategory.jsx";
 import { Browser } from "../../../public/api/shared.variables.mjs";
 
 

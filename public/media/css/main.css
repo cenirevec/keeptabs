@@ -64,10 +64,7 @@
     margin-bottom: 25px;
 }
 
-.kt-component-mood-navbar .mood-name{
-    text-transform: capitalize;
-    margin-right: 10px;
-}
+
 
 @font-face {
     font-family: "Josephin";
@@ -316,10 +313,6 @@ h2 .tabs-count{
     margin-bottom: .15rem;
 }
 
-.kt-component-mood-navbar{
-    margin: 20px 50px;
-}
-
 .kt-panel-footer{
     text-align: center;
     border-top: 1px solid #8080806b;
@@ -359,21 +352,8 @@ h2 .tabs-count{
     opacity: 0.1;
 }
 
-/* 
-.mood-name:hover .badge:not(.selected){
-    opacity: 1 !important;
 
-    color: red !important
-}
 
-.mood-name .badge:not(.selected){
-    opacity: 0 !important;
-} */
-
-.kt-component-mood-navbar .nav-link .badge:not(.selected){
-    color: #0d6efd !important;
-    background-color: #0d6efd33 !important;
-}
 
 .mood-name .kt-component-renamable input{
 	background-color: #fff2;
@@ -415,11 +395,15 @@ h2 .tabs-count{
 }
 
 .kt-panel-saved .kt-component-tab:hover{
-	background-color: var(--body-color) !important;
+	background-color: var(--primary-bttn-color);
 }
 
 :is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{
-    margin: 5px 1rem;
+    margin: 7px 0;
+}
+
+.kt-panel-current .btn-group{
+    margin: 7px 12px;
 }
 
 .kt-component-tabgroup{
@@ -510,11 +494,6 @@ h2 .tabs-count{
     margin-bottom: 25px;
 }
 
-.kt-component-mood-navbar .mood-name{
-    text-transform: capitalize;
-    margin-right: 10px;
-}
-
 @font-face {
     font-family: "Josephin";
     src: url(../Josephin.ttf);
@@ -762,15 +741,12 @@ h2 .tabs-count{
     margin-bottom: .15rem;
 }
 
-.kt-component-mood-navbar{
-    margin: 20px 50px;
-}
-
 .kt-panel-footer{
     text-align: center;
     border-top: 1px solid #8080806b;
     padding: 20px 20px 0 20px;
 }
+
 
 /*Components*/
 
@@ -804,22 +780,6 @@ h2 .tabs-count{
 
 .kt-component-tab img.no-icon{
     opacity: 0.1;
-}
-
-/* 
-.mood-name:hover .badge:not(.selected){
-    opacity: 1 !important;
-
-    color: red !important
-}
-
-.mood-name .badge:not(.selected){
-    opacity: 0 !important;
-} */
-
-.kt-component-mood-navbar .nav-link .badge:not(.selected){
-    color: #0d6efd !important;
-    background-color: #0d6efd33 !important;
 }
 
 .mood-name .kt-component-renamable input{
@@ -868,10 +828,6 @@ h2 .tabs-count{
     font-weight: bold;
 }
 
-:is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{
-    margin: 5px 1rem;
-}
-
 .kt-component-tabgroup{
     margin-bottom: .15rem;
 }
@@ -903,72 +859,30 @@ h2 .tabs-count{
     width: 100px;
 }
 
-.kt-component-mood-navbar{
-    --popover-width: 25px;
+
+
+.btn-primary{
+    background-color: var(--primary-bttn-color);
+    border-color: var(--primary-dropdown-bttn-color);
 }
 
-.kt-component-mood-navbar{
-    padding-right: var(--popover-width);
+.btn-primary.dropdown-toggle{
+    background-color: var(--primary-dropdown-bttn-color);
+    border-color: var(--primary-dropdown-bttn-color);
 }
 
-.kt-component-mood-navbar .nav-item{
-    display: flex;
-}
-
-.kt-component-mood-navbar .nav-link{
-    padding-right: calc(var(--popover-width));
-}
-
-.kt-component-mood-navbar .category-popover-icon {
-    margin-left: calc( -1 * var(--popover-width) - 25px );
-    padding-left: 27px;
-    box-shadow: none;
-    transform: translateY(-.5px);
-}
-  
-.kt-component-mood-navbar .selected .category-popover-icon {
-    color: white;
-}
-  
-.kt-component-mood-navbar .not-selected .category-popover-icon {
-    color: var(--bs-primary);
+.btn-primary.dropdown-toggle:hover{
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
 }
 
 
-.kt-popover-menu{
-    background-color: var(--popover-bg-color);
-    color: var(--font-color) !important;
+.btn-group button:first-of-type{
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
 }
 
-.kt-popover-menu .popover-header{
-    text-align: center;
-    background-color: var(--popover-header-bg-color);
-}
-
-.kt-popover-menu .popover-body{
-    color: var(--font-color) !important;
-    padding: 0;
-}
-
-.kt-popover-menu .popover-body .list-group{
-    max-height: 200px;
-    overflow: auto;
-}
-
-.kt-popover-menu .bs-popover-auto[data-popper-placement^="bottom"] > .popover-arrow::after, .bs-popover-bottom > .popover-arrow::after {
-    border-bottom-color:  var(--popover-header-bg-color);
-}
-
-.kt-popover-menu .bs-popover-auto[data-popper-placement^="bottom"] .popover-header::before, .bs-popover-bottom .popover-header::before {
-    border-bottom: none;
-}
-
-.kt-popover-menu .list-group.withSettings .list-group-item{
-    padding: .25em .5em;
-    overflow: hidden;
-    background-color: #fff1 !important; 
-}
-
-.kt-popover-menu .list-group-item:not(.list-group-item-info):not(.list-group-item-danger){
-    background-color: #fff1 !important; 
+.btn-group button:last-of-type{
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }

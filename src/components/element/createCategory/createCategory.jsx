@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import { Services } from "../../services.jsx";
+import { Services } from "../../../services.jsx";
+import './createCategory.css';
 
 export class CreateCategory extends Component {
 

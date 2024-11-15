@@ -1,0 +1,65 @@
+.kt-component-mood-navbar {
+    --popover-width: 25px;
+    padding-right: var(--popover-width);
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    padding: 15px 0;
+
+    .mood-name {
+        text-transform: capitalize;
+        margin-right: 10px;
+    }
+
+    .category-popover-icon {
+        margin-left: calc(-1 * var(--popover-width) - 25px);
+        padding-left: 27px;
+        box-shadow: none;
+        transform: translateY(-.5px);
+    }
+
+    .nav-item {
+        display: flex;
+        flex-shrink: 0;
+    }
+
+    .nav-item .badge:not(.selected) {
+        background-color: hsla(231.5, 100%, 45.9%, 0.36) !important
+        /* background-color: hsla(231.5, 100%, 45.9%, 0.36) !important */
+    }
+
+    .nav-item:hover .badge:not(.selected) {
+        background-color: var(--primary-pill-text-color) !important;
+        color: var(--primary-bttn-color);
+    }
+
+    .nav-link.active {
+        background-color: var(--primary-bttn-color);
+
+        .badge{
+            color: var(--primary-bttn-color) !important;
+        }
+    }
+
+    .nav-link {
+        padding-right: calc(var(--popover-width)); 
+        border-radius: 15px;
+        color: var(--primary-pill-text-color);
+    }
+
+    .selected .category-popover-icon {
+        color: white;
+    }
+
+    .not-selected .category-popover-icon {
+        color: var(--primary-pill-text-color);
+    }
+
+    .not-selected .nav-link{
+        background-color: var(--primary-pill-color);
+    }
+
+    .not-selected:hover .nav-link{
+        background-color: var(--primary-dropdown-bttn-color);
+        color: white;
+    }
+}

@@ -8,7 +8,7 @@ import { SearchBarPanel } from "./components/panel/searchBar.jsx";
 import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
 import { Services } from "./services.jsx";
-
+import './home.css';
 
 class Home extends React.Component {
 
