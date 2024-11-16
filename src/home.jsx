@@ -32,7 +32,8 @@ class Home extends React.Component {
 
         this.state = {
             data: {},
-            selectedCategory: null
+            selectedCategory: null,
+            selectedCategoryIndex: 0
         };
         this.setMoods = this.setMoods.bind(this);
         this.setFilter = this.setFilter.bind(this);
@@ -66,7 +67,8 @@ class Home extends React.Component {
 
         if (this.state.selectedCategory == null) {
             this.setState({
-                selectedCategory: loadedTabs.categories[0]
+                selectedCategory: loadedTabs.categories[0],
+                selectedCategoryIndex: 0
             });
         }
     }
@@ -87,7 +89,8 @@ class Home extends React.Component {
         this.selectedCategoryIndex = index;
         let category = this.data.categories[index];
         this.setState({
-            selectedCategory: category
+            selectedCategory: category,
+            selectedCategoryIndex: index
         });
     }
 
@@ -170,6 +173,7 @@ class Home extends React.Component {
                     data={this.data}
                     saveData={this.saveData}
                     setSelectedCategory={this.setSelectedCategory}
+                    selected={this.state.selectedCategoryIndex}
                     setMoods={this.setMoods} />
                 <FooterPanel />
             </div>

@@ -77,7 +77,7 @@ export class MoodNavBar extends Component {
   refresh() {
     this.setState({
       forceRefreshState: !this.state.forceRefreshState
-    })
+    });
   }
 
   /**
@@ -117,7 +117,7 @@ export class MoodNavBar extends Component {
       );
     })
 
-    return <Nav className="kt kt-component kt-component-mood-navbar" variant="pills" defaultActiveKey={this.props.selected}>
+    return <Nav className="kt kt-component kt-component-mood-navbar" variant="pills" defaultActiveKey={this.props.selected} activeKey={this.props.selected}>
       {navbarItems}
       <Nav.Item>
         <CreateCategory saveData={this.props.saveData} onCreated={this.createCategory} />

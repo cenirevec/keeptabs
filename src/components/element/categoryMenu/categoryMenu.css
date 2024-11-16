@@ -5,6 +5,7 @@
     .popover-header {
         text-align: center;
         background-color: var(--popover-header-bg-color);
+        border-bottom: none;
     }
 
     .popover-body {

@@ -398,11 +398,7 @@ h2 .tabs-count{
 	background-color: var(--primary-bttn-color);
 }
 
-:is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{
-    margin: 7px 0;
-}
-
-.kt-panel-current .btn-group{
+.kt-panel-current .btn-group, :is(.kt-component-tabgroup ,.kt-panel-current)> .btn-group{
     margin: 7px 12px;
 }
 
@@ -877,12 +873,13 @@ h2 .tabs-count{
 }
 
 
-.btn-group button:first-of-type{
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+:is(.btn-group,.input-group) :first-of-type{
+    border-top-left-radius: var(--pill-radius);
+    border-bottom-left-radius: var(--pill-radius);
 }
 
-.btn-group button:last-of-type{
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+
+:is(.btn-group,.input-group) :last-of-type{
+    border-top-right-radius: var(--pill-radius);
+    border-bottom-right-radius: var(--pill-radius);
 }

@@ -1,5 +1,6 @@
 .kt-component-mood-navbar {
-    --popover-width: 25px;
+    --popover-width: 27px;
+
     padding-right: var(--popover-width);
     flex-wrap: nowrap;
     overflow-x: scroll;
@@ -10,27 +11,23 @@
         margin-right: 10px;
     }
 
-    .category-popover-icon {
-        margin-left: calc(-1 * var(--popover-width) - 25px);
-        padding-left: 27px;
-        box-shadow: none;
-        transform: translateY(-.5px);
-    }
-
+    /* One of the pills */
     .nav-item {
         display: flex;
         flex-shrink: 0;
     }
 
     .nav-item .badge:not(.selected) {
-        background-color: hsla(231.5, 100%, 45.9%, 0.36) !important
-        /* background-color: hsla(231.5, 100%, 45.9%, 0.36) !important */
+        background-color: hsla(231.5, 100%, 45.9%, 0.36) !important;
+        color: var(--primary-pill-text-color);
     }
 
     .nav-item:hover .badge:not(.selected) {
-        background-color: var(--primary-pill-text-color) !important;
+        background-color: white !important;
         color: var(--primary-bttn-color);
     }
+
+
 
     .nav-link.active {
         background-color: var(--primary-bttn-color);
@@ -41,12 +38,19 @@
     }
 
     .nav-link {
-        padding-right: calc(var(--popover-width)); 
-        border-radius: 15px;
+        padding-right: calc(var(--popover-width));
+        border-radius: var(--pill-radius);
         color: var(--primary-pill-text-color);
     }
 
-    .selected .category-popover-icon {
+    .category-popover-icon {
+        margin-left: calc(-1 * var(--popover-width) - 25px);
+        padding-left: 27px;
+        box-shadow: none;
+        transform: translateY(-.5px);
+    }
+
+    .selected .category-popover-icon, .not-selected:hover .category-popover-icon {
         color: white;
     }
 

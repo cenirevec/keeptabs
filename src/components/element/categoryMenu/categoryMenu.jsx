@@ -25,8 +25,11 @@ export class CategoryMenu extends React.Component{
       }
       
       if(actionName == "confirm"){
+        console.log(this.props.categoryId);
         Services.category.delete(this.props.categoryId);
-        
+        //Services.main?.
+        console.log(this.props.categoryId);
+        Services.main?.setSelectedCategory(this.props.categoryId - 1)
         Services.main?.refresh();
       }
     }

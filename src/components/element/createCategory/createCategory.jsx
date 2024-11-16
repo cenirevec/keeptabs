@@ -56,26 +56,36 @@ export class CreateCategory extends Component {
      * @param {boolean} enabled Whether the mode is active or not
      */
     toggleEditionMode(enabled) {
+        console.log(this.state.edition)
         this.setState({
             edition: enabled
         });
 
-        if (!enabled) {
-            this.setState({
-                name: ''
-            })
+        // if (!enabled) {
+        //     this.setState({
+        //         name: ''
+        //     });
+        // }
+
+        if(enabled){
+            setTimeout(()=>{
+                let width = document.querySelector(".kt-component-mood-navbar").scrollWidth;
+                document.querySelector(".kt-component-mood-navbar").scrollTo(width + 500,0);    
+
+                document.querySelector(".form-control").value = "";
+            },0);
         }
     }
 
     renderButtonWithInput() {
         return <React.Fragment>
             {!this.state.edition &&
-                <Button variant="outline-primary" onClick={() => { this.toggleEditionMode(true) }}>
+                <Button className="kt kt-element kt-add-category-bttn" onClick={() => { this.toggleEditionMode(true) }}>
                     + Add category
                 </Button>
             }
             {this.state.edition &&
-                <Form onSubmit={this.createCategory}>
+                <Form className="kt kt-element kt-add-category-inputs" onSubmit={this.createCategory}>
                     <InputGroup>
                         <Form.Control placeholder="Add..."
                             aria-describedby="add-category-input"
