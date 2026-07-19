@@ -159,7 +159,4 @@ promise.then((json) => {
     console.log(json)
 })
 
-//@ts-ignore
-console.log("Avec tsig")
-
 InstanceController._do();
