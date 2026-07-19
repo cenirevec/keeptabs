@@ -34,6 +34,14 @@ export class TabGroup extends React.Component{
         let filteredTabs = this.filter(this.props.filter);
         let tokenForDeletion = [];
 
+        //Lock window closure
+        let preventClose = ()=>{
+            let sanite = confirm("Tabs are openning...")
+            return sanite;
+        }
+
+        window.onbeforeunload = preventClose;
+
         let loadingType = Services.data.getSetting("loading.mode");
         let lastIsActive = Services.data.getSetting("loading.makeOpenedTabActive")
 
@@ -61,6 +69,9 @@ export class TabGroup extends React.Component{
                         setTimeout(()=>{
                             openNext(index)}
                         , interval)
+                    }else{
+                        //Unlock the window closure
+                        window.onbeforeunload = undefined;
                     }
                 };
                 //Open the tab in case of error or not
@@ -100,6 +111,7 @@ export class TabGroup extends React.Component{
         if(this.props.tabGroup.tabs.length == 0){
           this.delete();
         }
+
         //Save the modification
         Services.data.save();
     }
