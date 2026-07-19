@@ -112,7 +112,7 @@ export class MoodNavBar extends Component {
             {index != this.props.selected
               && <Badge pill> {length} </Badge>}
           </Nav.Link>
-          <CategoryMenu category={category} categoryId={index} renameItem={this.renameItem}></CategoryMenu>
+          <CategoryMenu category={category} categoryId={index} selected={this.props.selected} renameItem={this.renameItem}></CategoryMenu>
         </Nav.Item>
       );
     })

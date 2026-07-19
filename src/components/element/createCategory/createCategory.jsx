@@ -56,7 +56,6 @@ export class CreateCategory extends Component {
      * @param {boolean} enabled Whether the mode is active or not
      */
     toggleEditionMode(enabled) {
-        console.log(this.state.edition)
         this.setState({
             edition: enabled
         });

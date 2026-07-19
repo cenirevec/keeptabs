@@ -81,7 +81,7 @@ export class SettingOption extends React.Component{
             case "number":
             case "duration":
                 let props = {
-                    value: this.state.value,
+                    value: this.props.value,
                     min: this.props.min,
                     max: this.props.max,
                     step: this.props.step,
@@ -89,6 +89,7 @@ export class SettingOption extends React.Component{
                     onBlur: this.onInput,
                     onInput: this.onInput
                 }
+
 
                 if(this.props.disabled){
                     props = Object.assign(props,{disabled:true})
@@ -99,11 +100,12 @@ export class SettingOption extends React.Component{
                         aria-label={this.props.children}
                         required></FormControl>
                     {this.props.type == "duration" &&
-                        <FormSelect aria-label="Default select example">
-                            <option value="86400000">day(s)</option>
-                            <option value="604800000">week(s)</option>
-                            <option value="18748800000">month(s)</option>
-                        </FormSelect>
+                        // <FormSelect aria-label="Default select example">
+                        //     <option value="1">day(s)</option>
+                        //     <option value="7">week(s)</option>
+                        //     <option value="31">month(s)</option>
+                        // </FormSelect>
+                        <span>days</span>
                     }
                 </div>
             case "options":

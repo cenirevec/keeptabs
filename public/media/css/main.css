@@ -297,16 +297,6 @@ h2 .tabs-count{
 }
 
 
-.tab-group-header .kt-component-renamable{
-    font-size: 1.5rem;
-}
-
-.tab-group-header .kt-component-renamable input{
-	background-color: var(--renamable-background-color);
-	border-color: var(--renamable-border-color);
-	color: var(--font-color);
-}
-
 .tab-group-header :not(.kt-component-renamable){
     margin-top: auto;
     opacity: 0.7;
@@ -354,14 +344,6 @@ h2 .tabs-count{
 
 
 
-
-.mood-name .kt-component-renamable input{
-	background-color: #fff2;
-	border-color: #fff6;
-	color: white;
-}
-
-
 .kt-component-chip{
     background-color: #0d6efd30;
     border: solid 2px #0d6efd20;
@@ -382,13 +364,6 @@ h2 .tabs-count{
     color: #e11;
 }
 
-.kt-component-renamable{
-    display: inline-flex;
-}
-
-.kt-component-renamable input{
-    border: dotted 3px;
-}
 
 .kt-panel-saved .kt-component-tab a{
 	color: var(--font-color);
@@ -721,21 +696,6 @@ h2 .tabs-count{
 }
 
 
-.tab-group-header .kt-component-renamable{
-    font-size: 1.5rem;
-}
-
-.tab-group-header .kt-component-renamable input{
-	background-color: var(--renamable-background-color);
-	border-color: var(--renamable-border-color);
-	color: var(--font-color);
-}
-
-.tab-group-header :not(.kt-component-renamable){
-    margin-top: auto;
-    opacity: 0.7;
-    margin-bottom: .15rem;
-}
 
 .kt-panel-footer{
     text-align: center;
@@ -778,12 +738,6 @@ h2 .tabs-count{
     opacity: 0.1;
 }
 
-.mood-name .kt-component-renamable input{
-	background-color: #fff2;
-	border-color: #fff6;
-	color: white;
-}
-
 
 .kt-component-chip{
     background-color: #0d6efd30;
@@ -803,14 +757,6 @@ h2 .tabs-count{
 
 .kt-component-chip .closeBttn:hover{
     color: #e11;
-}
-
-.kt-component-renamable{
-    display: inline-flex;
-}
-
-.kt-component-renamable input{
-    border: dotted 3px;
 }
 
 .kt-panel-saved .kt-component-tab a{

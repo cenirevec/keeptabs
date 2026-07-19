@@ -51,8 +51,8 @@ export const defaultModel = {
         categories: {
             "0": {
                 meta: {
-                    expiration: 30 * 24 * 3600 * 1000,
-                    hidding: 1378400,
+                    expiration: 30,
+                    hidden: 14,
                     name: "temporary",
                     translationLabel: "categories.names.temporary",
                     deleteOnOpening: true

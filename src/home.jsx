@@ -86,8 +86,10 @@ class Home extends React.Component {
     }
 
     setSelectedCategory(index) {
+        index = parseInt(index);
         this.selectedCategoryIndex = index;
         let category = this.data.categories[index];
+        //console.log(index,category);
         this.setState({
             selectedCategory: category,
             selectedCategoryIndex: index

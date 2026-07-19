@@ -23,18 +23,19 @@ export class CategoryMenu extends React.Component{
         this.setState({showModal:false})
         return;
       }
-      
+
       if(actionName == "confirm"){
-        console.log(this.props.categoryId);
         Services.category.delete(this.props.categoryId);
-        //Services.main?.
-        console.log(this.props.categoryId);
-        Services.main?.setSelectedCategory(this.props.categoryId - 1)
+
+        if(parseInt(this.props.selected) == parseInt(this.props.categoryId)){
+          Services.main?.setSelectedCategory(this.props.categoryId - 1);
+        }
         Services.main?.refresh();
       }
     }
 
     getPopover(){
+      
         return <Popover className="kt-popover-menu" id="category-popover">
         <Popover.Header as="h3">
             <Renamable value={this.props.category.meta.name} 
@@ -51,6 +52,7 @@ export class CategoryMenu extends React.Component{
           <ListGroup className="withSettings">
             <ListGroupItem>
                 <SettingOption type="duration"
+                    value={this.props.category.meta.hidden}
                     min="0"
                     step="1"
                     allowedUnits="dwM"
@@ -61,6 +63,7 @@ export class CategoryMenu extends React.Component{
             </ListGroupItem>
             <ListGroupItem>
                 <SettingOption type="duration"
+                    value={this.props.category.meta.expiration}
                     min="0"
                     step="1"
                     allowedUnits="dwM"
@@ -71,11 +74,11 @@ export class CategoryMenu extends React.Component{
             </ListGroupItem>
           </ListGroup>
           <br></br>
-          <ListGroup>
+          {this.props.category.meta.translationLabel != "categories.names.temporary" && <ListGroup>
             <ListGroupItem variant="danger" action onClick={()=>{
                 this.setState({showModal: true});}}
             >Remove {this.props.category.meta.name}</ListGroupItem>
-          </ListGroup>
+          </ListGroup>}
         </Popover.Body>
       </Popover>
     }
