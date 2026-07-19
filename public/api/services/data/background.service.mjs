@@ -16,6 +16,7 @@ export class BackgroundService {
      * @returns 
      */
     _do(actionId,callback,content,dst="server"){
+        console.log(actionId,callback,content,dst)
         if (callback == undefined){
             callback = (response,resolve)=>{
                 resolve(response);
