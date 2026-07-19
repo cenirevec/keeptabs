@@ -4,7 +4,7 @@ import { Services } from "../../services.jsx"
 import AccordionItem from "react-bootstrap/esm/AccordionItem.js";
 import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
 import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
-import { SettingOption } from "../element/settingOption.jsx";
+import { SettingOption } from "../element/settingOption/settingOption.jsx";
 import { LoadingMode } from "../../../public/api/defaultData.mjs";
 import { SearchAliasesModal } from "../modal/searchAliasesModal.jsx";
 

@@ -1,10 +1,11 @@
-.kt-popover-menu {
+#category-popover {
     background-color: var(--popover-bg-color);
     color: var(--font-color) !important;
+    border-radius: 25px;
 
     .popover-header {
         text-align: center;
-        background-color: var(--popover-header-bg-color);
+        background-color: #0000;
         border-bottom: none;
     }
 
@@ -36,5 +37,25 @@
 
     .list-group-item:not(.list-group-item-info):not(.list-group-item-danger) {
         background-color: #fff1 !important;
+    }
+
+    b {
+        text-align: center;
+        display: block;
+        padding: 5px;
+        font-size: 1.2em;
+    }
+
+    .popover-body {
+        margin: 0 10px 10px;
+    }
+
+    #remove-category{
+        margin-top: 10px;
+    }
+
+    .kt-component-renamable{
+        opacity: 0.7;
+        font-size: 1.3em;
     }
 }

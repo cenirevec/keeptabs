@@ -1,6 +1,7 @@
 import React from "react";
 import { ButtonGroup, Button, FormCheck, FormControl, FormLabel, InputGroup, FormSelect } from "react-bootstrap";
 import FormRange from "react-bootstrap/esm/FormRange";
+import './settingOption.css';
 
 export class SettingOption extends React.Component{
     
@@ -95,8 +96,8 @@ export class SettingOption extends React.Component{
                     props = Object.assign(props,{disabled:true})
                 }
                 return <div className="kt kt-component-setting-option number">
-                    <FormLabel htmlFor="number">{this.props.children}</FormLabel>
-                    <FormControl id="number" type="number" {...props}
+                    <FormLabel htmlFor={this.props.id}>{this.props.children}</FormLabel>
+                    <FormControl id={this.props.id} type="number" {...props}
                         aria-label={this.props.children}
                         required></FormControl>
                     {this.props.type == "duration" &&

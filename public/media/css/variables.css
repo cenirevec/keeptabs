@@ -21,7 +21,7 @@
 
         --searchbox-backdrop: linear-gradient(#111 39%,#1115 100%);
         
-        --popover-header-bg-color: #141414;
+        --popover-header-bg-color: #222;
         --popover-body-bg-color: var(--popover-header-bg-color);
         --popover-bg-color: #222;
 
@@ -46,7 +46,7 @@
 
         --searchbox-backdrop: linear-gradient(#eee 39%,#eee5 100%);
 
-        --popover-header-bg-color: #eee;
+        --popover-header-bg-color: #fff;
         --popover-body-bg-color: var(--popover-header-bg-color);
         --popover-bg-color: var(--list-bg-color);
 

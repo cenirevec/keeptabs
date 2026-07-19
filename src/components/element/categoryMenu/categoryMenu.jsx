@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, ListGroup, ListGroupItem, OverlayTrigger, Popover } from "react-bootstrap";
 import { Renamable } from "../../shared/renamable/renamable.jsx";
-import { SettingOption } from "../settingOption.jsx";
+import { SettingOption } from "../settingOption/settingOption.jsx";
 import { Services } from "../../../services.jsx";
 import ConfirmationModal from "../confirmationModal.jsx";
 import './categoryMenu.css';
@@ -57,6 +57,7 @@ export class CategoryMenu extends React.Component{
                     step="1"
                     allowedUnits="dwM"
                     unit="day"
+                    id="hidden"
                     >
                     Hide tabs after
                 </SettingOption>
@@ -68,14 +69,14 @@ export class CategoryMenu extends React.Component{
                     step="1"
                     allowedUnits="dwM"
                     unit="day"
+                    id="expiration"
                     >
                     Delete tabs after
                 </SettingOption>
             </ListGroupItem>
           </ListGroup>
-          <br></br>
           {this.props.category.meta.translationLabel != "categories.names.temporary" && <ListGroup>
-            <ListGroupItem variant="danger" action onClick={()=>{
+            <ListGroupItem id="remove-category" variant="danger" action onClick={()=>{
                 this.setState({showModal: true});}}
             >Remove {this.props.category.meta.name}</ListGroupItem>
           </ListGroup>}
