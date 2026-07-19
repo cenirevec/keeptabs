@@ -21,6 +21,11 @@ export class MoodGroup extends React.Component{
      */
     ShownGroups = 10;
 
+    /***
+     * One day 
+     */
+    DAY = 24*3600*1000;
+
         /**
      * Constructor
      * @param {Object} props Component's attributes
@@ -68,7 +73,7 @@ export class MoodGroup extends React.Component{
             //if(!this.props.category.meta.hidden) return false;
             if(this.props.category.meta.hidden == -1) return false;
 
-            return (Date.now() - tabGroup.meta.lastAccessed) > this.props.category.meta.hidden;
+            return (Date.now() - tabGroup.meta.lastAccessed) > this.props.category.meta.hidden * this.DAY;
         }
 
         //Withdraw the empty tabGroups
@@ -81,7 +86,7 @@ export class MoodGroup extends React.Component{
         
             this.props.category.tabGroups = 
                 this.props.category.tabGroups.filter((tabGroup)=>
-                    (Date.now() - tabGroup.meta.lastAccessed) <= this.props.category.meta.expiration);
+                    (Date.now() - tabGroup.meta.lastAccessed) <= this.props.category.meta.expiration * this.DAY);
             //Services.data.save();
         }
 
