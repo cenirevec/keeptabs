@@ -16,7 +16,7 @@ class InstanceController {
     * @param {"server"|"all_instances"} dst Destination
      * @returns 
      */
-    static _do(actionId: string, dst: "server" | "all_instances" = "all_instances", callback?, content?) {
+    static _do(actionId,dst,callback,content) {
         if (callback == undefined) {
             callback = (response, resolve) => {
                 resolve(200);
@@ -39,7 +39,7 @@ class InstanceController {
     /**
      * Ping back an instance and give it an UID
      * @param {*} sender 
-     * @param {*} sendResponse 
+     * @param {(arg0: { greeting: string; identifier: string; }) => void} sendResponse 
      */
     static subscribe(sender, sendResponse) {
         let uid = this.generateUid(sender);
@@ -47,39 +47,63 @@ class InstanceController {
         sendResponse({ greeting: "I send you your identifier", identifier: uid });
     }
 
+    /**
+     * 
+     * @param {{ tab: { windowId: any; id: any; }; }} sender 
+     * @returns 
+     */
     // Generate an unique ID
     static generateUid(sender) {
         return `w${sender.tab.windowId}i${sender.tab.id}`;
     }
 
+    /**
+     * 
+     * @param {*} _ 
+     * @param {: (arg0: { code: string; }) => void} sendResponse 
+     */
     static acknowledge(_, sendResponse) {
         console.log("Ack received...")
         sendResponse({ code: "200 OK" });
     }
 
-    static checkIfAlive(instanceUID: "server" | "all_instances") {
+    /**
+     * 
+     * @param {"server" | "all_instances"} instanceUID 
+     * @returns 
+     */
+    static checkIfAlive(instanceUID) {
         return this._do("acknowledge", instanceUID, (_, resolve) => {
             //instanceInfo = this.data.instances.get(instanceUID);
             resolve(200);
         })
     }
 
+    /**
+     * 
+     * @param {"server" | "all_instances"} instanceUID 
+     * @param {*} content 
+     */
     static console_log(
-        instanceUID: "server" | "all_instances", 
-        content: any
+        instanceUID, 
+        content
     ) {
         if (["info", "debug", "log", "error"].indexOf(content.level) == -1) {
             content.level = "log";
         };
 
         //Log the message
-        console[content.level](`[${instanceUID}]  ${content.message}`);
+        console.log(`[${instanceUID}]  ${content.message}`);
     }
 
     static reload() {
         return this._do("reload");
     }
 
+    /**
+     * Get Map
+     * @param {(arg0: Map<any, any>) => void} sendResponse 
+     */
     static getMap(sendResponse) {
         console.log("Ack received...")
         sendResponse(this.data.instances);
@@ -88,7 +112,7 @@ class InstanceController {
 
 /**
  * Function to handle the signals from the web pages
- * @param {*} message Data sent to the back-end
+ * @param { dst: string; actionId: any; src: string; content: any; } message Data sent to the back-end
  * @param {*} sender Data to identifier the sender
  * @param {*} sendResponse Callback response to give
  */
@@ -131,6 +155,11 @@ browser.runtime.onMessage.addListener(handleContentScriptMessage);
 //@ts-ignore
 let promise = browser.storage.local.get("model");
 
-promise.then(json => {
+promise.then((json) => {
     console.log(json)
 })
+
+//@ts-ignore
+console.log("Avec tsig")
+
+InstanceController._do();
