@@ -8,3 +8,5 @@ if(chrome != undefined && chrome.action != undefined){
         browser.tabs.create({"url": "/home.html"});
     });
 }
+
+//import './engine.js';
