@@ -1,0 +1,23 @@
+.kt-add-category-bttn{
+    border-radius: var(--pill-radius);
+    border: dotted 3px var(--primary-pill-text-color);
+    color: var(--primary-pill-text-color);
+    box-shadow: none !important;
+    background-color: transparent;
+}
+
+.kt-add-category-bttn:hover{
+    border-color: #0000;
+    background-color: var(--primary-bttn-color);
+    color: white;
+}
+
+
+.kt-add-category-inputs{
+    .form-control{
+        background-color: var(--list-bg-color);
+        border: none;
+        padding: 5px 17px;
+        color: var(--font-color);
+    }
+}

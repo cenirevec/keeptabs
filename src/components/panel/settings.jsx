@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { webexVersion } from "../../../public/api/shared.variables.mjs";
-import { Accordion, Button, ListGroup, ListGroupItem, Offcanvas } from "react-bootstrap";
+import React from "react";
+import { Accordion, ListGroup, ListGroupItem, Offcanvas } from "react-bootstrap";
 import { Services } from "../../services.jsx"
 import AccordionItem from "react-bootstrap/esm/AccordionItem.js";
 import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
 import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
-import { SettingOption } from "../element/settingOption.jsx";
+import { SettingOption } from "../element/settingOption/settingOption.jsx";
 import { LoadingMode } from "../../../public/api/defaultData.mjs";
-import ConfirmationModal from "../element/confirmationModal.jsx";
 import { SearchAliasesModal } from "../modal/searchAliasesModal.jsx";
 
 export class SettingsPanel extends React.Component {
@@ -75,22 +73,6 @@ export class SettingsPanel extends React.Component {
   setShowAliasesModal(value) {
     this.setState({
       showAliasesModal: value
-    });
-  }
-
-  askForInstanceCheck() {
-    return new Promise((resolve, reject) => {
-      browser.runtime.sendMessage({
-        dst: "server",
-        src: Services.main.instanceId,
-        actionId: "checkme",
-        content: null
-      }).then((response) => {
-        resolve(response);
-      }, (error) => {
-        onError(error);
-        reject(error);
-      })
     });
   }
 
@@ -164,7 +146,7 @@ export class SettingsPanel extends React.Component {
             </ListGroup>
 
 
-            <small id="manifest-version" className="text text-secondary">version {webexVersion} (dev)</small>
+            <small id="manifest-version" className="text text-secondary">version {Services.data?.webexManifest?.version} (dev)</small>
 
 
             <Accordion>
@@ -174,7 +156,7 @@ export class SettingsPanel extends React.Component {
                   <ListGroup>
                     {/*  <Button variant="outline-danger">Remove a Tab</Button> */}
                     {/* <Button variant="secondary">Refresh</Button> */}
-                    <ListGroupItem><small><i>Instance UID: {Services.main.instanceId}</i></small></ListGroupItem>
+                    <ListGroupItem><small><i>Instance UID: {Services.background.instanceId}</i></small></ListGroupItem>
                     <ListGroupItem action onClick={() => { Services.main?.refresh() }}>Refresh</ListGroupItem>
                     <ListGroupItem action onClick={() => { console.log(Services) }}> Get Services</ListGroupItem>
                     <ListGroupItem action onClick={() => { console.log(Services.data.model) }}> Get Data model</ListGroupItem>
@@ -183,10 +165,11 @@ export class SettingsPanel extends React.Component {
                   </ListGroup>
                   <h5>Communcation</h5>
                   <ListGroup>
-                    <ListGroupItem action onClick={() => { Services.main.ping(); console.log('Ping done!') }}>Ping the server</ListGroupItem>
-                    <ListGroupItem action onClick={() => { this.askForInstanceCheck() }}>Check the instance</ListGroupItem>
-                    <ListGroupItem action onClick={() => { Services.main.getMap().then(console.log) }}>Get map</ListGroupItem>
-                    <ListGroupItem action onClick={() => { Services.main.reloadOtherInstances() }}>Reload instances</ListGroupItem>
+                    <ListGroupItem action onClick={() => { Services.background.subscribe(); console.log('Ping done!') }}>Ping the server</ListGroupItem>
+                    <ListGroupItem action onClick={() => { Services.background.checkInstance() }}>Check the instance</ListGroupItem>
+                    <ListGroupItem action onClick={() => { Services.background.getMap().then(console.log) }}>Get map</ListGroupItem>
+                    <ListGroupItem action onClick={() => { Services.background.reloadOtherInstances() }}>Reload instances</ListGroupItem>
+                    <ListGroupItem action onClick={() => { Services.background.log("info","Hello world!") }}>Say Hello to the world</ListGroupItem>
                   </ListGroup>
                 </AccordionBody>
               </AccordionItem>

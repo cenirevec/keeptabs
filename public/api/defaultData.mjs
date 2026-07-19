@@ -30,9 +30,9 @@ export const defaultData = {
     },
 
     icons: {
-        "unknown": "./media/ico-48.png",
-        "settings": "./media/ico-48.png",
-        "keeptabs": "./media/ico-48.png",
+        "unknown": "./media/ico.png",
+        "settings": "./media/ico.png",
+        "keeptabs": "./media/ico.png",
     }
 }
 
@@ -51,8 +51,8 @@ export const defaultModel = {
         categories: {
             "0": {
                 meta: {
-                    expiration: 30 * 24 * 3600 * 1000,
-                    hidding: 1378400,
+                    expiration: 30,
+                    hidden: 14,
                     name: "temporary",
                     translationLabel: "categories.names.temporary",
                     deleteOnOpening: true

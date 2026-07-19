@@ -25,7 +25,7 @@ export class SearchBar{
         })
 
         // let searchbutton = document.createElement("button");
-        // searchbutton.innerHTML = "Empty search bar";
+        // searchbutton.innerText = "Empty search bar";
         // searchbutton.className="btn btn-danger floatting-btn";
         // searchbutton.disabled = "true";
 

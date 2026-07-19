@@ -1,6 +1,7 @@
 import React from "react";
 import { ButtonGroup, Button, FormCheck, FormControl, FormLabel, InputGroup, FormSelect } from "react-bootstrap";
 import FormRange from "react-bootstrap/esm/FormRange";
+import './settingOption.css';
 
 export class SettingOption extends React.Component{
     
@@ -81,7 +82,7 @@ export class SettingOption extends React.Component{
             case "number":
             case "duration":
                 let props = {
-                    value: this.state.value,
+                    value: this.props.value,
                     min: this.props.min,
                     max: this.props.max,
                     step: this.props.step,
@@ -90,20 +91,22 @@ export class SettingOption extends React.Component{
                     onInput: this.onInput
                 }
 
+
                 if(this.props.disabled){
                     props = Object.assign(props,{disabled:true})
                 }
                 return <div className="kt kt-component-setting-option number">
-                    <FormLabel htmlFor="number">{this.props.children}</FormLabel>
-                    <FormControl id="number" type="number" {...props}
+                    <FormLabel htmlFor={this.props.id}>{this.props.children}</FormLabel>
+                    <FormControl id={this.props.id} type="number" {...props}
                         aria-label={this.props.children}
                         required></FormControl>
                     {this.props.type == "duration" &&
-                        <FormSelect aria-label="Default select example">
-                            <option value="86400000">day(s)</option>
-                            <option value="604800000">week(s)</option>
-                            <option value="18748800000">month(s)</option>
-                        </FormSelect>
+                        // <FormSelect aria-label="Default select example">
+                        //     <option value="1">day(s)</option>
+                        //     <option value="7">week(s)</option>
+                        //     <option value="31">month(s)</option>
+                        // </FormSelect>
+                        <span>days</span>
                     }
                 </div>
             case "options":

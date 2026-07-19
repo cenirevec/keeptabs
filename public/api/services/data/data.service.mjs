@@ -28,8 +28,15 @@ export class ProgressionStatus {
 
 export class DataService {
 
-    mutex = {}
+    /**
+     * Manifest data
+     */
+    webexManifest;
 
+    mutex = {}
+    /**
+     * Application data
+     */
     model = JSON.parse(JSON.stringify(defaultModel))
 
     constructor(services) {
@@ -40,6 +47,12 @@ export class DataService {
 
         this.download = this.download.bind(this);
         this.clear = this.clear.bind(this);
+
+        /** Load the data in the manifest file */
+        fetch("../../../manifest.json")
+            .then(response => response.json())
+            .then(json => {this.webexManifest = json;})
+            .catch(error=>console.error);
     }
 
     /**

@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, ButtonGroup, ListGroup, ListGroupItem, OverlayTrigger, Popover } from "react-bootstrap";
-import { Renamable } from "../shared/renamable/renamable.jsx";
-import { SettingOption } from "./settingOption.jsx";
-import { Services } from "../../services.jsx";
-import ConfirmationModal from "./confirmationModal.jsx";
+import { Button, ListGroup, ListGroupItem, OverlayTrigger, Popover } from "react-bootstrap";
+import { Renamable } from "../../shared/renamable/renamable.jsx";
+import { SettingOption } from "../settingOption/settingOption.jsx";
+import { Services } from "../../../services.jsx";
+import ConfirmationModal from "../confirmationModal.jsx";
+import './categoryMenu.css';
 
 export class CategoryMenu extends React.Component{
   
@@ -22,15 +23,19 @@ export class CategoryMenu extends React.Component{
         this.setState({showModal:false})
         return;
       }
-      
+
       if(actionName == "confirm"){
         Services.category.delete(this.props.categoryId);
-        
+
+        if(parseInt(this.props.selected) == parseInt(this.props.categoryId)){
+          Services.main?.setSelectedCategory(this.props.categoryId - 1);
+        }
         Services.main?.refresh();
       }
     }
 
     getPopover(){
+      
         return <Popover className="kt-popover-menu" id="category-popover">
         <Popover.Header as="h3">
             <Renamable value={this.props.category.meta.name} 
@@ -47,31 +52,34 @@ export class CategoryMenu extends React.Component{
           <ListGroup className="withSettings">
             <ListGroupItem>
                 <SettingOption type="duration"
+                    value={this.props.category.meta.hidden}
                     min="0"
                     step="1"
                     allowedUnits="dwM"
                     unit="day"
+                    id="hidden"
                     >
                     Hide tabs after
                 </SettingOption>
             </ListGroupItem>
             <ListGroupItem>
                 <SettingOption type="duration"
+                    value={this.props.category.meta.expiration}
                     min="0"
                     step="1"
                     allowedUnits="dwM"
                     unit="day"
+                    id="expiration"
                     >
                     Delete tabs after
                 </SettingOption>
             </ListGroupItem>
           </ListGroup>
-          <br></br>
-          <ListGroup>
-            <ListGroupItem variant="danger" action onClick={()=>{
+          {this.props.category.meta.translationLabel != "categories.names.temporary" && <ListGroup>
+            <ListGroupItem id="remove-category" variant="danger" action onClick={()=>{
                 this.setState({showModal: true});}}
             >Remove {this.props.category.meta.name}</ListGroupItem>
-          </ListGroup>
+          </ListGroup>}
         </Popover.Body>
       </Popover>
     }

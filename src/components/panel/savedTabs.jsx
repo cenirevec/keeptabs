@@ -1,7 +1,7 @@
 import React from "react";
 import { TabModel } from "../../models/tab.model.js";
 import { MoodGroup } from "../element/moodGroup.jsx";
-import MoodNavBar from "../element/moodNavBar.jsx";
+import MoodNavBar from "../element/moodNavBar/moodNavBar.jsx";
 
 
 export class SavedTabsPanel extends React.Component {
@@ -18,7 +18,6 @@ export class SavedTabsPanel extends React.Component {
 
         this.state = {
             categories: this.props.data,
-            selected: 0,
             forceReload: false
         };
 
@@ -55,9 +54,6 @@ export class SavedTabsPanel extends React.Component {
      * @param {number} categoryId Id of the category
      */
     selectCategory(categoryId) {
-        this.setState({
-            selected: categoryId
-        });
         this.props.setSelectedCategory(categoryId)
     }
 
@@ -159,7 +155,7 @@ export class SavedTabsPanel extends React.Component {
      */
     render() {
         //Create the mood list
-        let categoryIndex = this.state.selected;
+        let categoryIndex = this.props.selected;
         let categoryName = (this.props.data != undefined) ? this.props.data.categories[categoryIndex].meta.name : "Untitled";
 
         return <section className="kt kt-panel kt-panel-saved group-by-moodID">
@@ -168,7 +164,7 @@ export class SavedTabsPanel extends React.Component {
                 saveData={this.props.saveData}
                 addMood={this.addMood}
                 data={this.props.data}
-                selected={categoryIndex} />
+                selected={this.props.selected} />
             {this.props.data && this.props.data.categories[categoryIndex] != undefined &&
                 <MoodGroup //name={categoryName} 
                     category={this.props.data.categories[categoryIndex]}

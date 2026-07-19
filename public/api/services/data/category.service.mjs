@@ -2,6 +2,8 @@ import { Services } from "../../../../src/services.jsx";
 
 export class CategoryService {
 
+    DAYS = 24*3600*1000;
+
     defaultTabGroupData = {
         "meta": {
             "lastAccessed": new Date().valueOf(),
@@ -13,8 +15,8 @@ export class CategoryService {
     defaultCategoryData = {
         "meta":{
             name: "newCategory",
-            expiration: 30*24*3600*1000,
-            hidden: 14*24*3600*1000
+            expiration: -1, // 30*this.DAYS,
+            hidden: -1//14*this.DAYS
         },
         "tabGroups":[]
     }
@@ -91,6 +93,21 @@ export class CategoryService {
     delete(id){
         delete Services.data?.model?.categories[id];
         Services.data.save();
+    }
+
+    configure(category,setting,value){
+        if(setting == "expiration" && (parseInt(value) != NaN)){
+            category.meta.expiration = parseInt(value)
+        }
+
+        if(setting == "hidden" && parseInt(value) != NaN){
+            category.meta.hidden = parseInt(value)
+        }
+        Services.data.save();
+    }
+
+    getSetting(category,setting){
+        return category.meta[setting]
     }
 }
 

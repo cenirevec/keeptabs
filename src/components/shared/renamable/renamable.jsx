@@ -1,22 +1,22 @@
 import React from "react";
-//import "./renamable.css"
+import "./renamable.css"
 
-export class Renamable extends React.Component{
-    
+export class Renamable extends React.Component {
+
     callbacks = {
-        onChange : null,
-        onSubmit : null
+        onChange: null,
+        onSubmit: null
     }
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
-        if(props.onSubmit)
+        if (props.onSubmit)
             this.callbacks.onSubmit = props.onSubmit;
 
-        if(props.onChange)
+        if (props.onChange)
             this.callbacks.onChange = props.onChange;
-        
+
         this.state = {
             value: props.value ?? "",
             edition: false,
@@ -33,47 +33,55 @@ export class Renamable extends React.Component{
         this.textInput = React.createRef();
     }
 
-    componentDidUpdate(newProps){
-        if(!this.state.edition && newProps.value != this.state.value){
-            this.setState({value: newProps.value});
+    componentDidUpdate(newProps) {
+        if (!this.state.edition && newProps.value != this.state.value) {
+            this.setState({ value: newProps.value });
         }
     }
 
-    enableEdition(){
+    enableEdition() {
         // Switch to edition mode
-        this.setState({edition: true});
+        this.setState({ edition: true });
 
         //Preselect the text
-        setTimeout((_self = this)=>{
+        setTimeout((_self = this) => {
             _self.textInput.current.select();
             // When the user clicks outside of the input
             document.body.onclick = this.handleOutsideClick
-        },0)
+        }, 0)
     }
 
     /**
      * Actions to do when the value changes
      */
-    setValue(event){
+    setValue(event) {
         /* if(this.callbacks.onChange){
             this.setState({valid: this.callbacks.onChange(this.state.value)})
         } */
-        
-        this.setState({value: event.target.value});
+
+        this.setState({ value: event.target.value });
     }
 
-    handleSubmit(event){
-        if(this.state.edition){
-            this.setState({edition: false});
-            if(this.callbacks.onSubmit && this.state.valid){
+    /**
+     * Estimate the size taken by a font
+     * @returns 
+     */
+    estimateSize(){
+        return this.state.value?.length;
+    }
+
+    handleSubmit(event) {
+        if (this.state.edition) {
+            this.setState({ edition: false });
+            if (this.callbacks.onSubmit && this.state.valid) {
                 this.callbacks.onSubmit(this.state.value);
             }
-            
-            if(event) event.preventDefault();
+
+            if (event) event.preventDefault();
         }
     }
 
-    handleOutsideClick(event){
+    handleOutsideClick(event) {
         document.body.onclick = null;
         this.handleSubmit();
     }
@@ -82,19 +90,21 @@ export class Renamable extends React.Component{
      * 
      * @returns 
      */
-    render(){
-        let innerText = (this.state.value?.length === 0)?
-            this.props.placeholder: this.state.value;
+    render() {
+        let innerText = (this.state.value?.length === 0) ?
+            this.props.placeholder : this.state.value;
 
         return <span className="kt-component-renamable" onDoubleClick={this.enableEdition}>
             {!this.state.edition && innerText}
             {this.state.edition &&
-                <form  className="kt-component-renamable" onSubmit={this.handleSubmit}>
-                    <input ref={this.textInput} type="text" value={this.state.value} onChange={this.setValue}/>
+                <form className="kt-component-renamable" onSubmit={this.handleSubmit}>
+                    <input ref={this.textInput} type="text" value={this.state.value} onChange={this.setValue} size={this.estimateSize()}/>
+                    
                     {(this.props.submitLabel) &&
-                         <button onClick={this.handleSubmit}>
-                            {this.props.submitLabel !== "" ? 
-                            this.props.submitLabel : "Submit"}</button>}
+                        <button onClick={this.handleSubmit}>
+                            {this.props.submitLabel !== "" ?
+                                this.props.submitLabel : "Submit"}</button>
+                    }
                 </form>
             }
         </span>

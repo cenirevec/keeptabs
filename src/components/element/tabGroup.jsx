@@ -34,6 +34,14 @@ export class TabGroup extends React.Component{
         let filteredTabs = this.filter(this.props.filter);
         let tokenForDeletion = [];
 
+        //Lock window closure
+        let preventClose = ()=>{
+            let sanite = confirm("Tabs are openning...")
+            return sanite;
+        }
+
+        window.onbeforeunload = preventClose;
+
         let loadingType = Services.data.getSetting("loading.mode");
         let lastIsActive = Services.data.getSetting("loading.makeOpenedTabActive")
 
@@ -61,13 +69,35 @@ export class TabGroup extends React.Component{
                         setTimeout(()=>{
                             openNext(index)}
                         , interval)
+                    }else{
+                        //Unlock the window closure
+                        window.onbeforeunload = undefined;
                     }
                 };
+                //Open the tab in case of error or not
+                let openTab = (windowId)=>{
+                    let options = {url: filteredTabs[index].url, active:lastIsActive};
+                    if(windowId != undefined) {
+                        options.windowId = windowId;
+                    }
+                    browser.tabs.create(options).then(loadNext,loadNext);
+                    this.refresh();
+                }
 
-                // Open a tab
-                browser.tabs.create(
-                    {url: filteredTabs[index].url, active:lastIsActive})
-                .then(loadNext,loadNext);
+                //Create tabs where the user started the open all feature when possible
+                browser.tabs.getCurrent().then((current)=>{
+                    //Open the tab
+                    openTab(current.windowId);
+                },(error)=>{
+                    //Open the tab
+                    openTab();
+                    let errorMessage = "Cannot get the current window id, will open when the user has currently the focus";
+                    // When an error occurs
+                    console.error(errorMessage);
+
+                    //Send the error to the extension logs
+                    Services.background.catch(error);
+                });
             };
 
             openNext(0);
@@ -81,6 +111,7 @@ export class TabGroup extends React.Component{
         if(this.props.tabGroup.tabs.length == 0){
           this.delete();
         }
+
         //Save the modification
         Services.data.save();
     }
@@ -129,6 +160,7 @@ export class TabGroup extends React.Component{
                 this.delete();
             }else{
                 this.props.tabGroup.tabs.splice(index,1);
+                this.refresh();
                 Services.data.save();
             }
         }
@@ -181,10 +213,8 @@ export class TabGroup extends React.Component{
         className += areSavedTabs ? " col-lg-6":"";
 
         this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
-        
 
-        let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`
-        //console.trace(tabGroupKey);
+        let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`;
 
         return <div className={className}>
                     {/* Show the number of tabs and when it as been saved */}

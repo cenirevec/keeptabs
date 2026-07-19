@@ -32,7 +32,7 @@ export class TabModel {
         }
         else{
             if(faviconUrl.startsWith("chrome://")){
-                faviconUrl =  "./media/ico-48.png";
+                faviconUrl =  "./media/ico.png";
             }
             
             this.favicon = faviconUrl;
@@ -61,6 +61,7 @@ export class TabModel {
         options = (options == undefined || options == null)? {}:options;
         options["url"] = tab.url;
 
+        console.log(Browser.tabs.currentTab());
         Browser.tabs.create(options);
         return true;
     }

@@ -5,8 +5,8 @@ import { Browser, getClosestParentByClass } from "../shared.variables.mjs";
 var rootURL = window.location.href.split("/home.html")[0];
 
 var Imgs = {
-    extension : rootURL + "/media/ico-48.png",
-    default : rootURL + "/media/ico-48.png"
+    extension : rootURL + "/media/ico.png",
+    default : rootURL + "/media/ico.png"
 }
 
 var uniqueId = 0;
@@ -61,11 +61,10 @@ export class Tab{
         this.target.key = this.id;
         this.target.identifier = this.getIdentifier();
 
-        if(this.target.innerHTML == ""){
+        if(!this.target.hasChildNodes()){
 
             let img = document.createElement("img");
             let link = document.createElement("a");
-            let options;
             let lastAccessed = document.createElement("small");
 
         
@@ -82,7 +81,7 @@ export class Tab{
 
             if(context != "current" || (!this.selected && TabService.mode.selection))
                 link.href = this.url;
-            link.innerHTML = this.title;
+                link.innerText = this.title;
 
             if (!TabService.mode.selection) {
                 link.target = "_blank";
@@ -91,21 +90,18 @@ export class Tab{
                     let tabID = event.target.parentNode.key;
                     let tabGroupID = parseInt(getClosestParentByClass(event.target,"tab-group-container").id.split('gid')[1]);
                     let moodID = getClosestParentByClass(event.target,"group-by-moodID").id;
-                    //console.log(moodID,tabGroupID,tabID)
+
                     TabService.removeTabFromLoadedTabsByID(moodID,tabGroupID,tabID);
-                    //window.focus();
                 })
             }
             
-            lastAccessed.innerHTML = timeSince(new Date(this.lastAccessed));
+            lastAccessed.innerText = timeSince(new Date(this.lastAccessed));
 
             this.target.appendChild(img);
             this.target.appendChild(link);
             this.target.appendChild(lastAccessed);
         }
         
-
-        //el.innerHTML=`<img src="${this.favicon}"><a href="${this.url}">${this.title}</a><small>last:${this.lastAccessed}</small>`
         return this.target;
     }
 
@@ -131,11 +127,13 @@ export class Tab{
             let tab = tabs.reduce((previous, current) => {
               return previous.lastAccessed > current.lastAccessed ? previous : current;
             });
-            // previous tab
-            //console.log(tab);
           });
 
-        this.target.innerHTML = "";
+        //Withdraw all children
+        Array.from(this.target.children).forEach(childNode=>{
+            this.target.removeChild(childNode)
+        })
+
         this.render(context);
     }
 
@@ -215,7 +213,9 @@ export class Tab{
         } else {
             options = (options == undefined || options == null)? {}:options;
             options["url"] = this.url;
+            options["windowId"] = 1;
 
+            //console.log(Browser.tabs.getCurrent());
             Browser.tabs.create(options);
             return true;
         }

@@ -1,3 +1,27 @@
-body{
-    color: red;
+
+.tab-group-header .kt-component-renamable{
+    font-size: 1.5rem;
+}
+
+.tab-group-header .kt-component-renamable input{
+	background-color: var(--renamable-background-color);
+	border-color: var(--renamable-border-color);
+	color: var(--font-color);
+}
+
+
+
+.mood-name .kt-component-renamable input{
+	background-color: #fff2;
+	border-color: #fff6;
+	color: white;
+}
+
+
+.kt-component-renamable{
+    display: inline-flex;
+}
+
+.kt-component-renamable input{
+    border: dotted 3px;
 }

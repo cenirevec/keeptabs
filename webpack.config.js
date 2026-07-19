@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+  
   entry: {
     home: './src/home.jsx'
   },
@@ -21,6 +22,10 @@ module.exports = {
         }
       }
     },
+    {
+          test: /\.css$/,
+          use: [ 'style-loader', 'css-loader' ]
+      }
     ],
   },
   optimization: {

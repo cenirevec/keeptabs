@@ -9,10 +9,10 @@
     },
         
     "icons": {
-      "48": "media/ico-48-dev.png"
+      "48": "media/ico-dev.png"
     },
     "action":{
-      "default_icon": "media/ico-48-dev.png"
+      "default_icon": "media/ico-dev.png"
     },
     "permissions": [
       "tabs",
