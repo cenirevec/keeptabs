@@ -1,12 +1,16 @@
 #!/bin/bash
 
 # WebExtension archive generator
+# Cleaning repertory
+rm -rf package
+mkdir -p ./builds/archives/{dist,src}
 
+mkdir -p ./package/src
 cp -r ./ ./package/src
 cd ./package/src
 
 # Making 
-version=`cat manifest.json | egrep "\"version\"" | awk '{print $2}' | sed -e 's/[",]//g'`
+version=`cat manifest.json | grep -E "\"version\"" | awk '{print $2}' | sed -e 's/[",]//g'`
 
 rm -r perso
 rm -r builds
@@ -18,13 +22,16 @@ rm ./manifest3.json
 rm ./build.sh
 
 
-zip -r ../../builds/keeptabs-$version-src.zip *
+zip -rqu ../../builds/archives/src/keeptabs-$version-src.zip *
+cp ../../builds/archives/src/keeptabs-$version-src.zip ../../builds/keeptabs-lastest-src.zip
 
 cd ../dist
 
 # Voila
 
-zip -r ../../builds/keeptabs-$version.zip *
+zip -rqu ../../builds/archives/dist/keeptabs-$version.zip *
+cp ../../builds/archives/dist/keeptabs-$version.zip ../../builds/keeptabs-lastest.zip
 
-# rm -r package
+cd ../../
+rm -rf package
 
