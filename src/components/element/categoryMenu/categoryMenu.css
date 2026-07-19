@@ -52,6 +52,14 @@
 
     #remove-category{
         margin-top: 10px;
+        font-weight: bold;
+        color: red;
+        transition: 0.3s;
+    }
+
+    #remove-category:hover{
+        background-color: red;
+        color:white;
     }
 
     .kt-component-renamable{
