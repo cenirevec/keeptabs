@@ -18,7 +18,7 @@ rm -r builds
 mv ./dist ../dist
 
 mv ./public/media/ico-std.png ./public/media/ico.png
-rm ./manifest3.json
+# rm ./manifest3.json
 rm ./build.sh
 
 
@@ -26,6 +26,7 @@ zip -rqu ../../builds/archives/src/keeptabs-$version-src.zip *
 cp ../../builds/archives/src/keeptabs-$version-src.zip ../../builds/keeptabs-lastest-src.zip
 
 cd ../dist
+mv ./media/ico-std.png ./media/ico.png
 
 # Voila
 

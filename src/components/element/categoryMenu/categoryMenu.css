@@ -2,6 +2,7 @@
     background-color: var(--popover-bg-color);
     color: var(--font-color) !important;
     border-radius: 25px;
+    box-shadow: 0 10px 8px 5px var(--body-color);
 
     .popover-header {
         text-align: center;
