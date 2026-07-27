@@ -6,6 +6,7 @@ import { Renamable } from "../shared/renamable/renamable.jsx";
 import { Services } from "../../services.jsx";
 import { LoadingMode } from "../../../public/api/defaultData.mjs";
 import { MoveToMenu } from "./moveToMenu.jsx";
+import { TabReduced } from "./tab-reduced/tab-reduced.jsx";
 
 export class TabGroup extends React.Component{  
 
@@ -235,9 +236,17 @@ export class TabGroup extends React.Component{
                     }
 
                     {/* Show the list of tabs */}
-                    <ul className="list-group">
-                        {tabList}
-                    </ul>
+                    {areSavedTabs &&
+                        <ul className="list-group">
+                            {tabList}
+                        </ul>
+                    }
+                    {!areSavedTabs &&
+                        <ul className="list-group">
+                            {tabList.slice(0,6)}
+                            <TabReduced tabList={filteredTabs.slice(7,)}></TabReduced>
+                        </ul>
+                    }
 
                     {/* Show the action buttons */}
                     {areSavedTabs && 
