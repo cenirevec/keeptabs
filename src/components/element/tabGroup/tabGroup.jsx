@@ -6,7 +6,7 @@ import { Renamable } from "../../shared/renamable/renamable.jsx";
 import { Services } from "../../../services.jsx";
 import { LoadingMode } from "../../../../public/api/defaultData.mjs";
 import { MoveToMenu } from "../moveToMenu.jsx";
-import { TabReduced } from "../tab-reduced/tab-reduced.jsx";
+import { TabReduced } from "../tabReduced/tabReduced.jsx";
 import "./tabGroup.css";
 
 export class TabGroup extends React.Component{  
