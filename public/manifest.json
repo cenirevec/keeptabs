@@ -2,7 +2,7 @@
   "name": "Keep Tabs",
   "description": "Tool to manage your browser workspace.",
   "homepage_url": "https://github.com/cenirevec/keeptabs",
-  "version": "0.5.5",
+  "version": "0.5.8",
   "manifest_version": 3,
   "background": {
     "scripts": [

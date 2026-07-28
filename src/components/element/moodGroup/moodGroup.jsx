@@ -1,9 +1,10 @@
 import React from "react";
 import { Accordion, Button } from "react-bootstrap";
-import { TabGroup } from "./tabGroup.jsx";
+import { TabGroup } from "../tabGroup/tabGroup.jsx";
 import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
 import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
-import { Services } from "../../services.jsx";
+import { Services } from "../../../services.jsx";
+import "./moodGroup.css"
 
 export class MoodGroup extends React.Component{  
     /**
@@ -147,10 +148,10 @@ export class MoodGroup extends React.Component{
             }
         });
         
-        return <div className="kt kt-component kt-component-moodgroup row">
+        return <div className="kt kt-component kt-component-moodgroup">
                     {tabgroupList.length > 0 && tabgroupList}
                     {this.props.category.tabGroups.length == 0 && 
-                        <div className="empty col-lg-6">
+                        <div className="empty">
                             <p>There is no tab saved in {this.props.category.meta.name}</p>
                             <small>You can add the current tabs by clicking on the <Button className="disabled">Save</Button> button</small>
                         </div>

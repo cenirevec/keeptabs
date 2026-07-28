@@ -1,12 +1,13 @@
 import React from "react";
 import { Badge, Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
-import { Tab } from "./tab.jsx";
-import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
-import { Renamable } from "../shared/renamable/renamable.jsx";
-import { Services } from "../../services.jsx";
-import { LoadingMode } from "../../../public/api/defaultData.mjs";
-import { MoveToMenu } from "./moveToMenu.jsx";
-import { TabReduced } from "./tab-reduced/tab-reduced.jsx";
+import { Tab } from "../tab.jsx";
+import { Browser, timeSince } from "../../../../public/api/shared.variables.mjs";
+import { Renamable } from "../../shared/renamable/renamable.jsx";
+import { Services } from "../../../services.jsx";
+import { LoadingMode } from "../../../../public/api/defaultData.mjs";
+import { MoveToMenu } from "../moveToMenu.jsx";
+import { TabReduced } from "../tab-reduced/tab-reduced.jsx";
+import "./tabGroup.css";
 
 export class TabGroup extends React.Component{  
 
@@ -211,13 +212,13 @@ export class TabGroup extends React.Component{
         let areSavedTabs = this.props.context == "saved";
 
         let className = "kt kt-component kt-component-tabgroup tabs";
-        className += areSavedTabs ? " col-lg-6":"";
+        //className += areSavedTabs ? " col-lg-6":"";
 
         this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
 
         let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`;
 
-        return <div className={className}>
+        return <div className={className} style={{"--tabs":tabList.length + 2}}>
                     {/* Show the number of tabs and when it as been saved */}
                     {areSavedTabs && 
                         <div>

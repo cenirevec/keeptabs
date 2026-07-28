@@ -1,0 +1,35 @@
+.kt-component-moodgroup {
+
+    display: grid;
+    grid-template-columns: repeat(2, calc(48.5vw - 30px));
+    gap: 3vw;
+
+    .empty {
+        border: var(--transparent-border) dotted 5px;
+        margin: 25px 1rem;
+        padding: 2vw;
+        min-height: 300px;
+        display: inline-block;
+        font-size: 1.2em;
+
+
+        p {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    }
+
+
+    .hiddenSeparator {
+        text-align: center;
+    }
+
+    .accordion {
+        margin-top: 1rem;
+    }
+
+    .accordion-button {
+        background-color: var(--body-color);
+    }
+}
