@@ -204,7 +204,7 @@ export class TabGroup extends React.Component{
 
         //Create the tab list
         let tabList = filteredTabs.map(
-            (tab)=> <Tab key={tab.id} tab={tab} delete={()=>{this.removeItem(tab.id)}} context={this.props.context}/>);
+            (tab,index)=> <Tab key={tab.id} index={index} tab={tab} delete={()=>{this.removeItem(tab.id)}} context={this.props.context}/>);
 
         // Define the date of the tabgroup (currently by pick the date of the first element)
         let date = new Date(this.props.tabGroup.meta?.lastAccessed ?? filteredTabs[0].lastAccessed); 

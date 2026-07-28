@@ -24,7 +24,6 @@ export class TabReduced extends React.Component {
     showMore() {
 
     }
-
     getTabFavicon(tab,id){
         let favicon;
         if (tab.faviconId != undefined) {
@@ -32,19 +31,22 @@ export class TabReduced extends React.Component {
         } else {
             favicon = tab.faviconUrl;
         }
+        return <img onClick={()=>this.goto(tab.id)} title={tab.title} key={id} src={favicon}/>
+    }
 
-        return <img key={id} src={favicon}/>
+    goto(id){
+        browser.tabs.update(id,{active:true});
     }
 
     render() {
-        console.log(this.props.tabList)
+        // Don't do anything else if not enough tabs are openned
         if (this.props.tabList.length <= 0){
             return;
         }
         
-
+        // Add a reduced version when the threshold is reached
         return <li className="kt kt-component kt-component-tab-reduced list-group-item list-group-item-action">
-            {this.props.tabList.map((tab,id)=>this.getTabFavicon(tab,id))}
+            <span className="kt-component-tab-reduced-imgs">{this.props.tabList.map((tab,id)=>this.getTabFavicon(tab,id))}</span>
             <b> {this.props.tabList.length} more tabs</b>
         </li>
     }

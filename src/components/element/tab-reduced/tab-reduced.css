@@ -1,5 +1,11 @@
 .kt-component-tab-reduced{
+    display: grid;
+    
+    .kt-component-tab-reduced-imgs{
+
+    }
+
     img{
-        margin-right: 8px;
+        margin-right: 8px !important;
     }   
 }
