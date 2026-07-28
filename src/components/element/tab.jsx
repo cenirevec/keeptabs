@@ -18,7 +18,7 @@ export class Tab extends React.Component {
         if(this.props.context == 'current'){
             this.onFocus();
         }else if (this.props.context == 'saved'){
-
+            this.onOpen(event);
         }else{};
     }
 
@@ -36,7 +36,7 @@ export class Tab extends React.Component {
         }
     }
 
-    onFocus(event) {
+    onFocus() {
         browser.tabs.update(this.props.tab.id,{active:true});
     }
 
