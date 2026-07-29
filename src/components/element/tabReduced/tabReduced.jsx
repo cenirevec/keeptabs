@@ -24,6 +24,13 @@ export class TabReduced extends React.Component {
     showMore() {
 
     }
+
+    /**
+     * Get Tab Favicons
+     * @param {*} tab 
+     * @param {number} id 
+     * @returns 
+     */
     getTabFavicon(tab,id){
         let favicon;
         if (tab.faviconId != undefined) {
@@ -34,10 +41,18 @@ export class TabReduced extends React.Component {
         return <img onClick={()=>this.goto(tab.id)} title={tab.title} key={id} src={favicon}/>
     }
 
+    /**
+     * Go to 
+     * @param {number} id tab identifier
+     */
     goto(id){
         browser.tabs.update(id,{active:true});
     }
 
+    /**
+     * Render
+     * @returns 
+     */
     render() {
         // Don't do anything else if not enough tabs are openned
         if (this.props.tabList.length <= 0){

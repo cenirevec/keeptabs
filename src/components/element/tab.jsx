@@ -14,6 +14,10 @@ export class Tab extends React.Component {
         this.onClick = this.onClick.bind(this);
     }
 
+    /**
+     * When you click on a tab
+     * @param {*} event 
+     */
     onClick(event){
         if(this.props.context == 'current'){
             this.onFocus();

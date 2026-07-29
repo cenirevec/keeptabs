@@ -182,6 +182,14 @@ br {
     padding: 1.25rem 0 0.1rem;
     border-bottom: var(--body-color) 2px solid;
     margin: 0 -25px;
+
+    input {
+        background: none;
+        border: none;
+        padding-left: 25px;
+        border-radius: 25px;
+        width: 100%;
+    }
 }
 
 #searchbox .searchbar {
