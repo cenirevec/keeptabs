@@ -1,6 +1,6 @@
 import React from "react";
 import { TabModel } from "../../models/tab.model.js";
-import { MoodGroup } from "../element/moodGroup.jsx";
+import { MoodGroup } from "../element/moodGroup/moodGroup.jsx";
 import MoodNavBar from "../element/moodNavBar/moodNavBar.jsx";
 
 

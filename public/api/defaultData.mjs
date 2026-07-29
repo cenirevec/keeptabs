@@ -18,6 +18,7 @@ export const defaultData = {
         }
     },
 
+    //Test data added
     shortcuts: {
         searchEngine: {
             value: [
@@ -26,6 +27,12 @@ export const defaultData = {
                 "www.google.com",
                 "www.bing.com"
             ]
+        },
+        t: {
+            value:["www.youtube.com","www.furaffinity.net"]
+        },
+        yt:{
+            value:["www.youtube.com"]
         }
     },
 
