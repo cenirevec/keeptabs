@@ -82,6 +82,11 @@ export class DataService {
         }
     }
 
+    /**
+     * Patch the data model
+     * @param {*} model 
+     * @returns 
+     */
     patch(model) {
         let modelCopy;
         try {
@@ -459,11 +464,20 @@ export class DataService {
     }
 
     /**
+     * TO BE DEFINED: Check if an alias name exists and propose another if necessary
+     * @param {*} name 
+     * @returns Available name
+     */
+    checkForNewAliasName(name){
+        
+    }
+
+    /**
     * Create an alias
     * @param {string} alias Given alias 
     */
     addAlias(alias) {
-        Services.data.model.meta.shortcuts[alias] = { value: [] }
+        Services.data.model.meta.shortcuts[alias] = { value: ["example.com"] }
         Services.data.save();
     }
 
