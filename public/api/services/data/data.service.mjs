@@ -490,6 +490,16 @@ export class DataService {
         Services.data.save();
     }
 
+
+    /**
+     * Set a list of filter associated to an alias
+     * @param {string} alias Given alias 
+     */
+    setDescriptionForAlias(alias, description) {
+        Services.data.model.meta.shortcuts[alias].description = description;
+        Services.data.save();
+    }
+
     /**
      * Remove an alias for the aliases list
      * @param {string} alias Given alias 

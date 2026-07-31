@@ -23,7 +23,7 @@ const patchList = {
                     for (const key in meta.shortcuts) {
                         if (!Object.hasOwn(meta.shortcuts, key)) continue;
                         
-                        meta.shortcuts[key].description = "Description...";
+                        meta.shortcuts[key].description = "";
                     }
                 }
             }

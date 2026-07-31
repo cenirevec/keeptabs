@@ -58,9 +58,11 @@ export class AliasSettings extends React.Component {
     onSave(oldAlias,newAlias){
         let oldKey = oldAlias[0];
         let newKey = Object.keys(newAlias)[0];
-        let values = newAlias[newKey];
+        let values = newAlias[newKey].values;
+        let description = newAlias[newKey].description;
 
         Services.data.setValuesForAlias(oldKey, values.split(","));
+        Services.data.setDescriptionForAlias(oldKey, description);
         Services.data.renameAlias(oldKey, newKey);
         this.refresh();
     }

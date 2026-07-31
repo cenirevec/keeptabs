@@ -10,15 +10,19 @@ export class AliasEditor extends React.Component {
 
         this.key = this.props.alias[0];
         this.values = this.props.alias[1].value.join();
+        this.description = this.props.alias[1].description
 
         this.state = {
             edited: false,
             editingValues: false,
+            editingDesc: false,
             key: this.key,
-            values: this.values
+            values: this.values,
+            description: this.description
         };
         this.onEditKey = this.onEditKey.bind(this);
         this.onEditValues = this.onEditValues.bind(this);
+        this.onEditDescription = this.onEditDescription.bind(this);
 
         this.onSave = this.onSave.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -41,6 +45,14 @@ export class AliasEditor extends React.Component {
     }
 
     /**
+     * When an alias description is edited
+     * @param {*} event 
+     */
+    onEditDescription(event) {
+        this.setState({ edited: true, description: event.target.value });
+    }
+
+    /**
      * When values are edited
      * @param {*} isEditingValues 
      */
@@ -49,16 +61,28 @@ export class AliasEditor extends React.Component {
     }
 
     /**
+     * When description is edited
+     * @param {*} isEditingDesc 
+     */
+    setEditingDescription(isEditingDesc) {
+        this.setState({ editingDesc: isEditingDesc })
+    }
+
+    /**
      * Action to perform when changes are saved
      */
     onSave() {
         let alias = {}
-        alias[this.state.key] = this.state.values;
+        alias[this.state.key] = {
+            values: this.state.values,
+            description: this.state.description
+        };
 
         this.props.onEdit(alias);
 
         this.key = this.state.key;
         this.values = this.state.values;
+        this.description = this.state.description;
 
         this.setState({ edited: false });
     }
@@ -70,15 +94,37 @@ export class AliasEditor extends React.Component {
         this.setState({
             edited: false,
             editingValues: false,
+            editingDesc: false,
             key: this.key,
             values: this.values
         });
     }
 
     render() {
+        let description = "Description here...";
+        let empty = new RegExp(" *");
+
+        if (this.state.description
+            && this.state.description.split(empty).join().length > 0) {
+            description = this.state.description;
+        } else if (this.state.description == undefined) {
+            this.setState({ description: "" });
+        }
+
         return (
             <ListGroupItem className="kt kt-component kt-alias-editor">
-                <Chip onEdit={this.onEditKey}>{this.state.key}</Chip>
+                <div className="kt kt-alias-name">
+                    <Chip onEdit={this.onEditKey}>{this.state.key}</Chip>
+                    {!this.state.editingDesc &&
+                        <span onDoubleClick={() => this.setEditingDescription(true)}
+                            className="description">{description}</span>}
+                    {this.state.editingDesc &&
+                        <FormControl
+                            onBlur={() => this.setEditingDescription(false)}
+                            value={this.state.description}
+                            onInput={this.onEditDescription}>
+                        </FormControl>}
+                </div>
 
                 {!this.state.editingValues &&
                     <span onDoubleClick={() => this.setEditingValues(true)}
