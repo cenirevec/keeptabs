@@ -41,21 +41,21 @@ export class AliasSettings extends React.Component {
     /**
      * Add an alias
      */
-    addAlias(){
+    addAlias() {
         let withAlias = Object.assign(this.state.aliases);
-        withAlias["yourAlias"] = {value: ["example.com"]};
+        withAlias["yourAlias"] = { value: ["example.com"] };
 
         this.setState({
             aliases: withAlias
         })
     }
-    
+
     /**
      * Actions to do when changes are saved
      * @param {*} oldAlias Previous name of the alias
      * @param {*} newAlias New name of the alias
      */
-    onSave(oldAlias,newAlias){
+    onSave(oldAlias, newAlias) {
         let oldKey = oldAlias[0];
         let newKey = Object.keys(newAlias)[0];
         let values = newAlias[newKey].values;
@@ -68,13 +68,29 @@ export class AliasSettings extends React.Component {
     }
 
     /**
+     * Compare two aliases based on the first letter
+     * @param {*} alias1 
+     * @param {*} alias2 
+     * @returns 
+     */
+    compareAliases(alias1, alias2) {
+        if (alias1[0] < alias2[0]) {
+            return -1;
+        } else if (alias1[0] > alias2[0]) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * Render
      * @returns 
      */
-    render(){
+    render() {
         
-        let aliasesList = Object.entries(this.state.aliases).map((alias,index)=>
-            <AliasEditor key={index} alias={alias} onEdit={(newValue)=>this.onSave(alias,newValue)}></AliasEditor>
+        let aliasesList = Object.entries(this.state.aliases).sort(this.compareAliases).map((alias, index) =>
+            <AliasEditor key={index} alias={alias} onEdit={(newValue) => this.onSave(alias, newValue)}></AliasEditor>
         );
 
         return (

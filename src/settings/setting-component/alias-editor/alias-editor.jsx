@@ -10,7 +10,14 @@ export class AliasEditor extends React.Component {
 
         this.key = this.props.alias[0];
         this.values = this.props.alias[1].value.join();
-        this.description = this.props.alias[1].description
+        this.description = "";
+
+        let savedDescription = this.props.alias[1].description;
+        let empty = new RegExp(" *");
+        if (savedDescription
+            && savedDescription.split(empty).join().length > 0) {
+            this.description = savedDescription;
+        }
 
         this.state = {
             edited: false,
@@ -101,15 +108,8 @@ export class AliasEditor extends React.Component {
     }
 
     render() {
-        let description = "Description here...";
-        let empty = new RegExp(" *");
-
-        if (this.state.description
-            && this.state.description.split(empty).join().length > 0) {
-            description = this.state.description;
-        } else if (this.state.description == undefined) {
-            this.setState({ description: "" });
-        }
+        let description = (this.description == "") ?
+            "Description here..." : this.description;
 
         return (
             <ListGroupItem className="kt kt-component kt-alias-editor">
