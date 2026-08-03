@@ -1,0 +1,41 @@
+.kt-panel-current {
+    h2 {
+        font-size: calc(0.825rem + .9vw);
+        margin-top: 20px;
+        margin-left: 1rem;
+    }
+
+    .tabs {
+        display: block;
+    }
+}
+
+
+
+.kt-panel-current-empty {
+    text-align: center;
+    margin: 7vh 7vw;
+
+    div {
+        font-size: 1.4em;
+        margin-bottom: 1vh;
+        opacity: 0.5;
+        user-select: none;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1.7em;
+        font-weight: bold;
+    }
+}
+
+.kt-open-rand-btn {
+    border-radius: var(--pill-radius);
+}
+
+
+.kt-panel-current .btn-group,
+:is(.kt-panel-current)>.btn-group {
+    margin: 7px 12px;
+}
