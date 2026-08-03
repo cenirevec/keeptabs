@@ -3,13 +3,18 @@
 # WebExtension archive generator
 # Cleaning repertory
 rm -rf package
+
+#Compiling code
+npm run build
+
+#Creating workspace
 mkdir -p ./builds/archives/{dist,src}
 
 mkdir -p ./package/src
 cp -r ./ ./package/src
 cd ./package/src
 
-# Making 
+# Getting version number 
 version=`cat manifest.json | grep -E "\"version\"" | awk '{print $2}' | sed -e 's/[",]//g'`
 
 rm -r perso
