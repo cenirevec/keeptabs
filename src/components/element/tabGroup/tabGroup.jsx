@@ -8,14 +8,15 @@ import { LoadingMode } from "../../../../public/api/defaultData.mjs";
 import { MoveToMenu } from "../moveToMenu.jsx";
 import { TabReduced } from "../tabReduced/tabReduced.jsx";
 import "./tabGroup.css";
+import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 
-export class TabGroup extends React.Component{  
+export class TabGroup extends React.Component {
 
     /**
      * Constructor
      * @param {Object} props Component's attributes
      */
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             tabs: this.props.tabGroup
@@ -24,144 +25,58 @@ export class TabGroup extends React.Component{
         this.openAll = this.openAll.bind(this);
         this.delete = this.delete.bind(this);
         this.removeItem = this.removeItem.bind(this);
-        
+        this.refresh = this.refresh.bind(this);
+
 
         this.tabGroupTitle = React.createRef();
     }
 
     /**
-     * Open all the tabs in this group
+     * Open All tabs of group according to filter
      */
-    openAll(options){
-        let filteredTabs = this.filter(this.props.filter);
-        let tokenForDeletion = [];
-
-        //Lock window closure
-        let preventClose = ()=>{
-            let sanite = confirm("Tabs are openning...")
-            return sanite;
-        }
-
-        window.onbeforeunload = preventClose;
-
-        let loadingType = Services.data.getSetting("loading.mode");
-        let lastIsActive = Services.data.getSetting("loading.makeOpenedTabActive")
-
-        let timeStamp;
-
-        filteredTabs.forEach((tab,index) => {
-            //Open all the tab in lazyMode
-            if(loadingType == LoadingMode.LAZY){
-                Browser.tabs.create({url: tab.url, discarded:true, active:lastIsActive});
-            }
-
-            //Prepare for deletion
-            tokenForDeletion.push(this.props.tabGroup.tabs.findIndex(tabInGroup => tabInGroup == tab));
-        });
-
-        if(loadingType == LoadingMode.DIFFERED){
-            timeStamp = Date.now();
-            let interval = Services.data.getSetting("loading.interval");
-
-            let openNext = (index) => {
-                // Load the next tab
-                let loadNext = (result)=>{
-                    index += 1;
-                    if(index < filteredTabs.length){
-                        setTimeout(()=>{
-                            openNext(index)}
-                        , interval)
-                    }else{
-                        //Unlock the window closure
-                        window.onbeforeunload = undefined;
-                    }
-                };
-                //Open the tab in case of error or not
-                let openTab = (windowId)=>{
-                    let options = {url: filteredTabs[index].url, active:lastIsActive};
-                    if(windowId != undefined) {
-                        options.windowId = windowId;
-                    }
-                    browser.tabs.create(options).then(loadNext,loadNext);
-                    this.refresh();
-                }
-
-                //Create tabs where the user started the open all feature when possible
-                browser.tabs.getCurrent().then((current)=>{
-                    //Open the tab
-                    openTab(current.windowId);
-                },(error)=>{
-                    //Open the tab
-                    openTab();
-                    let errorMessage = "Cannot get the current window id, will open when the user has currently the focus";
-                    // When an error occurs
-                    console.error(errorMessage);
-
-                    //Send the error to the extension logs
-                    Services.background.catch(error);
-                });
-            };
-
-            openNext(0);
-        }
-
-        //Remove openned tabs
-        this.props.tabGroup.tabs = this.props.tabGroup.tabs.filter(
-            (tab,index)=> tokenForDeletion.indexOf(index) == -1);
-
-        //Delete the tabgroup if all tabs have been openned and/or deleted
-        if(this.props.tabGroup.tabs.length == 0){
-          this.delete();
-        }
-
-        //Save the modification
-        Services.data.save();
+    openAll() {
+        TabService.openTabGroup(
+            this.props.tabGroup.tabs,
+            this.props.filter,
+            this.refresh,
+            this.delete
+        );
     }
 
     /**
      * Rename the tabGroup
      * @param {String} value Name to give to the tab group
      */
-    renameGroup(value){
+    renameGroup(value) {
         this.props.tabGroup.meta.name = value;
         Services.data.save();
         this.refresh();
     }
 
-    refresh(){
+    /**
+     * Refresh tab group
+     * @param {*} tabs 
+     */
+    refresh(tabs) {
+        if(tabs) this.props.tabGroup.tabs = tabs;
+        
         this.setState({
             tabs: this.props.tabGroup
         });
     }
 
     /**
-     * Filter the tab list according to searchbar parameters
-     * @param {searchBarParameters} params Searchbar filters
-     * @returns 
-     */
-    filter(params){
-        let filteredTabs = [];
-        let source = this.props.tabGroup.tabs;
-
-        if (source != undefined) {
-            filteredTabs = source.filter(
-                tab => params.filter(tab));
-        }
-        return filteredTabs;
-    }
-
-    /**
      * Remove a tab from the list
      * @param {number} tabID Identifier of the tab
      */
-    removeItem(tabID){
-        let index = this.props.tabGroup.tabs.findIndex(tab=>tab.id == tabID);
+    removeItem(tabID) {
+        let index = this.props.tabGroup.tabs.findIndex(tab => tab.id == tabID);
 
-        if(index != -1){
-            if(this.props.tabGroup.tabs.length == 1){
+        if (index != -1) {
+            if (this.props.tabGroup.tabs.length == 1) {
                 this.delete();
-            }else{
-                this.props.tabGroup.tabs.splice(index,1);
+            } else {
+                this.props.tabGroup.tabs.splice(index, 1);
                 this.refresh();
                 Services.data.save();
             }
@@ -171,11 +86,11 @@ export class TabGroup extends React.Component{
     /**
      * Remove all tabs and delete this tabGroup
      */
-    delete(event,filteredTabs){
-        if(!filteredTabs || this.props.tabGroup.tabs.length == filteredTabs.length){
+    delete(event, filteredTabs) {
+        if (!filteredTabs || this.props.tabGroup.tabs.length == filteredTabs.length) {
             this.props.deleteFunction();
             this.props.onUpdate();
-        }else{
+        } else {
             let tokenForDeletion = [];
             filteredTabs.forEach(tab => {
                 //Prepare for deletion
@@ -183,8 +98,8 @@ export class TabGroup extends React.Component{
             });
             //Remove openned tabs
             this.props.tabGroup.tabs = this.props.tabGroup.tabs.filter(
-                (tab,index)=> tokenForDeletion.indexOf(index) == -1);
-            
+                (tab, index) => tokenForDeletion.indexOf(index) == -1);
+
             //Refresh and save
             this.setState({
                 tabs: this.props.tabGroup.tabs
@@ -197,18 +112,18 @@ export class TabGroup extends React.Component{
      * React rendering function
      * @returns Rendered content
      */
-    render(){
-        let filteredTabs = this.filter(this.props.filter);
+    render() {
+        let filteredTabs = TabService.filter(this.props.tabGroup.tabs,this.props.filter);
         // Returns nothing if the tab list is empty
-        if(filteredTabs.length == 0)
+        if (filteredTabs.length == 0)
             return;
 
         //Create the tab list
         let tabList = filteredTabs.map(
-            (tab,index)=> <Tab key={tab.id} index={index} tab={tab} delete={()=>{this.removeItem(tab.id)}} context={this.props.context}/>);
+            (tab, index) => <Tab key={tab.id} index={index} tab={tab} delete={() => { this.removeItem(tab.id) }} context={this.props.context} />);
 
         // Define the date of the tabgroup (currently by pick the date of the first element)
-        let date = new Date(this.props.tabGroup.meta?.lastAccessed ?? filteredTabs[0].lastAccessed); 
+        let date = new Date(this.props.tabGroup.meta?.lastAccessed ?? filteredTabs[0].lastAccessed);
         let areSavedTabs = this.props.context == "saved";
 
         let className = "kt kt-component kt-component-tabgroup tabs";
@@ -218,54 +133,54 @@ export class TabGroup extends React.Component{
 
         let tabGroupKey = `${this.props.category?.meta?.name}-${this.props.id}`;
 
-        return <div className={className} style={{"--tabs":tabList.length + 2}}>
-                    {/* Show the number of tabs and when it as been saved */}
-                    {areSavedTabs && 
-                        <div>
-                            <span className="tab-group-header" onClick={this.tabGroupTitle?.current?.enableEdition}>
-                                <Renamable  ref={this.tabGroupTitle} 
-                                            key={tabGroupKey}
-                                            value={this.props.tabGroup.meta.name} 
-                                            onSubmit={(value)=>{this.renameGroup(value)}}></Renamable>
-                                <span className="time-ago" >{timeSince(date)} ago</span>
-                                <span className="tabs-count">
-                                    <Badge pill bg="secondary">{filteredTabs.length}</Badge>
-                                    <span>tabs</span>
-                                </span>
-                            </span>
-                        </div>
-                    }
-
-                    {/* Show the list of tabs */}
-                    {areSavedTabs &&
-                        <ul className="list-group">
-                            {tabList}
-                        </ul>
-                    }
-                    {!areSavedTabs &&
-                        <ul className="list-group">
-                            {tabList.slice(0,6)}
-                            <TabReduced tabList={filteredTabs.slice(7,)}></TabReduced>
-                        </ul>
-                    }
-
-                    {/* Show the action buttons */}
-                    {areSavedTabs && 
-                    <ButtonGroup>
-                        <Button onClick={this.openAll}>Open all</Button>
-                        <MoveToMenu 
-                            tabGroup={this.props.tabGroup} 
-                            filteredTabs={filteredTabs}
-                            category={this.props.category}
-                            ></MoveToMenu>
-                        <Button onClick={(event)=>{this.delete(event,filteredTabs)}}>Delete</Button>
-                    
-                        <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown">
-                            <Dropdown.Item eventKey="1">Move to category</Dropdown.Item>
-                            <Dropdown.Item eventKey="2">Split on match</Dropdown.Item>
-                        </DropdownButton>
-                    </ButtonGroup>
-                    }
+        return <div className={className} style={{ "--tabs": tabList.length + 2 }}>
+            {/* Show the number of tabs and when it as been saved */}
+            {areSavedTabs &&
+                <div>
+                    <span className="tab-group-header" onClick={this.tabGroupTitle?.current?.enableEdition}>
+                        <Renamable ref={this.tabGroupTitle}
+                            key={tabGroupKey}
+                            value={this.props.tabGroup.meta.name}
+                            onSubmit={(value) => { this.renameGroup(value) }}></Renamable>
+                        <span className="time-ago" >{timeSince(date)} ago</span>
+                        <span className="tabs-count">
+                            <Badge pill bg="secondary">{filteredTabs.length}</Badge>
+                            <span>tabs</span>
+                        </span>
+                    </span>
                 </div>
-    }   
+            }
+
+            {/* Show the list of tabs */}
+            {areSavedTabs &&
+                <ul className="list-group">
+                    {tabList}
+                </ul>
+            }
+            {!areSavedTabs &&
+                <ul className="list-group">
+                    {tabList.slice(0, 6)}
+                    <TabReduced tabList={filteredTabs.slice(7,)}></TabReduced>
+                </ul>
+            }
+
+            {/* Show the action buttons */}
+            {areSavedTabs &&
+                <ButtonGroup>
+                    <Button onClick={this.openAll}>Open all</Button>
+                    <MoveToMenu
+                        tabGroup={this.props.tabGroup}
+                        filteredTabs={filteredTabs}
+                        category={this.props.category}
+                    ></MoveToMenu>
+                    <Button onClick={(event) => { this.delete(event, filteredTabs) }}>Delete</Button>
+
+                    <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown">
+                        <Dropdown.Item eventKey="1">Move to category</Dropdown.Item>
+                        <Dropdown.Item eventKey="2">Split on match</Dropdown.Item>
+                    </DropdownButton>
+                </ButtonGroup>
+            }
+        </div>
+    }
 }

@@ -109,7 +109,7 @@ export class AliasEditor extends React.Component {
 
     render() {
         let description = (this.description == "") ?
-            "Description here..." : this.description;
+            "Description here..." : this.state.description;
 
         return (
             <ListGroupItem className="kt kt-component kt-alias-editor">

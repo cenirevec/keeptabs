@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { HeaderPanel } from "./components/panel/header.jsx";
-import { CurrentTabsPanel } from "./components/panel/currentTabs.jsx";
+import { CurrentTabsPanel } from "./components/panel/currentTabs/currentTabs.jsx";
 import { SavedTabsPanel } from "./components/panel/savedTabs.jsx";
 import { FooterPanel } from "./components/panel/footer.jsx";
 import { SearchBarPanel } from "./components/panel/searchBar.jsx";
@@ -37,6 +37,7 @@ class Home extends React.Component {
             selectedCategoryIndex: 0
         };
         this.setMoods = this.setMoods.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.setFilter = this.setFilter.bind(this);
         this.setSelectedCategory = this.setSelectedCategory.bind(this);
         this.saveData = this.saveData.bind(this);
@@ -82,6 +83,7 @@ class Home extends React.Component {
         if (Services.data.model) {
             Services.data.save(() => {
                 this.setMoods(Services.data.model);
+                this.refresh();
             })
         }
     }
