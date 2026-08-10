@@ -8,7 +8,8 @@
 
 
 .tabs li img {
-    width: 25px;
+    max-width: 25px;
+    max-height: 25px;
     border-radius: 5px;
     margin: auto 0;
 }
