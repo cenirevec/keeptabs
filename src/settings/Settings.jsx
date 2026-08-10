@@ -6,6 +6,7 @@ import { Button, CloseButton, Nav, Tab, TabContainer } from "react-bootstrap";
 import { AliasSettings } from "./settings-pages/aliases/aliases-settings.jsx";
 import { DeveloperSettings } from "./settings-pages/dev/dev-settings.jsx";
 import { Services } from "../services.jsx";
+import { FileSettings } from "./settings-pages/file/file-settings.jsx";
 
 export class Settings extends React.Component {
 
@@ -53,6 +54,9 @@ export class Settings extends React.Component {
                                 <Nav.Link eventKey="alias">Aliases</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
+                                <Nav.Link eventKey="file">Import/Export</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
                                 <Nav.Link eventKey="dev">Developer settings</Nav.Link>
                             </Nav.Item>
 
@@ -62,6 +66,7 @@ export class Settings extends React.Component {
                         <Tab.Content>
                             <Tab.Pane eventKey="general"><GeneralSettings></GeneralSettings></Tab.Pane>
                             <Tab.Pane eventKey="alias"><AliasSettings></AliasSettings></Tab.Pane>
+                            <Tab.Pane eventKey="file"><FileSettings></FileSettings></Tab.Pane>
                             <Tab.Pane eventKey="dev"><DeveloperSettings></DeveloperSettings></Tab.Pane>
                         </Tab.Content>
                     </TabContainer>

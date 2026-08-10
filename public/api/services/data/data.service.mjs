@@ -321,13 +321,14 @@ export class DataService {
 
         switch (method) {
             case DataUploadMethodEnum.MERGE:
-                let importedCategories = Object.keys(content.categories).map(categoryid => content.categories[categoryid]);
-                importedCategories.forEach(category => {
-                    this.mergeWithCategory(category);
-                });
-
+                let currentlySavedFavicons = Services.data?.model?.icons?.references.length ?? 0;
                 this.mergeIconReferences(content.icons);
 
+                let importedCategories = Object.keys(content.categories).map(categoryid => content.categories[categoryid]);
+                importedCategories.forEach(category => {
+                    this.mergeWithCategory(category,currentlySavedFavicons);
+                });
+                
                 //Services.main.reload();
                 Services.data.save();
                 break;
@@ -341,33 +342,20 @@ export class DataService {
     }
 
     /**
-     * Download the saved tabs
-     */
-    download() {
-        var data = JSON.stringify(this.model);
-        var a = document.createElement("a");
-        var file = new Blob([data], { type: 'application/json' });
-        a.href = URL.createObjectURL(file);
-
-        function addLeadingZeros(n) {
-            if (n <= 9) {
-                return "0" + n;
-            }
-            return n
-        }
-
-        let currentDatetime = new Date();
-        let formattedDate = currentDatetime.getFullYear() + "-" + addLeadingZeros(currentDatetime.getMonth() + 1) + "-" + addLeadingZeros(currentDatetime.getDate()) + " " + addLeadingZeros(currentDatetime.getHours()) + ":" + addLeadingZeros(currentDatetime.getMinutes()) + ":" + addLeadingZeros(currentDatetime.getSeconds())
-
-        a.download = `keeptabs-data_${formattedDate}.json`;
-        a.click();
-    }
-
-    /**
      * Merge categories
      * @param {Object} toMerge Category from the file to merge or add
+     * @param {number} oldNbFavs Number of previously saved favicons
      */
-    mergeWithCategory(toMerge) {
+    mergeWithCategory(toMerge,oldNbFavs) {
+        //Update the iconReference ids
+        toMerge.tabGroups.map(
+            tabGroup => tabGroup.tabs.map(
+                tab=>{
+                    tab.faviconId += oldNbFavs;
+                    return tab;
+                })
+            );
+
         //Check if the category exists
         if (toMerge?.meta?.name) {
             let category = Services.category.getByName(toMerge?.meta?.name);
@@ -392,7 +380,14 @@ export class DataService {
      * @param {IconReferencer} toMerge icon referencer to merge
      */
     mergeIconReferences(toMerge){
-        this.model.icons = toMerge;
+        this.model.icons.references = this.model.icons.references.concat(toMerge.references);
+    }
+
+    /**
+     * TO BE DEFINED Merge aliases
+     */
+    mergeAliases(toMerge){
+        
     }
 
     // ---------------- SETTINGS ------------- //
@@ -464,28 +459,45 @@ export class DataService {
     }
 
     /**
-     * TO BE DEFINED: Check if an alias name exists and propose another if necessary
+     * Check if an alias name exists and propose another if necessary
      * @param {*} name 
+     * @param {number} [iteration=0] 
      * @returns Available name
      */
-    checkForNewAliasName(name){
-        
+    suggestAliasName(name,iteration=0){
+        if(Services.data.model.meta.shortcuts[name]){
+            this.suggestAliasName(
+                `${name}${iteration}`,
+                iteration++
+            ); 
+        }else{
+            return name;
+        }
     }
 
     /**
     * Create an alias
     * @param {string} alias Given alias 
+    * @returns alias name
     */
-    addAlias(alias) {
+    addAlias(_alias) {
+        let alias = this.suggestAliasName(_alias);
         Services.data.model.meta.shortcuts[alias] = { value: ["example.com"] }
         Services.data.save();
+        
+        return alias;
     }
 
     /**
      * Set a list of filter associated to an alias
-     * @param {string} alias Given alias 
+     * @param {string} _alias Given alias 
      */
     setValuesForAlias(alias, values) {
+        // Check if the alias exist and create one if not
+        if(Services.data.model.meta.shortcuts[alias] == undefined){
+            alias = this.addAlias(alias);
+        }
+
         Services.data.model.meta.shortcuts[alias].value = values;
         Services.data.save();
     }
@@ -524,44 +536,29 @@ export class DataService {
         }
         return false;
     }
-}
 
-export class DataOperationService {
 
-    constructor() {
-
-    }
-    //Nécessite l'élaboration de diagrammes à états
-    /*
-     * Prendre en compte le fait que:
-        - des modifications peuvent arriver le temps que le mutex libère le DataService.save()
-            - il n'est pas possible de juste réécraser car les nouveaux ajouts seraient perdus, 
-            il faudra donc essayer de patcher le précédent model avant la sauvegarde. ordre:
-            piste 1 : patch -> modification -> save
-            piste 2 (essayer de moins créer de ralentissement): 
-                remplacer la save monolitique en bloc quoi par une save par patch, voir le fonctionnement de git
-                    - crainte: avoir quelque chose de complètement dégueulasse et incohérent
-            piste 3 : ajouter une fonction patch que permettra d'appliquer le changement en question lors que le mutex sera libérer
-            piste 4 : avoir une copie contenant uniquement les modifications et travailler sur le modèle incomplet
-                 puis ensuite le save en ajoutant le patch
-        - 
+        /**
+     * Download the saved tabs
      */
+    download() {
+        var data = JSON.stringify(this.model);
+        var a = document.createElement("a");
+        var file = new Blob([data], { type: 'application/json' });
+        a.href = URL.createObjectURL(file);
 
-    lockMutex() {
+        function addLeadingZeros(n) {
+            if (n <= 9) {
+                return "0" + n;
+            }
+            return n
+        }
 
-    }
+        let currentDatetime = new Date();
+        let formattedDate = currentDatetime.getFullYear() + "-" + addLeadingZeros(currentDatetime.getMonth() + 1) + "-" + addLeadingZeros(currentDatetime.getDate()) + " " + addLeadingZeros(currentDatetime.getHours()) + ":" + addLeadingZeros(currentDatetime.getMinutes()) + ":" + addLeadingZeros(currentDatetime.getSeconds())
 
-    unlockMutex() {
-        // this.
-    }
-
-    checkForAvailability() {
-
-    }
-
-    // Utiliser la propriété onChange du local storage pour vérifier si la fenêtre est toujours présente
-    freeMutex() {
-
+        a.download = `keeptabs-data_${formattedDate}.json`;
+        a.click();
     }
 }
 
