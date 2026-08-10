@@ -12,8 +12,9 @@ export class SettingOption extends React.Component{
     constructor(props){
         super(props)
 
+        this.value = props.value;
         this.state = {
-            value: props.value
+            value: this.value
         };
 
         this.setValue = this.setValue.bind(this);
@@ -36,6 +37,7 @@ export class SettingOption extends React.Component{
                 break;
         }
 
+        this.value = value;
         this.setState({ value: value });
         this.props.onChange(value);
     }
@@ -52,6 +54,11 @@ export class SettingOption extends React.Component{
         }
     }
 
+    /**
+     * Action to do when a file is uploaded
+     * @param {*} event 
+     * @param {*} callback 
+     */
     onFileUpload(event,callback){
       var file = event.target.files[0]; // Get the first file selected
 
@@ -69,6 +76,10 @@ export class SettingOption extends React.Component{
       reader.readAsText(file); 
     }
 
+    /**
+     * Render
+     * @returns 
+     */
     render(){
         switch (this.props.type) {
             case "checkbox":
@@ -82,7 +93,7 @@ export class SettingOption extends React.Component{
             case "number":
             case "duration":
                 let props = {
-                    value: this.props.value,
+                    value: this.value,
                     min: this.props.min,
                     max: this.props.max,
                     step: this.props.step,

@@ -8,7 +8,7 @@ export const PatchListPath = {
 let iconReferencer = new IconReferencer();
 
 const patchList = {
-    versions: ["1.0.0", "2.0.0", "2.0.2", "2.0.3", "2.0.4", "2.1.0", "2.1.0.1"], //Versions prises en charge
+    versions: ["1.0.0", "2.0.0", "2.0.2", "2.0.3", "2.0.4", "2.1.0", "2.1.0.1","2.1.1"], //Versions prises en charge
     patchs: [
         {
             path: "meta",
@@ -19,7 +19,13 @@ const patchList = {
                 "4": (meta) => {
                     meta.shortcuts = defaultData.shortcuts
                 },
-
+                "7": (meta) => {
+                    for (const key in meta.shortcuts) {
+                        if (!Object.hasOwn(meta.shortcuts, key)) continue;
+                        
+                        meta.shortcuts[key].description = "";
+                    }
+                }
             }
         },
         {

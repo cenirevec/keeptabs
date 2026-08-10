@@ -17,9 +17,11 @@ function getNavigatorName() {
 
 export const navigatorName = getNavigatorName();
 export const Browser = (chrome != undefined)? chrome : browser;
+
+
 //               |!\ CAUTION |!\ 
 // Ensure to update all functions producing data according to the modifications of the version
-export const currentDataVersion = "2.1.0.1" 
+export const currentDataVersion = "2.1.1" 
 /**
  * Writing date in a "time ago" format
  * @param {*} date 

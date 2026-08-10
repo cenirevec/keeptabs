@@ -1,9 +1,12 @@
 import React, { Component, useState } from "react";
-import { TabModel } from "../../models/tab.model.js";
-import { TabGroup } from "../element/tabGroup.jsx";
+import { TabModel } from "../../../models/tab.model.js";
+import { TabGroup } from "../../element/tabGroup/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
-import { CreateCategory } from "../element/createCategory/createCategory.jsx";
-import { Browser } from "../../../public/api/shared.variables.mjs";
+import { CreateCategory } from "../../element/createCategory/createCategory.jsx";
+import { Browser } from "../../../../public/api/shared.variables.mjs";
+import TabService from "../../../../public/api/services/data/tabs.services.mjs";
+import { Services } from "../../../services.jsx";
+import "./currentTabs.css";
 
 
 export class CurrentTabsPanel extends Component {
@@ -24,12 +27,13 @@ export class CurrentTabsPanel extends Component {
 
         this.saveCurrentTabs = this.saveCurrentTabs.bind(this);
         this.getCurrentTabs = this.getCurrentTabs.bind(this);
+        this.openRandomTabGroup = this.openRandomTabGroup.bind(this);
 
 
         //Add listeners to handle the tabs changes
         // Browser.tabs.onActivated.addListener(this.getCurrentTabs);
         Browser.tabs.onRemoved.addListener(this.getCurrentTabs);
-        document.addEventListener("focus",this.getCurrentTabs);
+        document.addEventListener("focus", this.getCurrentTabs);
     }
 
     /** Before component rerender */
@@ -58,12 +62,36 @@ export class CurrentTabsPanel extends Component {
         });
     }
 
-    saveModel(){
+    saveModel() {
         if (Services.data.model) {
             Services.data.save(() => {
                 this.setMoods(Services.data.model);
             })
         }
+    }
+
+    /**
+     * Open a random tab group from the category
+     * @param {*} category 
+     */
+    openRandomTabGroup(category) {
+        //console.log(category,this.props.filter);
+        let tabGroupId = Date.now() % category.tabGroups.length;
+        //console.log();
+        let tabGroup = category.tabGroups[tabGroupId];
+
+        //Delete a tabGroup if all tabs are loaded
+        let onDelete = () => {
+            category.tabGroups.splice(tabGroupId, 1);
+            this.props.saveData();
+        };
+
+        TabService.openTabGroup(
+            tabGroup.tabs,
+            this.props.filter,
+            (tabs) => { tabGroup.tabs = tabs; Services.main?.refresh() },
+            onDelete
+        )
     }
 
     /**
@@ -169,6 +197,12 @@ export class CurrentTabsPanel extends Component {
             categories.push(<Dropdown.Item key={index} onClick={() => this.saveCurrentTabs(category)}>{category.meta.name}</Dropdown.Item>);
         })
 
+        let openRandomButton = (
+            <Button variant="primary" className="kt kt-open-rand-btn"
+                onClick={() => this.openRandomTabGroup(this.props.selectedCategory)}>
+                Open random from {this.props.selectedCategory.meta.name}</Button>
+        )
+
         if (this.state.currentTabs.tabs.length > 0) {
             // Return the current tabs panel
             return <section className="kt kt-panel kt-panel-current">
@@ -178,10 +212,13 @@ export class CurrentTabsPanel extends Component {
                     tabGroup={this.state.currentTabs}
                     saveData={this.props.saveData} />
 
+                {openRandomButton}
+
                 <Dropdown as={ButtonGroup}>
                     <Button variant="primary"
                         onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
                         Save in {this.props.selectedCategory.meta.name}</Button>
+
 
                     <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
 
@@ -192,8 +229,11 @@ export class CurrentTabsPanel extends Component {
             </section>
         } else {
             return <section className="kt kt-panel kt-panel-current kt-panel-current-empty">
-                <p>There is no tab openned</p>
-                <small>You can choose among the saved ones or click on Open All to restore an older browsing session</small>
+                <div>
+                    <p>There is no tab openned</p>
+                    <small>You can choose among the saved ones or click on Open All to restore an older browsing session</small>
+                </div>
+                {openRandomButton}
             </section>
         }
     }

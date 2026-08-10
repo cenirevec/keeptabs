@@ -1,21 +1,43 @@
 #!/bin/bash
 
 # WebExtension archive generator
+# Cleaning repertory
+rm -rf package
 
-# cp -r ./ ./package/
-# cd ./package
+#Compiling code
+npm run build
 
-# version=`cat manifest.json | egrep "\"version\"" | awk '{print $2}' | sed -e 's/[",]//g'`
+#Creating workspace
+mkdir -p ./builds/archives/{dist,src}
 
-# rm -r perso
-# rm -r builds
-# mv ./icons/ico-48-std.jpg ./icons/ico-48.jpg
+mkdir -p ./package/src
+cp -r ./ ./package/src
+cd ./package/src
+
+# Getting version number 
+version=`cat manifest.json | grep -E "\"version\"" | awk '{print $2}' | sed -e 's/[",]//g'`
+
+rm -r perso
+rm -r builds
+
+mv ./dist ../dist
+
+mv ./public/media/ico-std.png ./public/media/ico.png
 # rm ./manifest3.json
-# rm ./build.sh
+rm ./build.sh
 
 
-# zip -r ../builds/keeptabs-$version.zip *
+zip -rqu ../../builds/archives/src/keeptabs-$version-src.zip *
+cp ../../builds/archives/src/keeptabs-$version-src.zip ../../builds/keeptabs-lastest-src.zip
 
-# cd ..
-# rm -r package
+cd ../dist
+mv ./media/ico-std.png ./media/ico.png
+
+# Voila
+
+zip -rqu ../../builds/archives/dist/keeptabs-$version.zip *
+cp ../../builds/archives/dist/keeptabs-$version.zip ../../builds/keeptabs-lastest.zip
+
+cd ../../
+rm -rf package
 

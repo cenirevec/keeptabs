@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { HeaderPanel } from "./components/panel/header.jsx";
-import { CurrentTabsPanel } from "./components/panel/currentTabs.jsx";
+import { CurrentTabsPanel } from "./components/panel/currentTabs/currentTabs.jsx";
 import { SavedTabsPanel } from "./components/panel/savedTabs.jsx";
 import { FooterPanel } from "./components/panel/footer.jsx";
 import { SearchBarPanel } from "./components/panel/searchBar.jsx";
@@ -9,6 +9,7 @@ import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
 import { Services } from "./services.jsx";
 import './home.css';
+import { Settings } from "./settings/Settings.jsx";
 
 class Home extends React.Component {
 
@@ -36,6 +37,7 @@ class Home extends React.Component {
             selectedCategoryIndex: 0
         };
         this.setMoods = this.setMoods.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.setFilter = this.setFilter.bind(this);
         this.setSelectedCategory = this.setSelectedCategory.bind(this);
         this.saveData = this.saveData.bind(this);
@@ -81,10 +83,15 @@ class Home extends React.Component {
         if (Services.data.model) {
             Services.data.save(() => {
                 this.setMoods(Services.data.model);
+                this.refresh();
             })
         }
     }
 
+    /**
+     * Set to a selected category
+     * @param {*} index 
+     */
     setSelectedCategory(index) {
         index = parseInt(index);
         this.selectedCategoryIndex = index;
@@ -232,18 +239,18 @@ Features to develop 2
 
 
 
-/** 0.5.5
+/** 0.6.5
  * 
  * Distinguish dev from prod versions by using npm
  */
 
-/*0.6.0 */
+/*0.7.0 */
 /**
  * Add the What's new page
  * Integrate the keywords
  */
 
-/* 0.5.1 */
+/* 0.8.1 */
 /*
 * Blobify the img URLs and reference to it
 */

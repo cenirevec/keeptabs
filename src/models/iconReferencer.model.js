@@ -6,8 +6,10 @@ export class IconReferencer{
 
     // Extension related icon references
     default = {
-        "unknown": "./media/ico.png",
-        "settings": "./media/ico.png",
+        "unknown": "./media/icons/unknown.svg",
+        "settings": "./media/icons/settings.svg",
+        "new_tab": "./media/icons/new_tab.svg",
+        "addons": "./media/icons/addons.svg",
         "keeptabs": "./media/ico.png",
     }
 
@@ -22,11 +24,15 @@ export class IconReferencer{
      * @returns ID of a favicon
      */
     getFaviconIdByURL(imageURL){
+
         if(imageURL == undefined){
             imageURL = this.default.unknown;
         }
         else if(imageURL.startsWith("chrome://")){
-            imageURL = this.default.settings;
+            // Add an icon for addons page
+            if(imageURL.indexOf("extension") != -1){
+                imageURL = this.default.addons;
+            }
         }
 
         let iconId = this.references.findIndex(x=>x == imageURL);

@@ -18,14 +18,21 @@ export const defaultData = {
         }
     },
 
+    //Test data added
     shortcuts: {
-        searchEngine: {
+        s: {
             value: [
                 "www.qwant.com",
                 "www.lilo.org",
                 "www.google.com",
-                "www.bing.com"
-            ]
+                "www.bing.com",
+                "www.duckduckgo.com"
+            ],
+            description:"Search Engines"
+        },
+        n:{
+            value:["www.youtube.com","reddit.com","facebook.com"],
+            description:"Social Networks"
         }
     },
 
