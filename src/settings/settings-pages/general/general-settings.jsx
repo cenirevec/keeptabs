@@ -1,14 +1,13 @@
 import React from "react";
 import { Accordion, ListGroup, ListGroupItem, Offcanvas } from "react-bootstrap";
-import { Services } from "../../services.jsx"
+import { Services } from "../../../services.jsx"
 import AccordionItem from "react-bootstrap/esm/AccordionItem.js";
 import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
 import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
-import { SettingOption } from "../element/settingOption/settingOption.jsx";
-import { LoadingMode } from "../../../public/api/defaultData.mjs";
-import { SearchAliasesModal } from "../modal/searchAliasesModal.jsx";
+import { SettingOption } from "../../../components/element/settingOption/settingOption.jsx";
+import { LoadingMode } from "../../../../public/api/defaultData.mjs";
 
-export class SettingsPanel extends React.Component {
+export class GeneralSettings extends React.Component {
 
 
   options = [
@@ -23,35 +22,30 @@ export class SettingsPanel extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.handleClose = this.handleClose.bind(this);
-    this.handleShow = this.handleShow.bind(this);
-
-    this.setShowAliasesModal = this.setShowAliasesModal.bind(this);
-
-    this.state = {
-      showAliasesModal: false
-    }
   }
 
+  /**
+   * Read data from model
+   */
   componentDidUpdate() {
     this.savedOptions = {
       tabs: Services.data.model?.meta?.settings?.loading
     }
   }
 
-  handleClose() {
-    this.props.setShow(false);
-
+  /**
+   * Save on unmount
+   */
+  componentWillUnmount(){
     // Save the settings data
     Services.data.save();
-  };
-
-  handleShow() {
-    this.props.setShow(true);
   }
 
-
+  /**
+   * Action to do when a file is uploaded
+   * @param {*} result 
+   * @param {*} file 
+   */
   handleFileUpload(result, file) {
     /**
      * Function to acknowledge import progression
@@ -65,29 +59,20 @@ export class SettingsPanel extends React.Component {
     Services.main.refresh();
   }
 
+  /**
+   * Action triggered when an option is changed
+   * @param {*} source 
+   * @param {*} optionToChange 
+   * @param {*} value 
+   */
   onOptionUpdate(source, optionToChange, value) {
     source[optionToChange] = value;
   }
 
-
-  setShowAliasesModal(value) {
-    this.setState({
-      showAliasesModal: value
-    });
-  }
-
   render() {
-    //const [showAliasesModal, setShowAliasesModal] = useState(false);
-
     return (
       <>
-
-        <Offcanvas className="settings" show={this.props.show} onHide={this.handleClose} placement="end">
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Settings</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-
+          <h4>General Settings</h4>
             <h5>Tabs</h5>
             <ListGroup>
               <ListGroupItem>
@@ -110,17 +95,6 @@ export class SettingsPanel extends React.Component {
                   onChange={(value) => { this.onOptionUpdate(this.savedOptions?.tabs, "makeOpenedTabActive", value) }}
                 > Make last opened tab active </SettingOption>
               </ListGroupItem>
-            </ListGroup>
-            <br></br>
-            <h5>Searchbar</h5>
-            <ListGroup>
-              <ListGroupItem action onClick={() => this.setShowAliasesModal(true)}>
-                Open search aliases panel
-              </ListGroupItem>
-              <SearchAliasesModal
-                visible={this.state.showAliasesModal}
-                setVisible={this.setShowAliasesModal}
-              ></SearchAliasesModal>
             </ListGroup>
             <br></br>
             <h5>Storage</h5>
@@ -148,14 +122,12 @@ export class SettingsPanel extends React.Component {
 
             <small id="manifest-version" className="text text-secondary">version {Services.data?.webexManifest?.version} (dev)</small>
 
-
+{/* 
             <Accordion>
               <AccordionItem>
                 <AccordionHeader> <h5>Development tools</h5></AccordionHeader>
                 <AccordionBody>
                   <ListGroup>
-                    {/*  <Button variant="outline-danger">Remove a Tab</Button> */}
-                    {/* <Button variant="secondary">Refresh</Button> */}
                     <ListGroupItem><small><i>Instance UID: {Services.background.instanceId}</i></small></ListGroupItem>
                     <ListGroupItem action onClick={() => { Services.main?.refresh() }}>Refresh</ListGroupItem>
                     <ListGroupItem action onClick={() => { console.log(Services) }}> Get Services</ListGroupItem>
@@ -174,12 +146,8 @@ export class SettingsPanel extends React.Component {
                 </AccordionBody>
               </AccordionItem>
             </Accordion>
-
-
-
-          </Offcanvas.Body>
-        </Offcanvas>
-      </>
+ */}
+ </>
     );
   }
 }

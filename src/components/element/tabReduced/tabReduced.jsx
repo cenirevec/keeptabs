@@ -42,7 +42,7 @@ export class TabReduced extends React.Component {
     }
 
     /**
-     * Go to 
+     * Go to a tab based on its id
      * @param {number} id tab identifier
      */
     goto(id){

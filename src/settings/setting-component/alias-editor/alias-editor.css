@@ -1,0 +1,17 @@
+.kt-alias-value {
+    margin: 0 15px;
+}
+
+
+
+.kt-alias-name {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto 1fr;
+
+    .description {
+        opacity: 0.5;
+        font-style: italic;
+        margin: auto 0;
+    }
+}
