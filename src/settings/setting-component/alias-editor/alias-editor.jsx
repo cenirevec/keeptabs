@@ -107,6 +107,13 @@ export class AliasEditor extends React.Component {
         });
     }
 
+    /**
+     * Action to perform when deleting the alias
+     */
+    onDelete(){
+
+    }
+
     render() {
         let description = (this.description == "") ?
             "Description here..." : this.state.description;

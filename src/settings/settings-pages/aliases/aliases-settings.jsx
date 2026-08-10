@@ -67,6 +67,18 @@ export class AliasSettings extends React.Component {
         this.refresh();
     }
 
+    onDelete(alias){
+
+    }
+
+    import(){
+
+    }
+
+    export(){
+
+    }
+
     /**
      * Compare two aliases based on the first letter
      * @param {*} alias1 
@@ -100,6 +112,11 @@ export class AliasSettings extends React.Component {
                     {aliasesList}
                     <ListGroupItem onClick={this.addAlias}>+Add alias</ListGroupItem>
                 </ListGroup>
+                <div className="kt kt-alias-options">
+                    <Button onClick={this.import}>Import</Button>
+                    <Button onClick={this.export}>Export</Button>
+                    <Button variant="danger">Clear</Button>
+                </div>
             </>
         )
     }
