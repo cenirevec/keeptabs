@@ -1,9 +1,10 @@
 import React from "react";
-import { Modal, Button, Table, ListGroup, ListGroupItem } from "react-bootstrap"
+import { Modal, Button, Table, ListGroup, ListGroupItem, ButtonGroup } from "react-bootstrap"
 
 import { AliasEditor } from "../../setting-component/alias-editor/alias-editor.jsx";
 import { Services } from "../../../services.jsx";
 import Chip from "../../../components/element/chip.jsx";
+import "./alias-settings.css";
 
 export class AliasSettings extends React.Component {
     aliases = {};
@@ -67,15 +68,15 @@ export class AliasSettings extends React.Component {
         this.refresh();
     }
 
-    onDelete(alias){
+    onDelete(alias) {
 
     }
 
-    import(){
+    import() {
 
     }
 
-    export(){
+    export() {
 
     }
 
@@ -100,24 +101,26 @@ export class AliasSettings extends React.Component {
      * @returns 
      */
     render() {
-        
+
         let aliasesList = Object.entries(this.state.aliases).sort(this.compareAliases).map((alias, index) =>
             <AliasEditor key={index} alias={alias} onEdit={(newValue) => this.onSave(alias, newValue)}></AliasEditor>
         );
 
         return (
-            <>
+            <div className="kt kt-settings-pane kt-alias-settings">
                 <h4>Alias Settings</h4>
                 <ListGroup>
                     {aliasesList}
                     <ListGroupItem onClick={this.addAlias}>+Add alias</ListGroupItem>
                 </ListGroup>
                 <div className="kt kt-alias-options">
-                    <Button onClick={this.import}>Import</Button>
-                    <Button onClick={this.export}>Export</Button>
+                    <ButtonGroup>
+                        <Button variant="outline-primary" onClick={this.import}>Import</Button>
+                        <Button variant="outline-primary" onClick={this.export}>Export</Button>
+                    </ButtonGroup>
                     <Button variant="danger">Clear</Button>
                 </div>
-            </>
+            </div>
         )
     }
 }

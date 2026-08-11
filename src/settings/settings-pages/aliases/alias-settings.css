@@ -1,0 +1,7 @@
+.kt-alias-settings {
+    .kt-alias-options {
+        margin: var(--default-margin);
+        display: flex;
+        gap: var(--default-margin);
+    }
+}
