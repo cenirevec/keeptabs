@@ -1,5 +1,5 @@
 import React from "react";
-import { ListGroupItem, Button, FormControl } from "react-bootstrap";
+import { ListGroupItem, Button, FormControl, CloseButton } from "react-bootstrap";
 import Chip from "../../../components/element/chip.jsx";
 import './alias-editor.css'
 
@@ -33,6 +33,7 @@ export class AliasEditor extends React.Component {
 
         this.onSave = this.onSave.bind(this);
         this.onCancel = this.onCancel.bind(this);
+        this.onDelete = this.onDelete.bind(this);
     }
 
     /**
@@ -110,42 +111,48 @@ export class AliasEditor extends React.Component {
     /**
      * Action to perform when deleting the alias
      */
-    onDelete(){
-
+    onDelete() {
+        this.props.onDelete();
     }
 
     render() {
         let description = (this.description == "") ?
             "Description here..." : this.state.description;
 
+        let values = (this.state.values == "") ?
+            "example.com" : this.state.values;
+
         return (
             <ListGroupItem className="kt kt-component kt-alias-editor">
-                <div className="kt kt-alias-name">
-                    <Chip onEdit={this.onEditKey}>{this.state.key}</Chip>
-                    {!this.state.editingDesc &&
-                        <span onDoubleClick={() => this.setEditingDescription(true)}
-                            className="description">{description}</span>}
-                    {this.state.editingDesc &&
-                        <FormControl
-                            onBlur={() => this.setEditingDescription(false)}
-                            value={this.state.description}
-                            onInput={this.onEditDescription}>
-                        </FormControl>}
+                <div className="editor">
+                    <div className="kt kt-alias-name">
+                        <Chip onEdit={this.onEditKey}>{this.state.key}</Chip>
+                        {!this.state.editingDesc &&
+                            <span onDoubleClick={() => this.setEditingDescription(true)}
+                                className="description">{description}</span>}
+                        {this.state.editingDesc &&
+                            <FormControl
+                                onBlur={() => this.setEditingDescription(false)}
+                                value={this.state.description}
+                                onInput={this.onEditDescription}>
+                            </FormControl>}
+                    </div>
+
+                    {!this.state.editingValues &&
+                        <span onDoubleClick={() => this.setEditingValues(true)}
+                            className="kt kt-alias-value">
+                            {values}</span>
+                    }
+                    {this.state.editingValues &&
+                        <FormControl onBlur={() => this.setEditingValues(false)}
+                            value={this.state.values} onInput={this.onEditValues}></FormControl>
+                    }
+
+
+                    {this.state.edited && <Button variant="outline-danger" onClick={this.onCancel}>Cancel</Button>}
+                    {this.state.edited && <Button onClick={this.onSave}>Save</Button>}
                 </div>
-
-                {!this.state.editingValues &&
-                    <span onDoubleClick={() => this.setEditingValues(true)}
-                        className="kt kt-alias-value">
-                        {this.state.values}</span>
-                }
-                {this.state.editingValues &&
-                    <FormControl onBlur={() => this.setEditingValues(false)}
-                        value={this.state.values} onInput={this.onEditValues}></FormControl>
-                }
-
-
-                {this.state.edited && <Button variant="outline-danger" onClick={this.onCancel}>Cancel</Button>}
-                {this.state.edited && <Button onClick={this.onSave}>Save</Button>}
+                <CloseButton onClick={this.onDelete}></CloseButton>
             </ListGroupItem>
         );
     }

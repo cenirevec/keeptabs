@@ -469,7 +469,14 @@ export class DataService {
      * @returns Available name
      */
     checkForNewAliasName(name){
-        
+        let count = 0;
+        let _name = name;
+
+        while (this.hasAlias(_name) && count < 100) {
+            count++;
+            _name = name + count;
+        }
+        return _name;
     }
 
     /**
@@ -477,8 +484,15 @@ export class DataService {
     * @param {string} alias Given alias 
     */
     addAlias(alias) {
-        Services.data.model.meta.shortcuts[alias] = { value: ["example.com"] }
+        alias = alias ?? this.checkForNewAliasName('yourAlias');
+        let value = [];
+        let description = "";
+
+        Services.data.model.meta.shortcuts[alias] = { value };
+        Services.data.model.meta.shortcuts[alias].description = description;
         Services.data.save();
+
+        return {name,value,description};
     }
 
     /**

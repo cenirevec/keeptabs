@@ -43,12 +43,8 @@ export class AliasSettings extends React.Component {
      * Add an alias
      */
     addAlias() {
-        let withAlias = Object.assign(this.state.aliases);
-        withAlias["yourAlias"] = { value: ["example.com"] };
-
-        this.setState({
-            aliases: withAlias
-        })
+        Services.data.addAlias();
+        this.refresh();
     }
 
     /**
@@ -69,7 +65,8 @@ export class AliasSettings extends React.Component {
     }
 
     onDelete(alias) {
-
+        Services.data.removeAlias(alias);
+        this.refresh();
     }
 
     import() {
@@ -103,7 +100,12 @@ export class AliasSettings extends React.Component {
     render() {
 
         let aliasesList = Object.entries(this.state.aliases).sort(this.compareAliases).map((alias, index) =>
-            <AliasEditor key={index} alias={alias} onEdit={(newValue) => this.onSave(alias, newValue)}></AliasEditor>
+            <AliasEditor
+                key={alias}
+                alias={alias}
+                onEdit={(newValue) => this.onSave(alias, newValue)}
+                onDelete={()=>this.onDelete(alias[0])}
+            ></AliasEditor>
         );
 
         return (
