@@ -1,11 +1,13 @@
 .kt-alias-editor {
     display: grid;
     grid-template-columns: 1fr auto;
+    cursor: text;
 
     .editor {}
 
     .btn-close{
         margin-top: 5px;
+        opacity: 0.1;
     }
 
     .kt-alias-value {
@@ -25,4 +27,8 @@
             margin: auto 0;
         }
     }
+}
+
+.kt-alias-editor:hover .btn-close{
+    opacity: 0.5;
 }
