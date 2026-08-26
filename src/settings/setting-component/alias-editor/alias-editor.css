@@ -1,0 +1,34 @@
+.kt-alias-editor {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    cursor: text;
+
+    .editor {}
+
+    .btn-close{
+        margin-top: 5px;
+        opacity: 0.1;
+    }
+
+    .kt-alias-value {
+        margin: 0 15px;
+    }
+
+
+
+    .kt-alias-name {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: auto 1fr;
+
+        .description {
+            opacity: 0.5;
+            font-style: italic;
+            margin: auto 0;
+        }
+    }
+}
+
+.kt-alias-editor:hover .btn-close{
+    opacity: 0.5;
+}

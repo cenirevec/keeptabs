@@ -82,6 +82,11 @@ export class DataService {
         }
     }
 
+    /**
+     * Patch the data model
+     * @param {*} model 
+     * @returns 
+     */
     patch(model) {
         let modelCopy;
         try {
@@ -459,12 +464,35 @@ export class DataService {
     }
 
     /**
+     * TO BE DEFINED: Check if an alias name exists and propose another if necessary
+     * @param {*} name 
+     * @returns Available name
+     */
+    checkForNewAliasName(name){
+        let count = 0;
+        let _name = name;
+
+        while (this.hasAlias(_name) && count < 100) {
+            count++;
+            _name = name + count;
+        }
+        return _name;
+    }
+
+    /**
     * Create an alias
     * @param {string} alias Given alias 
     */
     addAlias(alias) {
-        Services.data.model.meta.shortcuts[alias] = { value: [] }
+        alias = alias ?? this.checkForNewAliasName('yourAlias');
+        let value = [];
+        let description = "";
+
+        Services.data.model.meta.shortcuts[alias] = { value };
+        Services.data.model.meta.shortcuts[alias].description = description;
         Services.data.save();
+
+        return {name,value,description};
     }
 
     /**
@@ -473,6 +501,16 @@ export class DataService {
      */
     setValuesForAlias(alias, values) {
         Services.data.model.meta.shortcuts[alias].value = values;
+        Services.data.save();
+    }
+
+
+    /**
+     * Set a list of filter associated to an alias
+     * @param {string} alias Given alias 
+     */
+    setDescriptionForAlias(alias, description) {
+        Services.data.model.meta.shortcuts[alias].description = description;
         Services.data.save();
     }
 

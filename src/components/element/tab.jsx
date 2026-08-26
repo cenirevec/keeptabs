@@ -11,7 +11,19 @@ export class Tab extends React.Component {
     constructor(props) {
         super(props)
 
-        this.onOpen = this.onOpen.bind(this);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    /**
+     * When you click on a tab
+     * @param {*} event 
+     */
+    onClick(event){
+        if(this.props.context == 'current'){
+            this.onFocus();
+        }else if (this.props.context == 'saved'){
+            this.onOpen(event);
+        }else{};
     }
 
     /**
@@ -23,9 +35,13 @@ export class Tab extends React.Component {
             //Open the tab
             Browser.tabs.create({ url: this.props.tab.url, active: true });
             //Remove tab from list
-            if(event.which == 1 || event.button == 0)
+            if (event.which == 1 || event.button == 0)
                 this.delete();
         }
+    }
+
+    onFocus() {
+        browser.tabs.update(this.props.tab.id,{active:true});
     }
 
     /**
@@ -56,14 +72,16 @@ export class Tab extends React.Component {
 
         let date = new Date(lastAccessed);
 
-        return <li className="kt kt-component kt-component-tab list-group-item list-group-item-action" onMouseDown={this.onOpen}>
-            <img src={favicon} className={addedClasses} />
-            {this.props.context == 'saved' &&
-                <a title={title}>{title}</a>}
-            {this.props.context == 'current' &&
-                <span title={title}
-                >{title}</span>}
-            <small>{timeSince(date)}</small>
-        </li>;
+        return (
+            <li className="kt kt-component kt-component-tab list-group-item list-group-item-action" onMouseDown={this.onClick}>
+                <img src={favicon} className={addedClasses} />
+                {this.props.context == 'saved' &&
+                    <a title={title}>{title}</a>}
+                {this.props.context == 'current' &&
+                    <span title={title}
+                    >{title}</span>}
+                <small>{timeSince(date)}</small>
+            </li>
+        );
     }
 }
