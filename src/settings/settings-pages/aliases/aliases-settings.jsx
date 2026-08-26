@@ -1,19 +1,20 @@
 import React from "react";
-import { Modal, Button, Table, ListGroup, ListGroupItem } from "react-bootstrap"
+import { Modal, Button, Table, ListGroup, ListGroupItem, ButtonGroup } from "react-bootstrap"
 
 import { AliasEditor } from "../../setting-component/alias-editor/alias-editor.jsx";
 import { Services } from "../../../services.jsx";
 import Chip from "../../../components/element/chip.jsx";
+import "./alias-settings.css";
 
 export class AliasSettings extends React.Component {
     aliases = {};
 
     constructor(props) {
-        super(props)
+        super(props);
 
-
-        // this.onAddAlias = this.onAddAlias.bind(this);
+        // Binding function used by events
         this.addAlias = this.addAlias.bind(this);
+        this.refresh = this.refresh.bind(this);
 
         this.state = {
             aliases: Services.data.getAliases()
@@ -42,29 +43,25 @@ export class AliasSettings extends React.Component {
      * Add an alias
      */
     addAlias() {
-        let withAlias = Object.assign(this.state.aliases);
-        withAlias["yourAlias"] = { value: ["example.com"] };
-
-        this.setState({
-            aliases: withAlias
-        })
+        Services.data.addAlias();
+        this.refresh();
     }
 
     /**
-     * Actions to do when changes are saved
-     * @param {*} oldAlias Previous name of the alias
-     * @param {*} newAlias New name of the alias
+     * Delete an alias by its name
+     * @param {string} alias 
      */
-    onSave(oldAlias, newAlias) {
-        let oldKey = oldAlias[0];
-        let newKey = Object.keys(newAlias)[0];
-        let values = newAlias[newKey].values;
-        let description = newAlias[newKey].description;
-
-        Services.data.setValuesForAlias(oldKey, values.split(","));
-        Services.data.setDescriptionForAlias(oldKey, description);
-        Services.data.renameAlias(oldKey, newKey);
+    deleteAlias(alias) {
+        Services.data.removeAlias(alias);
         this.refresh();
+    }
+
+    import() {
+        
+    }  
+
+    export() {
+        console.log(Services.data.getAliases());
     }
 
     /**
@@ -88,19 +85,32 @@ export class AliasSettings extends React.Component {
      * @returns 
      */
     render() {
-        
+
         let aliasesList = Object.entries(this.state.aliases).sort(this.compareAliases).map((alias, index) =>
-            <AliasEditor key={index} alias={alias} onEdit={(newValue) => this.onSave(alias, newValue)}></AliasEditor>
+            <AliasEditor
+                key={alias}
+                alias={alias}
+                onEdit={(newValue) => this.onSave(alias, newValue)}
+                onDelete={()=>this.deleteAlias(alias[0])}
+                refresh={this.refresh}
+            ></AliasEditor>
         );
 
         return (
-            <>
+            <div className="kt kt-settings-pane kt-alias-settings">
                 <h4>Alias Settings</h4>
                 <ListGroup>
                     {aliasesList}
                     <ListGroupItem onClick={this.addAlias}>+Add alias</ListGroupItem>
                 </ListGroup>
-            </>
+                {/* <div className="kt kt-alias-options">
+                    <ButtonGroup>
+                        <Button variant="outline-primary" onClick={this.import}>Import</Button>
+                        <Button variant="outline-primary" onClick={this.export}>Export</Button>
+                    </ButtonGroup>
+                    <Button variant="danger">Clear</Button>
+                </div> */}
+            </div>
         )
     }
 }

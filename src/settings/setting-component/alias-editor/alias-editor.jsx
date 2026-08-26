@@ -1,7 +1,8 @@
 import React from "react";
-import { ListGroupItem, Button, FormControl } from "react-bootstrap";
+import { ListGroupItem, Button, FormControl, CloseButton } from "react-bootstrap";
 import Chip from "../../../components/element/chip.jsx";
 import './alias-editor.css'
+import { Services } from "../../../services.jsx";
 
 
 export class AliasEditor extends React.Component {
@@ -31,8 +32,8 @@ export class AliasEditor extends React.Component {
         this.onEditValues = this.onEditValues.bind(this);
         this.onEditDescription = this.onEditDescription.bind(this);
 
-        this.onSave = this.onSave.bind(this);
-        this.onCancel = this.onCancel.bind(this);
+        this.renameAlias = this.renameAlias.bind(this);
+        this.onDelete = this.onDelete.bind(this);
     }
 
     /**
@@ -60,10 +61,24 @@ export class AliasEditor extends React.Component {
     }
 
     /**
+     * Rename the alias
+     * @param {string} name Name of the alias
+     */
+    renameAlias(name) {
+        Services.data.renameAlias(this.key, name);
+        this.refresh();
+    }
+
+    /**
      * When values are edited
      * @param {*} isEditingValues 
      */
     setEditingValues(isEditingValues) {
+        if (this.state.editingValues) {
+            Services.data.setValuesForAlias(this.key, this.state.values.split(","));
+            this.refresh();
+        }
+
         this.setState({ editingValues: isEditingValues })
     }
 
@@ -72,73 +87,70 @@ export class AliasEditor extends React.Component {
      * @param {*} isEditingDesc 
      */
     setEditingDescription(isEditingDesc) {
-        this.setState({ editingDesc: isEditingDesc })
+        if (this.state.editingDesc) {
+            Services.data.setDescriptionForAlias(this.key, this.state.description);
+            this.refresh();
+        }
+
+        this.setState({ editingDesc: isEditingDesc });
     }
 
     /**
-     * Action to perform when changes are saved
+     * Refresh aliases based on what as been saved
      */
-    onSave() {
-        let alias = {}
-        alias[this.state.key] = {
-            values: this.state.values,
-            description: this.state.description
-        };
-
-        this.props.onEdit(alias);
-
-        this.key = this.state.key;
-        this.values = this.state.values;
-        this.description = this.state.description;
-
-        this.setState({ edited: false });
+    refresh() {
+        this.props.refresh();
     }
 
+
     /**
-     * Action to perform when changes are canceled
+     * Action to perform when deleting the alias
      */
-    onCancel() {
-        this.setState({
-            edited: false,
-            editingValues: false,
-            editingDesc: false,
-            key: this.key,
-            values: this.values
-        });
+    onDelete() {
+        this.props.onDelete();
     }
 
     render() {
-        let description = (this.description == "") ?
+        let description = (this.state.description == "") ?
             "Description here..." : this.state.description;
+
+        let values = (this.state.values == "") ?
+            "example.com" : this.state.values;
 
         return (
             <ListGroupItem className="kt kt-component kt-alias-editor">
-                <div className="kt kt-alias-name">
-                    <Chip onEdit={this.onEditKey}>{this.state.key}</Chip>
-                    {!this.state.editingDesc &&
-                        <span onDoubleClick={() => this.setEditingDescription(true)}
-                            className="description">{description}</span>}
-                    {this.state.editingDesc &&
+                <div className="editor">
+                    <div className="kt kt-alias-name">
+                        <Chip
+                            onBlur={this.renameAlias}
+                            onEdit={this.onEditKey}
+                        >{this.state.key}</Chip>
+                        {!this.state.editingDesc &&
+                            <div onClick={() => this.setEditingDescription(true)}
+                                className="description">{description}</div>}
+                        {this.state.editingDesc &&
+                            <FormControl
+                                autoFocus
+                                onBlur={() => this.setEditingDescription(false)}
+                                value={this.state.description}
+                                onInput={this.onEditDescription}>
+                            </FormControl>}
+                    </div>
+
+                    {!this.state.editingValues &&
+                        <div onClick={() => this.setEditingValues(true)}
+                            className="kt kt-alias-value">
+                            {values}</div>
+                    }
+                    {this.state.editingValues &&
                         <FormControl
-                            onBlur={() => this.setEditingDescription(false)}
-                            value={this.state.description}
-                            onInput={this.onEditDescription}>
-                        </FormControl>}
+                            autoFocus
+                            onBlur={() => this.setEditingValues(false)}
+                            value={this.state.values}
+                            onInput={this.onEditValues}></FormControl>
+                    }
                 </div>
-
-                {!this.state.editingValues &&
-                    <span onDoubleClick={() => this.setEditingValues(true)}
-                        className="kt kt-alias-value">
-                        {this.state.values}</span>
-                }
-                {this.state.editingValues &&
-                    <FormControl onBlur={() => this.setEditingValues(false)}
-                        value={this.state.values} onInput={this.onEditValues}></FormControl>
-                }
-
-
-                {this.state.edited && <Button variant="outline-danger" onClick={this.onCancel}>Cancel</Button>}
-                {this.state.edited && <Button onClick={this.onSave}>Save</Button>}
+                <CloseButton onClick={this.onDelete}></CloseButton>
             </ListGroupItem>
         );
     }
