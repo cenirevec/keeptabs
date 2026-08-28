@@ -1,4 +1,4 @@
-.kt-add-category-bttn{
+/* .kt-add-category-bttn{
     border-radius: var(--pill-radius);
     border: dotted 3px var(--primary-pill-text-color);
     color: var(--primary-pill-text-color);
@@ -20,4 +20,8 @@
         padding: 5px 17px;
         color: var(--font-color);
     }
+} */
+
+.kt-add-category-bttn{
+    margin-bottom: -18px;
 }

@@ -4,7 +4,10 @@
     padding-right: var(--popover-width);
     flex-wrap: nowrap;
     overflow-x: scroll;
-    padding: 15px 0;
+    overflow-y: hidden;
+    padding-top: 15px;
+    margin: 0 25px;
+    height: 60px;
 
     .mood-name {
         text-transform: capitalize;
@@ -12,7 +15,25 @@
     }
 
     /* One of the pills */
-    .nav-item {
+    .nav-item{
+        white-space: nowrap;
+    }
+    .nav-link {
+        color: var(--font-color);
+        border: none;
+    }
+
+    .nav-link.active {
+        border-radius: 15px 15px 0 0;
+        background-color: color-mix(in srgb, var(--list-bg-color) 70%, rgba(0,0,0,0) 30%) !important;
+        color: var(--primary-bttn-color);
+    }
+
+    .selected.badge{
+        background-color: var(--primary-bttn-color);
+    }
+
+    /* .nav-item {
         display: flex;
         flex-shrink: 0;
     }
@@ -20,9 +41,9 @@
     .nav-item .badge:not(.selected) {
         background-color: hsla(231.5, 100%, 45.9%, 0.36) !important;
         color: var(--primary-pill-text-color);
-    }
+    } */
 
-    .nav-item:hover .badge:not(.selected) {
+    /* .nav-item:hover .badge:not(.selected) {
         background-color: white !important;
         color: var(--primary-bttn-color);
     }
@@ -41,33 +62,39 @@
         padding-right: calc(var(--popover-width));
         border-radius: var(--pill-radius);
         color: var(--primary-pill-text-color);
-    }
+    } */
 
     .category-popover-icon {
-        margin-left: calc(-1 * var(--popover-width) - 25px);
-        padding-left: 27px;
         box-shadow: none;
         transform: translateY(-.5px);
+        padding-left: 0;
+        padding-right: 0;
+        color: black;
     }
 
+    .nav-link.active .category-popover-icon{
+        color: var(--primary-bttn-color);
+    }
+
+    /* 
     .selected .category-popover-icon, .not-selected:hover .category-popover-icon {
         color: white;
     }
 
     .not-selected .category-popover-icon {
         color: var(--primary-pill-text-color);
-    }
+    } */
 
-    .not-selected .nav-link{
+    /* .not-selected .nav-link{
         background-color: var(--primary-pill-color);
     }
 
     .not-selected:hover .nav-link{
         background-color: hsla(231, 60%, 46%, 0.484);/* var(--primary-dropdown-bttn-color); */
-        /*color: white;*/
-    }
+    /*color: white;*
+    } */
 
-    .nav-link{
-        transition: none !important;
-    }
+
+
+
 }

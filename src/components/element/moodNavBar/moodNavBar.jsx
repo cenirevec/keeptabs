@@ -108,16 +108,17 @@ export class MoodNavBar extends Component {
               ></Renamable>
             </span>
             {index == this.props.selected
-              && <Badge pill bg="light" text="primary" className="selected"> {length} </Badge>}
+              && <Badge pill bg="undefined" className="selected"> {length} </Badge>}
             {index != this.props.selected
-              && <Badge pill> {length} </Badge>}
+              && <Badge pill bg="secondary"> {length} </Badge>}
+            <CategoryMenu category={category} categoryId={index} selected={this.props.selected} renameItem={this.renameItem}></CategoryMenu>
           </Nav.Link>
-          <CategoryMenu category={category} categoryId={index} selected={this.props.selected} renameItem={this.renameItem}></CategoryMenu>
+          
         </Nav.Item>
       );
     })
 
-    return <Nav className="kt kt-component kt-component-mood-navbar" variant="pills" defaultActiveKey={this.props.selected} activeKey={this.props.selected}>
+    return <Nav className="kt kt-component kt-component-mood-navbar" variant="tabs" defaultActiveKey={this.props.selected} activeKey={this.props.selected}>
       {navbarItems}
       <Nav.Item>
         <CreateCategory saveData={this.props.saveData} onCreated={this.createCategory} />
