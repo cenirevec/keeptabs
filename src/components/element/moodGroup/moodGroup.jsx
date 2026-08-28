@@ -65,7 +65,7 @@ export class MoodGroup extends React.Component {
         //console.log(webpage);
 
         let hasReachedBottom = () => {
-            if (webpage.scrollTop == 0) {
+            if (webpage.scrollTop == 0  && this.state.enableScrollToTop) {
                 this.setState({
                     enableScrollToTop: false
                 })
