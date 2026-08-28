@@ -477,26 +477,7 @@ header img {
     top: 10px;
 }
 
-#settings-btn svg {
-    margin-right: 0.5rem;
-    margin-bottom: 2px;
-    transition: transform 0.5s cubic-bezier(.55, .06, .68, .19);
-}
 
-#settings-btn:hover svg {
-    transform: rotateZ(360deg);
-}
-
-br {
-    margin: 0.5rem;
-}
-
-.settings .list-group-item-danger {
-    background: #ff818147 !important;
-    color: #a70303 !important;
-    transition: background 0.5s cubic-bezier(.55, .06, .68, .19);
-    font-weight: bold;
-}
 
 .settings .list-group-item-danger:hover {
     background: red !important;
