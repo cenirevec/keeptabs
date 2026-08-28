@@ -127,7 +127,7 @@ export class TabGroup extends React.Component {
         let areSavedTabs = this.props.context == "saved";
 
         let className = "kt kt-component kt-component-tabgroup tabs";
-        //className += areSavedTabs ? " col-lg-6":"";
+        className += this.props?.inBasket ? " tabs-in-basket":"";
 
         this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
 

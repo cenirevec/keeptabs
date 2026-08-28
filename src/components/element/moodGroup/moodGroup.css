@@ -1,8 +1,12 @@
 .kt-component-moodgroup {
 
     display: grid;
-    grid-template-columns: repeat(2, calc(48.5vw - 30px));
+    grid-template-columns: repeat(2, calc(48.5vw - 40px));
     gap: 3vw;
+    background-color: color-mix(in srgb, var(--list-bg-color) 70%, rgba(0,0,0,0) 30%);
+    padding: 7px 14px;
+    border-radius: 15px;
+    margin-top: -0.91px;
 
     .empty {
         border: var(--transparent-border) dotted 5px;
@@ -31,5 +35,30 @@
 
     .accordion-button {
         background-color: var(--body-color);
+    }
+
+    .notify-expiracy {
+        opacity: 0.75;
+        font-style: italic;
+        grid-column: 1/ span 2;
+        text-align: center;
+    }
+
+    .scroll-top-bttn{
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        box-shadow: 0px 0px 25px -5px var(--primary-bttn-color);
+        z-index: 1000;
+        transition: 0.5s;
+        padding: 0;
+    }
+
+    .scroll-top-bttn svg{
+        zoom: 2.5;
+    }
+
+    .scroll-top-bttn.hide-btn{
+        bottom: -250px;
     }
 }
