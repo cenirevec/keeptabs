@@ -36,6 +36,7 @@ export class MoodGroup extends React.Component {
 
         this.state = {
             tabGroups: this.props.category.tabGroups,
+            enableScrollToTop: false,
             loadedTabGroups: 10
         };
         this.removeTabGroup = this.removeTabGroup.bind(this);
@@ -64,10 +65,18 @@ export class MoodGroup extends React.Component {
         //console.log(webpage);
 
         let hasReachedBottom = () => {
+            if (webpage.scrollTop == 0) {
+                this.setState({
+                    enableScrollToTop: false
+                })
+            } else if (webpage.scrollTop > 0 && !this.state.enableScrollToTop) {
+                this.setState({
+                    enableScrollToTop: true
+                })
+            }
+
             if (!this.scrollNeeded &&
                 (webpage.scrollTop + document.body.offsetHeight) >= webpage.scrollTopMax) {
-
-
                 if (this.state.loadedTabGroups < this.props.category.tabGroups.length) {
                     //console.log("Add tabgroups")
                     this.setState({
@@ -83,6 +92,19 @@ export class MoodGroup extends React.Component {
         }
 
         setInterval(hasReachedBottom, 100);
+    }
+
+    scrollToTop() {
+        let webpage = document.getElementById("react-target");
+
+        webpage.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
+        this.setState({
+            enableScrollToTop: false
+        })
     }
 
     /**
@@ -178,7 +200,7 @@ export class MoodGroup extends React.Component {
      * @returns 
      */
     renderHiddenTabs() {
-        let hiddenTabsToRender = Math.max(0,this.state.loadedTabGroups - this.renderableTabs.length);
+        let hiddenTabsToRender = Math.max(0, this.state.loadedTabGroups - this.renderableTabs.length);
         //console.log(hiddenTabsToRender)
         //return;
         return this.props.category.tabGroups
@@ -216,6 +238,8 @@ export class MoodGroup extends React.Component {
         //Count the hidden elements
         this.countHiddenElements();
 
+        let classForScrollBtn = (this.state.enableScrollToTop) ? "" : "hide-btn";
+
         return <div className="kt kt-component kt-component-moodgroup">
             {tabgroupList.length > 0 && tabgroupList}
             {this.props.category.tabGroups.length == 0 &&
@@ -226,10 +250,15 @@ export class MoodGroup extends React.Component {
             }
 
 
-            {hiddenTabgroupList.length > 0 && 
+            {hiddenTabgroupList.length > 0 &&
                 <h3 className="notify-expiracy">The following tab groups will soon reach expiration date and will be removed</h3>
             }
             {hiddenTabgroupList}
+            <Button className={"scroll-top-bttn " + classForScrollBtn} onClick={this.scrollToTop}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5" />
+                </svg>
+            </Button>
         </div>
     }
 }
