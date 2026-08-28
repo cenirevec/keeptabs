@@ -63,7 +63,7 @@
     }
 
     .not-selected:hover .nav-link{
-        background-color: var(--primary-dropdown-bttn-color);
-        color: white;
+        background-color: hsla(231, 60%, 46%, 0.484);/* var(--primary-dropdown-bttn-color); */
+        /*color: white;*/
     }
 }

@@ -32,4 +32,11 @@
     .accordion-button {
         background-color: var(--body-color);
     }
+
+    .notify-expiracy{
+        opacity: 0.75;
+        font-style: italic;
+        grid-column: 1/ span 2;
+        text-align: center;
+    }
 }

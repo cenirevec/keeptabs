@@ -9,3 +9,11 @@
     margin: 7px 12px;
 
 }
+
+.tabs-in-basket{
+    opacity: 0.5;
+}
+
+.tabs-in-basket:hover{
+    opacity: 1;
+}

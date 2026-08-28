@@ -5,8 +5,6 @@
     border-radius: 1rem;
 }
 
-
-
 .tabs li img {
     max-width: 25px;
     max-height: 25px;
@@ -703,15 +701,6 @@ h2 .tabs-count {
 .kt-component-setting-option.number input {
     width: 100px;
 }
-/* 
-.btn:first-of-type{
-    border-top-left-radius: var(--pill-radius);
-    border-bottom-left-radius: var(--pill-radius);
-}
-.btn:last-of-type{
-    border-top-right-radius: var(--pill-radius);
-    border-bottom-right-radius: var(--pill-radius);
-} */
 
 .btn{
     border-radius: var(--pill-radius);
