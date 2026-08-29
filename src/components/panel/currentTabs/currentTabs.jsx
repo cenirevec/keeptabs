@@ -212,8 +212,6 @@ export class CurrentTabsPanel extends Component {
                     tabGroup={this.state.currentTabs}
                     saveData={this.props.saveData} />
 
-                {openRandomButton}
-
                 <Dropdown as={ButtonGroup}>
                     <Button variant="primary"
                         onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>

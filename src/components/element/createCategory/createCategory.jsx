@@ -10,6 +10,7 @@ export class CreateCategory extends Component {
     defaultCategoryData = {
         "meta": {
             name: "newCategory",
+            description: "",
             expiration: null,
             hidden: 2635200000 // a month
         },
