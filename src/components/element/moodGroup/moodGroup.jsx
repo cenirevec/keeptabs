@@ -28,6 +28,11 @@ export class MoodGroup extends React.Component {
     DAY = 24 * 3600 * 1000;
 
     /**
+     * Default number of loaded tabs
+     */
+    DEFAULT_LOADED_TABS = 10;
+
+    /**
  * Constructor
  * @param {Object} props Component's attributes
  */
@@ -43,6 +48,7 @@ export class MoodGroup extends React.Component {
         this.scrollNeeded = false;
         this.renderableTabs = [];
 
+        this.scrollToTop = this.scrollToTop.bind(this);
         this.detectScroll();
     }
 
@@ -51,7 +57,7 @@ export class MoodGroup extends React.Component {
         //console.log(nextProps)
         if (nextProps.category.meta.name !== this.props.category.meta.name) {
             this.setState({
-                loadedTabGroups: 10
+                loadedTabGroups: this.DEFAULT_LOADED_TABS
             })
         }
         return true;
@@ -80,7 +86,7 @@ export class MoodGroup extends React.Component {
                 if (this.state.loadedTabGroups < this.props.category.tabGroups.length) {
                     //console.log("Add tabgroups")
                     this.setState({
-                        loadedTabGroups: this.state.loadedTabGroups += 5
+                        loadedTabGroups: this.state.loadedTabGroups += this.DEFAULT_LOADED_TABS/2
                     });
                     this.scrollNeeded = true;
                 }
@@ -103,8 +109,10 @@ export class MoodGroup extends React.Component {
         });
 
         this.setState({
-            enableScrollToTop: false
-        })
+            enableScrollToTop: false,
+           // loadedTabGroups: this.DEFAULT_LOADED_TABS
+        });
+       // console.log("ça va (loadedTabGroups: " + this.state.loadedTabGroups + ")");
     }
 
     /**
@@ -255,8 +263,8 @@ export class MoodGroup extends React.Component {
             }
             {hiddenTabgroupList}
             <Button className={"scroll-top-bttn " + classForScrollBtn} onClick={this.scrollToTop}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                    <path fillRule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5" />
                 </svg>
             </Button>
         </div>
