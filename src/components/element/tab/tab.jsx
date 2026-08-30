@@ -1,6 +1,7 @@
 import React from "react";
-import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
-import { Services } from "../../services.jsx";
+import { Browser, timeSince } from "../../../../public/api/shared.variables.mjs";
+import { Services } from "../../../services.jsx";
+import './tab.css'
 
 export class Tab extends React.Component {
 

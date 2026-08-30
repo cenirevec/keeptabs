@@ -1,7 +1,8 @@
 import React from "react";
-import { TabModel } from "../../models/tab.model.js";
-import { MoodGroup } from "../element/moodGroup/moodGroup.jsx";
-import MoodNavBar from "../element/moodNavBar/moodNavBar.jsx";
+import { MoodGroup } from "../../element/moodGroup/moodGroup.jsx";
+import MoodNavBar from "../../element/moodNavBar/moodNavBar.jsx";
+import { TabModel } from "../../../models/tab.model.js";
+import "./savedTabs.css";
 
 
 export class SavedTabsPanel extends React.Component {
@@ -60,7 +61,7 @@ export class SavedTabsPanel extends React.Component {
     /**
      * Add a category
      * @param {string} name Name of the category
-     * @param {Array<Array<TabModel>>} tabGroups Tabs to add while adding the category
+     * @param {Array<Array<any>>} tabGroups Tabs to add while adding the category
      */
     addMood(name, tabGroups) {
         if (tabGroups) {

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { InputText } from 'primereact/inputtext';
-import { searchParameters } from "../../models/searchFilter.model";
-import Chip from "../element/chip.jsx";
+import { searchParameters } from "../../../models/searchFilter.model.js";
+import Chip from "../../element/chip/chip.jsx";
+import { TabModel } from "../../../models/tab.model.js";
+import "./searchBar.css";
 
 export class SearchBarPanel extends Component{
     /** Parameters linked to the searchbar */

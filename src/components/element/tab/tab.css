@@ -1,0 +1,63 @@
+.tabs {
+    li {
+        img {
+            max-width: 25px;
+            max-height: 25px;
+            border-radius: 5px;
+            margin: auto 0;
+            cursor: pointer;
+        }
+
+        img:hover {
+            filter: drop-shadow(2px 0px 3px rgb(183, 195, 235));
+        }
+
+        small {
+            margin: auto 0;
+            opacity: 0.5;
+            white-space: nowrap;
+        }
+
+    }
+
+    li.disappear {
+        display: none;
+    }
+
+    li.unselected {
+        opacity: 0.3;
+
+        img:hover {
+            filter: drop-shadow(2px 0px 6px rgb(82, 123, 212));
+        }
+    }
+
+    button {
+        white-space: nowrap;
+        width: 100%;
+    }
+}
+
+#loaded .tabs,
+section {
+    margin-bottom: 25px;
+}
+
+
+
+
+.kt-component-tab {
+    display: flex;
+    gap: 1rem;
+}
+
+.kt-component-tab :is(a, span) {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    min-height: 1.2rem;
+    white-space: nowrap;
+}
+
+.kt-component-tab img.no-icon {
+    opacity: 0.1;
+}

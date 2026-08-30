@@ -2,15 +2,39 @@
     grid-row-end: span var(--tabs);
 }
 
-.kt-component-tabgroup>.btn-group{
+.kt-component-tabgroup>.btn-group {
     margin: 7px 12px;
 
 }
 
-.tabs-in-basket{
+.tabs-in-basket {
     opacity: 0.5;
 }
 
-.tabs-in-basket:hover{
+.tabs-in-basket:hover {
     opacity: 1;
+}
+
+/* Header of the Tab Group*/
+.tab-group-header {
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+    gap: 1rem;
+    margin: 0px 1rem;
+    min-height: 2.25rem;
+
+    .tabs-count .badge {
+        position: relative;
+        top: -2px;
+    }
+
+    /* h2 .tabs-count {
+    margin-left: 10px;
+    } */
+
+    :not(.kt-component-renamable) {
+        margin-top: auto;
+        opacity: 0.7;
+        margin-bottom: .15rem;
+    }
 }

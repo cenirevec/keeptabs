@@ -1,6 +1,6 @@
 import React from "react";
 import { ListGroupItem, Button, FormControl, CloseButton } from "react-bootstrap";
-import Chip from "../../../components/element/chip.jsx";
+import Chip from "../../../components/element/chip/chip.jsx";
 import './alias-editor.css'
 import { Services } from "../../../services.jsx";
 

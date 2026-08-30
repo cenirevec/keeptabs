@@ -2,9 +2,9 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { HeaderPanel } from "./components/panel/header.jsx";
 import { CurrentTabsPanel } from "./components/panel/currentTabs/currentTabs.jsx";
-import { SavedTabsPanel } from "./components/panel/savedTabs.jsx";
+import { SavedTabsPanel } from "./components/panel/savedTabs/savedTabs.jsx";
 import { FooterPanel } from "./components/panel/footer.jsx";
-import { SearchBarPanel } from "./components/panel/searchBar.jsx";
+import { SearchBarPanel } from "./components/panel/searchBar/searchBar.jsx";
 import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
 import { Services } from "./services.jsx";

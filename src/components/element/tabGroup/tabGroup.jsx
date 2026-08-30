@@ -1,6 +1,6 @@
 import React from "react";
 import { Badge, Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
-import { Tab } from "../tab.jsx";
+import { Tab } from "../tab/tab.jsx";
 import { Browser, timeSince } from "../../../../public/api/shared.variables.mjs";
 import { Renamable } from "../../shared/renamable/renamable.jsx";
 import { Services } from "../../../services.jsx";
