@@ -274,7 +274,7 @@ export class MoodGroup extends React.Component {
         let classForScrollBtn = (this.state.enableScrollToTop) ? "" : "hide-btn";
 
         let openRandomButton = (
-            <Button variant="primary" className="kt kt-open-rand-btn"
+            <Button variant="secondary" className="kt kt-open-rand-btn"
                 onClick={() => this.openRandomTabGroup(this.props.category)}>
                 Open random tabs</Button>
         )

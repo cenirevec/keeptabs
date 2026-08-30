@@ -61,12 +61,6 @@ export class CreateCategory extends Component {
             edition: enabled
         });
 
-        // if (!enabled) {
-        //     this.setState({
-        //         name: ''
-        //     });
-        // }
-
         if(enabled){
             setTimeout(()=>{
                 let width = document.querySelector(".kt-component-mood-navbar").scrollWidth;
@@ -80,7 +74,7 @@ export class CreateCategory extends Component {
     renderButtonWithInput() {
         return <React.Fragment>
             {!this.state.edition &&
-                <Button className="kt kt-element kt-add-category-bttn" onClick={() => { this.toggleEditionMode(true) }}>
+                <Button variant="outline-secondary" className="kt kt-element kt-add-category-bttn" onClick={() => { this.toggleEditionMode(true) }}>
                     + Add category
                 </Button>
             }

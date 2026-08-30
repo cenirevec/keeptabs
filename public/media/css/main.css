@@ -6,6 +6,10 @@
     src: url(../Josephin.ttf);
 }
 
+#react-target{
+    position: absolute;
+}
+
 h1 {
     font-family: "Josephin";
     padding: 5px 0px 0px 25px;
@@ -119,4 +123,5 @@ br {
 .list-group-item:not(.list-group-item-info):not(.list-group-item-danger) {
     background-color: var(--list-bg-color) !important;
     color: var(--list-font-color) !important;
+    border-color: var(--body-color) !important;
 }

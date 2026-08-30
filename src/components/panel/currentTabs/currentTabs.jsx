@@ -184,7 +184,8 @@ export class CurrentTabsPanel extends Component {
                             )}
                         </ul>
                         <Dropdown.Divider />
-                        <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} />
+                        {/* <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} /> */}
+                        +Create {value}
                     </div>
                 );
             },
@@ -212,7 +213,7 @@ export class CurrentTabsPanel extends Component {
                     tabGroup={this.state.currentTabs}
                     saveData={this.props.saveData} />
 
-                <Dropdown as={ButtonGroup}>
+                <Dropdown drop="up" as={ButtonGroup}>
                     <Button variant="primary"
                         onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
                         Save in {this.props.selectedCategory.meta.name}</Button>

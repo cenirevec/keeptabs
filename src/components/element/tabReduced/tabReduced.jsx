@@ -58,10 +58,12 @@ export class TabReduced extends React.Component {
         if (this.props.tabList.length <= 0){
             return;
         }
+
+        let reducedTabs = this.props.tabList.map((tab,id)=>this.getTabFavicon(tab,id));
         
         // Add a reduced version when the threshold is reached
         return <li className="kt kt-component kt-component-tab-reduced list-group-item list-group-item-action">
-            <span className="kt-component-tab-reduced-imgs">{this.props.tabList.map((tab,id)=>this.getTabFavicon(tab,id))}</span>
+            <span className="kt-component-tab-reduced-imgs">{reducedTabs}</span>
             <b> {this.props.tabList.length} more tabs</b>
         </li>
     }

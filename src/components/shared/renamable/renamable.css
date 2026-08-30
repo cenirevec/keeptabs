@@ -20,6 +20,7 @@
 
 .kt-component-renamable{
     display: inline-flex;
+	color: var(--font-color);
 }
 
 .kt-component-renamable input{
