@@ -14,6 +14,7 @@
     grid-template-rows: auto 1fr;
     gap: 25px;
     backdrop-filter: blur(7px);
+    transition: 0.5s;
 
 
     .kt-settings-body {
@@ -72,4 +73,19 @@
 
 #settings-btn:hover svg {
     transform: rotateZ(360deg);
+}
+
+.kt-panel-settings-closed {
+    top: 100vh;
+}
+
+.background-blur {
+    background-color: #0006;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(7px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 500;
 }
