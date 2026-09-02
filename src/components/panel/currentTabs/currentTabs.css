@@ -1,8 +1,19 @@
 .kt-panel-current {
+    margin: 0 auto;
+    width: 70vw;
+
     h2 {
         font-size: calc(0.825rem + .9vw);
         margin-top: 20px;
         margin-left: 1rem;
+        margin-top: -35px;
+        text-align: center;
+
+        .tabs-count {
+            opacity: 0.3;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
     }
 
     .tabs {
@@ -14,7 +25,8 @@
 
 .kt-panel-current-empty {
     text-align: center;
-    margin: 7vh 7vw;
+    margin: 3vw auto;
+    width: 70vw;
 
     div {
         font-size: 1.4em;
@@ -29,6 +41,7 @@
         font-weight: bold;
     }
 }
+
 /* 
 .kt-open-rand-btn {
     border-radius: var(--pill-radius);

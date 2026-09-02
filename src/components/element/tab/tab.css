@@ -8,33 +8,12 @@
             cursor: pointer;
         }
 
-        img:hover {
-            filter: drop-shadow(2px 0px 3px rgb(183, 195, 235));
-        }
-
         small {
             margin: auto 0;
             opacity: 0.5;
             white-space: nowrap;
         }
 
-    }
-
-    li.disappear {
-        display: none;
-    }
-
-    li.unselected {
-        opacity: 0.3;
-
-        img:hover {
-            filter: drop-shadow(2px 0px 6px rgb(82, 123, 212));
-        }
-    }
-
-    button {
-        white-space: nowrap;
-        width: 100%;
     }
 }
 

@@ -104,11 +104,11 @@ br {
     border-top-right-radius: var(--pill-radius);
     border-bottom-right-radius: var(--pill-radius);
 }
-
+/* 
 .btn-group,
 :not(.btn-group) .btn {
     box-shadow: var(--button-shadow);
-}
+} */
 
 
 /** Lists */

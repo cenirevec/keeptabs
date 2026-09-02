@@ -25,28 +25,65 @@ export class TabReduced extends React.Component {
 
     }
 
+    // /**
+    //  * Get Tab Favicons
+    //  * @param {*} tab 
+    //  * @param {number} id 
+    //  * @returns 
+    //  */
+    // getTabFavicon(tab,id) {
+    //     let favicon;
+    //     if (tab.faviconId != undefined) {
+    //         favicon = Services.favicons.getURLByFaviconId(tab.faviconId);
+    //     } else {
+    //         favicon = tab.faviconUrl;
+    //     }
+    //     return <img onClick={() => this.goto(tab.id)} title={tab.title} key={id} src={favicon} />
+
+    // }   
+
     /**
-     * Get Tab Favicons
-     * @param {*} tab 
-     * @param {number} id 
+     * Get a summary of the currently openned tab
+     * @param {*} tabs 
      * @returns 
      */
-    getTabFavicon(tab,id){
-        let favicon;
-        if (tab.faviconId != undefined) {
-            favicon = Services.favicons.getURLByFaviconId(tab.faviconId);
-        } else {
-            favicon = tab.faviconUrl;
-        }
-        return <img onClick={()=>this.goto(tab.id)} title={tab.title} key={id} src={favicon}/>
+    getReducedTabs(tabs) {
+        //Sort tabs by favicon
+        let reducedTabs = tabs.reduce((_reducedTabs, tab) => {
+            let tab_favicon = tab.faviconId;
+
+            if (!_reducedTabs[tab_favicon]) {
+                _reducedTabs[tab_favicon] = 1;
+            } else {
+                _reducedTabs[tab_favicon]++;
+            }
+
+            return _reducedTabs;
+        }, new Object());
+
+        return Object.entries(reducedTabs).map((rtab)=>this.renderReducedTab(rtab));
     }
 
     /**
      * Go to a tab based on its id
      * @param {number} id tab identifier
      */
-    goto(id){
-        browser.tabs.update(id,{active:true});
+    goto(id) {
+        browser.tabs.update(id, { active: true });
+    }
+
+    /**
+     * Render the reduced version of tab list
+     * @param {*} rtab 
+     * @returns 
+     */
+    renderReducedTab(rtab){
+        let favicon = Services.favicons.getURLByFaviconId(rtab[0]);
+        return <span className="kt-component-reduced-tab-pill">
+            <img key={rtab[0]} src={favicon}/>
+            <span>{rtab[1]}</span>
+        </span>
+        return;
     }
 
     /**
@@ -55,12 +92,12 @@ export class TabReduced extends React.Component {
      */
     render() {
         // Don't do anything else if not enough tabs are openned
-        if (this.props.tabList.length <= 0){
+        if (this.props.tabList.length <= 0) {
             return;
         }
 
-        let reducedTabs = this.props.tabList.map((tab,id)=>this.getTabFavicon(tab,id));
-        
+        let reducedTabs = this.getReducedTabs(this.props.tabList);
+
         // Add a reduced version when the threshold is reached
         return <li className="kt kt-component kt-component-tab-reduced list-group-item list-group-item-action">
             <span className="kt-component-tab-reduced-imgs">{reducedTabs}</span>

@@ -55,7 +55,6 @@ export class MoodGroup extends React.Component {
 
     /** Just before update */
     shouldComponentUpdate(nextProps, nextStates) {
-        //console.log(nextProps)
         if (nextProps.category.meta.name !== this.props.category.meta.name) {
             this.setState({
                 loadedTabGroups: this.DEFAULT_LOADED_TABS
@@ -69,7 +68,6 @@ export class MoodGroup extends React.Component {
      */
     detectScroll() {
         let webpage = document.getElementById("react-target");
-        //console.log(webpage);
 
         let hasReachedBottom = () => {
             if (webpage.scrollTop == 0 && this.state.enableScrollToTop) {
@@ -85,16 +83,13 @@ export class MoodGroup extends React.Component {
             if (!this.scrollNeeded &&
                 (webpage.scrollTop + document.body.offsetHeight) >= webpage.scrollTopMax) {
                 if (this.state.loadedTabGroups < this.props.category.tabGroups.length) {
-                    //console.log("Add tabgroups")
                     this.setState({
                         loadedTabGroups: this.state.loadedTabGroups += this.DEFAULT_LOADED_TABS / 2
                     });
                     this.scrollNeeded = true;
                 }
             } else {
-                //console.log("ça va (loadedTabGroups: " + this.state.loadedTabGroups + ")");
                 this.scrollNeeded = false;
-
             }
         }
 
@@ -110,10 +105,8 @@ export class MoodGroup extends React.Component {
         });
 
         this.setState({
-            enableScrollToTop: false,
-            // loadedTabGroups: this.DEFAULT_LOADED_TABS
+            enableScrollToTop: false
         });
-        // console.log("ça va (loadedTabGroups: " + this.state.loadedTabGroups + ")");
     }
 
     /**
@@ -143,7 +136,7 @@ export class MoodGroup extends React.Component {
             this.props.category.tabGroups =
                 this.props.category.tabGroups.filter((tabGroup) =>
                     (Date.now() - tabGroup.meta.lastAccessed) <= this.props.category.meta.expiration * this.DAY);
-            //Services.data.save();
+            Services.data.save();
         }
     }
 
@@ -274,7 +267,7 @@ export class MoodGroup extends React.Component {
         let classForScrollBtn = (this.state.enableScrollToTop) ? "" : "hide-btn";
 
         let openRandomButton = (
-            <Button variant="secondary" className="kt kt-open-rand-btn"
+            <Button variant="outline-secondary" className="kt kt-open-rand-btn"
                 onClick={() => this.openRandomTabGroup(this.props.category)}>
                 Open random tabs</Button>
         )
