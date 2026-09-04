@@ -18,6 +18,31 @@
 
     .tabs {
         display: block;
+
+        .list-group {
+            display: grid;
+            grid-template-columns: repeat(2, 35vw);
+            border-radius: 25px;
+            overflow: hidden;
+            background-color: var(--list-bg-color);
+
+            li{
+                border-radius: 0;
+                border-left: none;
+            }
+
+            li:last-of-type{
+                border-bottom: none;
+            }
+
+            /* li:first-child{
+                border-radius: 20px 0 0 0;
+            }
+
+            li:nth-child(2){
+                border-radius: 0 20px 0 0;
+            } */
+        }
     }
 }
 

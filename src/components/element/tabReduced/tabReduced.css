@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 15px;
+    grid-column: span 2;
 
     .kt-component-tab-reduced-imgs {
         display: flex;

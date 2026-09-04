@@ -15,32 +15,15 @@ export class TabReduced extends React.Component {
      * @param {Object} props Component's attributes
      */
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     /**
-     * TO BE DEFINED
+     * Toggle to define whether the whole list of tabs is shown or not
      */
-    showMore() {
-
+    toggleShowMore() {
+        this.props.toggleShowMore(!this.props.expand);
     }
-
-    // /**
-    //  * Get Tab Favicons
-    //  * @param {*} tab 
-    //  * @param {number} id 
-    //  * @returns 
-    //  */
-    // getTabFavicon(tab,id) {
-    //     let favicon;
-    //     if (tab.faviconId != undefined) {
-    //         favicon = Services.favicons.getURLByFaviconId(tab.faviconId);
-    //     } else {
-    //         favicon = tab.faviconUrl;
-    //     }
-    //     return <img onClick={() => this.goto(tab.id)} title={tab.title} key={id} src={favicon} />
-
-    // }   
 
     /**
      * Get a summary of the currently openned tab
@@ -61,7 +44,7 @@ export class TabReduced extends React.Component {
             return _reducedTabs;
         }, new Object());
 
-        return Object.entries(reducedTabs).map((rtab)=>this.renderReducedTab(rtab));
+        return Object.entries(reducedTabs).map((rtab) => this.renderReducedTab(rtab));
     }
 
     /**
@@ -77,10 +60,10 @@ export class TabReduced extends React.Component {
      * @param {*} rtab 
      * @returns 
      */
-    renderReducedTab(rtab){
+    renderReducedTab(rtab) {
         let favicon = Services.favicons.getURLByFaviconId(rtab[0]);
-        return <span className="kt-component-reduced-tab-pill">
-            <img key={rtab[0]} src={favicon}/>
+        return <span key={rtab[0]} className="kt-component-reduced-tab-pill">
+            <img key={rtab[0]} src={favicon} />
             <span>{rtab[1]}</span>
         </span>
         return;
@@ -92,16 +75,20 @@ export class TabReduced extends React.Component {
      */
     render() {
         // Don't do anything else if not enough tabs are openned
-        if (this.props.tabList.length <= 0) {
+        if (this.props.tabs.length <= 0) {
             return;
         }
 
-        let reducedTabs = this.getReducedTabs(this.props.tabList);
+        let reducedTabs = this.getReducedTabs(this.props.tabs);
 
         // Add a reduced version when the threshold is reached
-        return <li className="kt kt-component kt-component-tab-reduced list-group-item list-group-item-action">
-            <span className="kt-component-tab-reduced-imgs">{reducedTabs}</span>
-            <b> {this.props.tabList.length} more tabs</b>
+        return <li onClick={()=>this.toggleShowMore()} className="kt kt-component kt-component-tab-reduced list-group-item list-group-item-action">
+            {!this.props.expand && <>
+                    <span className="kt-component-tab-reduced-imgs">{reducedTabs}</span>
+                    <b> {this.props.tabs.length} more tabs</b>
+                </>}
+
+            {this.props.expand && <b>Show less</b>}
         </li>
     }
 }

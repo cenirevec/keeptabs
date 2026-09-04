@@ -19,13 +19,16 @@ export class TabGroup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabs: this.props.tabGroup
+            tabs: this.props.tabGroup,
+            expand: false
         };
 
         this.openAll = this.openAll.bind(this);
         this.delete = this.delete.bind(this);
         this.removeItem = this.removeItem.bind(this);
         this.refresh = this.refresh.bind(this);
+
+        this.expandCurrentTabs = this.expandCurrentTabs.bind(this);
 
 
         this.tabGroupTitle = React.createRef();
@@ -58,8 +61,8 @@ export class TabGroup extends React.Component {
      * @param {*} tabs 
      */
     refresh(tabs) {
-        if(tabs) this.props.tabGroup.tabs = tabs;
-        
+        if (tabs) this.props.tabGroup.tabs = tabs;
+
         this.setState({
             tabs: this.props.tabGroup
         });
@@ -108,12 +111,18 @@ export class TabGroup extends React.Component {
         }
     }
 
+    expandCurrentTabs(showMore) {
+        this.setState({
+            expand: showMore
+        })
+    }
+
     /**
      * React rendering function
      * @returns Rendered content
      */
     render() {
-        let filteredTabs = TabService.filter(this.props.tabGroup.tabs,this.props.filter);
+        let filteredTabs = TabService.filter(this.props.tabGroup.tabs, this.props.filter);
         // Returns nothing if the tab list is empty
         if (filteredTabs.length == 0)
             return;
@@ -127,7 +136,7 @@ export class TabGroup extends React.Component {
         let areSavedTabs = this.props.context == "saved";
 
         let className = "kt kt-component kt-component-tabgroup tabs";
-        className += this.props?.inBasket ? " tabs-in-basket":"";
+        className += this.props?.inBasket ? " tabs-in-basket" : "";
 
         this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
 
@@ -152,15 +161,19 @@ export class TabGroup extends React.Component {
             }
 
             {/* Show the list of tabs */}
-            {areSavedTabs &&
+            {(areSavedTabs) &&
                 <ul className="list-group">
                     {tabList}
                 </ul>
             }
-            {!areSavedTabs &&
+            {(!areSavedTabs) &&
                 <ul className="list-group">
-                    {tabList.slice(0, 6)}
-                    <TabReduced tabList={filteredTabs.slice(7,)}></TabReduced>
+                    {!this.state.expand && tabList.slice(0, 12)}
+                    {this.state.expand && tabList}
+                    <TabReduced
+                        toggleShowMore={this.expandCurrentTabs}
+                        expand={this.state.expand}
+                        tabs={filteredTabs.slice(12,)}></TabReduced>
                 </ul>
             }
 
