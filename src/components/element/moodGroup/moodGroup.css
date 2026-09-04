@@ -3,9 +3,9 @@
     display: grid;
     grid-template-columns: repeat(2, calc(48.5vw - 40px));
     gap: 3vw;
-    background-color: color-mix(in srgb, var(--list-bg-color) 70%, rgba(0,0,0,0) 30%);
+    background-color: color-mix(in srgb, var(--list-bg-color) 70%, rgba(0, 0, 0, 0) 30%);
     padding: 7px 14px;
-    border-radius: 15px;
+    border-radius: 32px;
     margin-top: -0.91px;
 
     .empty {
@@ -37,14 +37,18 @@
         background-color: var(--body-color);
     }
 
+    .notify-expiracy,
+    .kt-component-moodgroup-header {
+        grid-column: 1/ span 2;
+    }
+
     .notify-expiracy {
         opacity: 0.75;
         font-style: italic;
-        grid-column: 1/ span 2;
         text-align: center;
     }
 
-    .scroll-top-bttn{
+    .scroll-top-bttn {
         position: fixed;
         bottom: 25px;
         right: 25px;
@@ -54,11 +58,29 @@
         padding: 0;
     }
 
-    .scroll-top-bttn svg{
+    .scroll-top-bttn svg {
         zoom: 2.5;
     }
 
-    .scroll-top-bttn.hide-btn{
+    .scroll-top-bttn.hide-btn {
         bottom: -250px;
+    }
+
+    .kt-component-moodgroup-header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        padding: 12px 4px;
+        margin-bottom: -30px;
+        text-transform: capitalize;
+        gap: 1.5em;
+
+        h3{
+            margin-left: 5px;
+        }
+
+        .description{
+            opacity: 0.3;
+            margin: auto 0;
+        }
     }
 }

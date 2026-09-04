@@ -1,4 +1,4 @@
-#category-popover {
+.kt-popover-menu {
     background-color: var(--popover-bg-color);
     color: var(--font-color) !important;
     border-radius: 25px;

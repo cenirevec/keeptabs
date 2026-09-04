@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FormControl } from "react-bootstrap";
+import './chip.css';
 
 export class Chip extends Component {
     constructor(props) {

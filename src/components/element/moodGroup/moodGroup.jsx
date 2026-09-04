@@ -5,6 +5,7 @@ import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
 import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
 import { Services } from "../../../services.jsx";
 import "./moodGroup.css"
+import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 
 export class MoodGroup extends React.Component {
     /**
@@ -23,7 +24,7 @@ export class MoodGroup extends React.Component {
     ShownGroups = 10;
 
     /***
-     * One day 
+     * One day
      */
     DAY = 24 * 3600 * 1000;
 
@@ -54,7 +55,6 @@ export class MoodGroup extends React.Component {
 
     /** Just before update */
     shouldComponentUpdate(nextProps, nextStates) {
-        //console.log(nextProps)
         if (nextProps.category.meta.name !== this.props.category.meta.name) {
             this.setState({
                 loadedTabGroups: this.DEFAULT_LOADED_TABS
@@ -68,10 +68,9 @@ export class MoodGroup extends React.Component {
      */
     detectScroll() {
         let webpage = document.getElementById("react-target");
-        //console.log(webpage);
 
         let hasReachedBottom = () => {
-            if (webpage.scrollTop == 0  && this.state.enableScrollToTop) {
+            if (webpage.scrollTop == 0 && this.state.enableScrollToTop) {
                 this.setState({
                     enableScrollToTop: false
                 })
@@ -84,16 +83,13 @@ export class MoodGroup extends React.Component {
             if (!this.scrollNeeded &&
                 (webpage.scrollTop + document.body.offsetHeight) >= webpage.scrollTopMax) {
                 if (this.state.loadedTabGroups < this.props.category.tabGroups.length) {
-                    //console.log("Add tabgroups")
                     this.setState({
-                        loadedTabGroups: this.state.loadedTabGroups += this.DEFAULT_LOADED_TABS/2
+                        loadedTabGroups: this.state.loadedTabGroups += this.DEFAULT_LOADED_TABS / 2
                     });
                     this.scrollNeeded = true;
                 }
             } else {
-                //console.log("ça va (loadedTabGroups: " + this.state.loadedTabGroups + ")");
                 this.scrollNeeded = false;
-
             }
         }
 
@@ -109,10 +105,8 @@ export class MoodGroup extends React.Component {
         });
 
         this.setState({
-            enableScrollToTop: false,
-           // loadedTabGroups: this.DEFAULT_LOADED_TABS
+            enableScrollToTop: false
         });
-       // console.log("ça va (loadedTabGroups: " + this.state.loadedTabGroups + ")");
     }
 
     /**
@@ -142,14 +136,14 @@ export class MoodGroup extends React.Component {
             this.props.category.tabGroups =
                 this.props.category.tabGroups.filter((tabGroup) =>
                     (Date.now() - tabGroup.meta.lastAccessed) <= this.props.category.meta.expiration * this.DAY);
-            //Services.data.save();
+            Services.data.save();
         }
     }
 
     /**
      * Check if the tab has to be hidden based on date of expiration
      * @param {*} tabGroup Tab Group to check
-     * @returns 
+     * @returns
      */
     checkHidden(tabGroup) {
         if (this.props.category.meta.hidden == -1) return false;
@@ -181,8 +175,8 @@ export class MoodGroup extends React.Component {
     }
 
     /**
-     * 
-     * @returns 
+     *
+     * @returns
      */
     renderTabs() {
 
@@ -204,8 +198,8 @@ export class MoodGroup extends React.Component {
     }
 
     /**
-     * 
-     * @returns 
+     *
+     * @returns
      */
     renderHiddenTabs() {
         let hiddenTabsToRender = Math.max(0, this.state.loadedTabGroups - this.renderableTabs.length);
@@ -225,6 +219,30 @@ export class MoodGroup extends React.Component {
                         deleteFunction={() => { this.removeTabGroup(index) }}
                         filter={this.props.filter}
                         tabGroup={tabGroup} context="saved" />);
+    }
+
+    /**
+     * Open a random tab group from the category
+     * @param {*} category
+     */
+    openRandomTabGroup(category) {
+        //console.log(category,this.props.filter);
+        let tabGroupId = Date.now() % category.tabGroups.length;
+        //console.log();
+        let tabGroup = category.tabGroups[tabGroupId];
+
+        //Delete a tabGroup if all tabs are loaded
+        let onDelete = () => {
+            category.tabGroups.splice(tabGroupId, 1);
+            this.props.saveData();
+        };
+
+        TabService.openTabGroup(
+            tabGroup.tabs,
+            this.props.filter,
+            (tabs) => { tabGroup.tabs = tabs; Services.main?.refresh() },
+            onDelete
+        )
     }
 
     /**
@@ -248,8 +266,23 @@ export class MoodGroup extends React.Component {
 
         let classForScrollBtn = (this.state.enableScrollToTop) ? "" : "hide-btn";
 
+        let openRandomButton = (
+            <Button variant="outline-secondary" className="kt kt-open-rand-btn"
+                onClick={() => this.openRandomTabGroup(this.props.category)}>
+                Open random tabs</Button>
+        )
+
+
+
         return <div className="kt kt-component kt-component-moodgroup">
-            {tabgroupList.length > 0 && tabgroupList}
+            {tabgroupList.length > 0 && <>
+                <div className="kt-component-moodgroup-header">
+                    <h3>{this.props.category.meta.name}</h3>
+                    <i className="description">Description...</i>
+                    {openRandomButton}
+                </div>
+                {tabgroupList}
+            </>}
             {this.props.category.tabGroups.length == 0 &&
                 <div className="empty">
                     <p>There is no tab saved in {this.props.category.meta.name}</p>

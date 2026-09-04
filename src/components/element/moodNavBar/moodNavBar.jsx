@@ -113,17 +113,17 @@ export class MoodNavBar extends Component {
               && <Badge pill bg="secondary"> {length} </Badge>}
             <CategoryMenu category={category} categoryId={index} selected={this.props.selected} renameItem={this.renameItem}></CategoryMenu>
           </Nav.Link>
-          
+
         </Nav.Item>
       );
     })
 
-    return <Nav className="kt kt-component kt-component-mood-navbar" variant="tabs" defaultActiveKey={this.props.selected} activeKey={this.props.selected}>
-      {navbarItems}
-      <Nav.Item>
-        <CreateCategory saveData={this.props.saveData} onCreated={this.createCategory} />
-      </Nav.Item>
-    </Nav>
+    return <div className="kt-component-category-navbar">
+      <Nav className="kt kt-component kt-component-mood-navbar" variant="tabs" defaultActiveKey={this.props.selected} activeKey={this.props.selected}>
+        {navbarItems}
+      </Nav>
+      <CreateCategory saveData={this.props.saveData} onCreated={this.createCategory} />
+    </div>
   }
 }
 

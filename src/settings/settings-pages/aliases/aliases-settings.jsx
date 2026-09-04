@@ -3,7 +3,7 @@ import { Modal, Button, Table, ListGroup, ListGroupItem, ButtonGroup } from "rea
 
 import { AliasEditor } from "../../setting-component/alias-editor/alias-editor.jsx";
 import { Services } from "../../../services.jsx";
-import Chip from "../../../components/element/chip.jsx";
+import Chip from "../../../components/element/chip/chip.jsx";
 import "./alias-settings.css";
 
 export class AliasSettings extends React.Component {

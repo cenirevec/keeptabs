@@ -1,0 +1,9 @@
+.kt-panel-saved {
+    .kt-component-tab a {
+        color: var(--font-color);
+    }
+
+    .kt-component-tab:hover {
+        background-color: var(--primary-bttn-color);
+    }
+}
