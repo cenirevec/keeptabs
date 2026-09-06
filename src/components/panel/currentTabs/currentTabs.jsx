@@ -3,7 +3,7 @@ import { TabModel } from "../../../models/tab.model.js";
 import { TabGroup } from "../../element/tabGroup/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
 import { CreateCategory } from "../../element/createCategory/createCategory.jsx";
-import { Browser } from "../../../../public/api/shared.variables.mjs";
+import { Browser, icons } from "../../../../public/api/shared.variables.mjs";
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { Services } from "../../../services.jsx";
 import "./currentTabs.css";
@@ -211,10 +211,13 @@ export class CurrentTabsPanel extends Component {
             // Return the current tabs panel
             return <section className="kt kt-panel kt-panel-current">
                 <h2>
-                    <span>Opened Tabs</span>
-                    <div className="tabs-count">{this.state.currentTabs.tabs.length} tabs</div>
+                    <span className="title">Opened Tabs</span>
+                    <span className="tabs-count">
+                        <img src={icons.tabs} role="img" alt=""></img>
+                        <span>{this.state.currentTabs.tabs.length} tabs</span>
+                    </span>
                 </h2>
-                
+
                 <TabGroup context="current"
                     filter={this.props.filter}
                     tabGroup={this.state.currentTabs}

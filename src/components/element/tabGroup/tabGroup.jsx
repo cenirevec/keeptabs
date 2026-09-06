@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge, Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { Tab } from "../tab/tab.jsx";
-import { Browser, timeSince } from "../../../../public/api/shared.variables.mjs";
+import { Browser, icons, timeSince } from "../../../../public/api/shared.variables.mjs";
 import { Renamable } from "../../shared/renamable/renamable.jsx";
 import { Services } from "../../../services.jsx";
 import { LoadingMode } from "../../../../public/api/defaultData.mjs";
@@ -153,8 +153,9 @@ export class TabGroup extends React.Component {
                             onSubmit={(value) => { this.renameGroup(value) }}></Renamable>
                         <span className="time-ago" >{timeSince(date)} ago</span>
                         <span className="tabs-count">
-                            <Badge pill bg="secondary">{filteredTabs.length}</Badge>
-                            <span>tabs</span>
+                            <img src={icons.tabs} role="img" alt=""></img>
+                            {/* <Badge pill bg="secondary">{filteredTabs.length}</Badge> */}
+                            <span>{filteredTabs.length} tabs</span>
                         </span>
                     </span>
                 </div>

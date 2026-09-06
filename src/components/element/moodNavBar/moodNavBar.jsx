@@ -111,7 +111,7 @@ export class MoodNavBar extends Component {
               && <Badge pill bg="undefined" className="selected"> {length} </Badge>}
             {index != this.props.selected
               && <Badge pill bg="secondary"> {length} </Badge>}
-            <CategoryMenu category={category} categoryId={index} selected={this.props.selected} renameItem={this.renameItem}></CategoryMenu>
+            {/* <CategoryMenu category={category} categoryId={index} selected={this.props.selected} renameItem={this.renameItem}></CategoryMenu> */}
           </Nav.Link>
 
         </Nav.Item>
