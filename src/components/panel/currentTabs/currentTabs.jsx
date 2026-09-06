@@ -3,7 +3,7 @@ import { TabModel } from "../../../models/tab.model.js";
 import { TabGroup } from "../../element/tabGroup/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
 import { CreateCategory } from "../../element/createCategory/createCategory.jsx";
-import { Browser } from "../../../../public/api/shared.variables.mjs";
+import { Browser, icons } from "../../../../public/api/shared.variables.mjs";
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { Services } from "../../../services.jsx";
 import "./currentTabs.css";
@@ -62,6 +62,9 @@ export class CurrentTabsPanel extends Component {
         });
     }
 
+    /**
+     * Save the data model and refesh
+     */
     saveModel() {
         if (Services.data.model) {
             Services.data.save(() => {
@@ -184,7 +187,8 @@ export class CurrentTabsPanel extends Component {
                             )}
                         </ul>
                         <Dropdown.Divider />
-                        <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} />
+                        {/* <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} /> */}
+                        +Create {value}
                     </div>
                 );
             },
@@ -206,15 +210,20 @@ export class CurrentTabsPanel extends Component {
         if (this.state.currentTabs.tabs.length > 0) {
             // Return the current tabs panel
             return <section className="kt kt-panel kt-panel-current">
-                <h2><span>Current Tabs</span> <span className="badge badge-secondary">{this.state.currentTabs.tabs.length}</span></h2>
+                <h2>
+                    <span className="title">Opened Tabs</span>
+                    <span className="tabs-count">
+                        <img src={icons.tabs} role="img" alt=""></img>
+                        <span>{this.state.currentTabs.tabs.length} tabs</span>
+                    </span>
+                </h2>
+
                 <TabGroup context="current"
                     filter={this.props.filter}
                     tabGroup={this.state.currentTabs}
                     saveData={this.props.saveData} />
 
-                {openRandomButton}
-
-                <Dropdown as={ButtonGroup}>
+                <Dropdown drop="end" as={ButtonGroup}>
                     <Button variant="primary"
                         onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
                         Save in {this.props.selectedCategory.meta.name}</Button>

@@ -15,6 +15,7 @@ export class CategoryService {
     defaultCategoryData = {
         "meta":{
             name: "newCategory",
+            description: "",
             expiration: -1, // 30*this.DAYS,
             hidden: -1//14*this.DAYS
         },
@@ -64,6 +65,7 @@ export class CategoryService {
         category.meta.name = newName;
         Services.data.save();
         Services.emitSignal("categoryListChange");
+        //Services.refresh();
     }
 
     /**

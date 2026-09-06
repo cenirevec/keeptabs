@@ -1,6 +1,8 @@
 import React from "react";
-import { Browser, timeSince } from "../../../public/api/shared.variables.mjs";
-import { Services } from "../../services.jsx";
+import { Browser, timeSince } from "../../../../public/api/shared.variables.mjs";
+import { Services } from "../../../services.jsx";
+import './tab.css'
+import { CloseButton } from "react-bootstrap";
 
 export class Tab extends React.Component {
 
@@ -18,12 +20,12 @@ export class Tab extends React.Component {
      * When you click on a tab
      * @param {*} event 
      */
-    onClick(event){
-        if(this.props.context == 'current'){
+    onClick(event) {
+        if (this.props.context == 'current' && event.button === 0) {
             this.onFocus();
-        }else if (this.props.context == 'saved'){
+        } else if (this.props.context == 'saved') {
             this.onOpen(event);
-        }else{};
+        } else { };
     }
 
     /**
@@ -40,8 +42,11 @@ export class Tab extends React.Component {
         }
     }
 
+    /**
+     * Action to do when a tab as the focus
+     */
     onFocus() {
-        browser.tabs.update(this.props.tab.id,{active:true});
+        browser.tabs.update(this.props.tab.id, { active: true });
     }
 
     /**
@@ -74,13 +79,18 @@ export class Tab extends React.Component {
 
         return (
             <li className="kt kt-component kt-component-tab list-group-item list-group-item-action" onMouseDown={this.onClick}>
-                <img src={favicon} className={addedClasses} />
-                {this.props.context == 'saved' &&
-                    <a title={title}>{title}</a>}
-                {this.props.context == 'current' &&
-                    <span title={title}
-                    >{title}</span>}
-                <small>{timeSince(date)}</small>
+                <div className="kt-component-tab-container">
+                    <div>
+                        <img src={favicon} className={addedClasses} />
+                        {this.props.context == 'saved' &&
+                            <a title={title}>{title}</a>}
+                        {this.props.context == 'current' &&
+                            <span title={title}
+                            >{title}</span>}
+                        <small>{timeSince(date)}</small>
+                    </div>
+                    <CloseButton></CloseButton>
+                </div>
             </li>
         );
     }

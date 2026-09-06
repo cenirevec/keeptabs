@@ -1,4 +1,4 @@
-#category-popover {
+.kt-popover-menu {
     background-color: var(--popover-bg-color);
     color: var(--font-color) !important;
     border-radius: 25px;
@@ -48,11 +48,11 @@
     }
 
     .popover-body {
-        margin: 0 10px 10px;
+        margin: 0 var(--default-margin) var(--default-margin);
     }
 
     #remove-category{
-        margin-top: 10px;
+        margin-top: var(--default-margin);
         font-weight: bold;
         color: red;
         transition: 0.3s;

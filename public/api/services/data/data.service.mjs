@@ -464,6 +464,18 @@ export class DataService {
      * @param {number} [iteration=0] 
      * @returns Available name
      */
+    checkForNewAliasName(name){
+        let count = 0;
+        let _name = name;
+
+        while (this.hasAlias(_name) && count < 100) {
+            count++;
+            _name = name + count;
+        }
+        return _name;
+    } 
+    
+    
     suggestAliasName(name,iteration=0){
         if(Services.data.model.meta.shortcuts[name]){
             this.suggestAliasName(

@@ -27,6 +27,10 @@ class AllServices{
     constructor(){
     }
 
+    refresh(){
+        this.main.refreshModel();
+    }
+
     //Improve to auto update all elements working with categories for example
     emitSignal(name){
         this.observer[name] = !this.observer[name];

@@ -18,6 +18,11 @@ function getNavigatorName() {
 export const navigatorName = getNavigatorName();
 export const Browser = (chrome != undefined)? chrome : browser;
 
+export const icons = {
+  tabs: "/media/icons/tabs.svg",
+  settings: "/media/icons/settings-cogged.svg",
+}
+
 
 //               |!\ CAUTION |!\ 
 // Ensure to update all functions producing data according to the modifications of the version

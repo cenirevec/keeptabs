@@ -1,5 +1,18 @@
-.kt-component-setting-option{
-    span{
+.kt-component-setting-option {
+    display: flex;
+    gap: 0.5rem;
+
+    span {
         margin: auto;
     }
+
+    .form-label {
+        flex: 1;
+        margin: auto;
+    }
+
+    input {
+        width: 100px;
+    }
+
 }

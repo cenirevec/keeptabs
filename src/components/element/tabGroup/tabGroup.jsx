@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge, Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
-import { Tab } from "../tab.jsx";
-import { Browser, timeSince } from "../../../../public/api/shared.variables.mjs";
+import { Tab } from "../tab/tab.jsx";
+import { Browser, icons, timeSince } from "../../../../public/api/shared.variables.mjs";
 import { Renamable } from "../../shared/renamable/renamable.jsx";
 import { Services } from "../../../services.jsx";
 import { LoadingMode } from "../../../../public/api/defaultData.mjs";
@@ -19,13 +19,16 @@ export class TabGroup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabs: this.props.tabGroup
+            tabs: this.props.tabGroup,
+            expand: false
         };
 
         this.openAll = this.openAll.bind(this);
         this.delete = this.delete.bind(this);
         this.removeItem = this.removeItem.bind(this);
         this.refresh = this.refresh.bind(this);
+
+        this.expandCurrentTabs = this.expandCurrentTabs.bind(this);
 
 
         this.tabGroupTitle = React.createRef();
@@ -58,8 +61,8 @@ export class TabGroup extends React.Component {
      * @param {*} tabs 
      */
     refresh(tabs) {
-        if(tabs) this.props.tabGroup.tabs = tabs;
-        
+        if (tabs) this.props.tabGroup.tabs = tabs;
+
         this.setState({
             tabs: this.props.tabGroup
         });
@@ -108,12 +111,18 @@ export class TabGroup extends React.Component {
         }
     }
 
+    expandCurrentTabs(showMore) {
+        this.setState({
+            expand: showMore
+        })
+    }
+
     /**
      * React rendering function
      * @returns Rendered content
      */
     render() {
-        let filteredTabs = TabService.filter(this.props.tabGroup.tabs,this.props.filter);
+        let filteredTabs = TabService.filter(this.props.tabGroup.tabs, this.props.filter);
         // Returns nothing if the tab list is empty
         if (filteredTabs.length == 0)
             return;
@@ -127,7 +136,7 @@ export class TabGroup extends React.Component {
         let areSavedTabs = this.props.context == "saved";
 
         let className = "kt kt-component kt-component-tabgroup tabs";
-        //className += areSavedTabs ? " col-lg-6":"";
+        className += this.props?.inBasket ? " tabs-in-basket" : "";
 
         this.props.tabGroup.meta.name = this.props.tabGroup.meta.name ?? "";
 
@@ -144,23 +153,28 @@ export class TabGroup extends React.Component {
                             onSubmit={(value) => { this.renameGroup(value) }}></Renamable>
                         <span className="time-ago" >{timeSince(date)} ago</span>
                         <span className="tabs-count">
-                            <Badge pill bg="secondary">{filteredTabs.length}</Badge>
-                            <span>tabs</span>
+                            <img src={icons.tabs} role="img" alt=""></img>
+                            {/* <Badge pill bg="secondary">{filteredTabs.length}</Badge> */}
+                            <span>{filteredTabs.length} tabs</span>
                         </span>
                     </span>
                 </div>
             }
 
             {/* Show the list of tabs */}
-            {areSavedTabs &&
+            {(areSavedTabs) &&
                 <ul className="list-group">
                     {tabList}
                 </ul>
             }
-            {!areSavedTabs &&
+            {(!areSavedTabs) &&
                 <ul className="list-group">
-                    {tabList.slice(0, 6)}
-                    <TabReduced tabList={filteredTabs.slice(7,)}></TabReduced>
+                    {!this.state.expand && tabList.slice(0, 12)}
+                    {this.state.expand && tabList}
+                    <TabReduced
+                        toggleShowMore={this.expandCurrentTabs}
+                        expand={this.state.expand}
+                        tabs={filteredTabs.slice(12,)}></TabReduced>
                 </ul>
             }
 

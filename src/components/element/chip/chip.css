@@ -1,0 +1,20 @@
+.kt-component-chip {
+    background-color: #0d6efd30;
+    border: solid 2px #0d6efd20;
+    color: var(--font-color);
+    margin: 6px 0 10px 8px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    display: inline-block;
+
+    .closeBttn {
+        cursor: pointer;
+        margin-bottom: 4px;
+        margin-left: 3px
+    }
+
+    .closeBttn:hover {
+        color: #e11;
+    }
+
+}

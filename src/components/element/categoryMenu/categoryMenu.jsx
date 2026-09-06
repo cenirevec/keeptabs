@@ -5,6 +5,7 @@ import { SettingOption } from "../settingOption/settingOption.jsx";
 import { Services } from "../../../services.jsx";
 import ConfirmationModal from "../confirmationModal.jsx";
 import './categoryMenu.css';
+import { icons } from "../../../../public/api/shared.variables.mjs";
 
 export class CategoryMenu extends React.Component{
   
@@ -18,20 +19,26 @@ export class CategoryMenu extends React.Component{
         this.handleRemoveModalAction = this.handleRemoveModalAction.bind(this);
     }
 
+    renameItem(newName){
+      Services.category.rename(this.props.category,newName);
+    }
+
     handleRemoveModalAction(actionName){
-      if(this.props.category.meta?.translationLabel == "categories.names.temporary"){
-        this.setState({showModal:false})
-        return;
-      }
+      let index = Services.data.model.categories;
+      // if(this.props.category.meta?.translationLabel == "categories.names.temporary"){
+      //   this.setState({showModal:false})
+      //   return;
+      // }
 
-      if(actionName == "confirm"){
-        Services.category.delete(this.props.categoryId);
+      // if(actionName == "confirm"){
+      //   Services.category.delete(this.props.categoryId);
 
-        if(parseInt(this.props.selected) == parseInt(this.props.categoryId)){
-          Services.main?.setSelectedCategory(this.props.categoryId - 1);
-        }
-        Services.main?.refresh();
-      }
+      //   if(parseInt(this.props.selected) == parseInt(this.props.categoryId)){
+      //     Services.main?.setSelectedCategory(this.props.categoryId - 1);
+      //   }
+      //   Services.main?.refresh();
+      // }
+      console.error("category id has to be defined")
     }
 
     getPopover(){
@@ -40,8 +47,8 @@ export class CategoryMenu extends React.Component{
         <Popover.Header as="h3">
             <Renamable value={this.props.category.meta.name} 
                            onSubmit={(newName)=>{
-                            if(this.props.renameItem){
-                                this.props.renameItem(this.props.category,newName)
+                            if(this.renameItem){
+                                this.renameItem(newName)
                             }
                            }}
                 ></Renamable>
@@ -88,9 +95,7 @@ export class CategoryMenu extends React.Component{
         return <>
           <OverlayTrigger trigger="click" rootClose  placement="bottom" overlay={this.getPopover()}>
             <Button className="category-popover-icon" variant="link">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-              </svg>
+              <img src={icons.settings}></img>
             </Button>
           </OverlayTrigger>
           <ConfirmationModal 

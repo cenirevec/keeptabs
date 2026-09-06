@@ -8,7 +8,8 @@ export const PatchListPath = {
 let iconReferencer = new IconReferencer();
 
 const patchList = {
-    versions: ["1.0.0", "2.0.0", "2.0.2", "2.0.3", "2.0.4", "2.1.0", "2.1.0.1","2.1.1"], //Versions prises en charge
+    versions: ["1.0.0", "2.0.0", "2.0.2", "2.0.3", "2.0.4", "2.1.0", "2.1.0.1","2.1.1","2.1.2"], //Versions prises en charge
+    //          0       1       2       3           4       5           6       7       8
     patchs: [
         {
             path: "meta",
@@ -57,6 +58,9 @@ const patchList = {
                                     categoryMeta.expiration = -1
                                     categoryMeta.hidden = -1
                                 }
+                            },
+                            "8":(categoryMeta)=>{
+                                categoryMeta.description = "";
                             }
                         }
                     },
