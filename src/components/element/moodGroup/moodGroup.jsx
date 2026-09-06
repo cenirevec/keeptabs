@@ -6,6 +6,8 @@ import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
 import { Services } from "../../../services.jsx";
 import "./moodGroup.css"
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
+import { icons } from "../../../../public/api/shared.variables.mjs";
+import { CategoryMenu } from "../categoryMenu/categoryMenu.jsx";
 
 export class MoodGroup extends React.Component {
     /**
@@ -277,11 +279,12 @@ export class MoodGroup extends React.Component {
         return <div className="kt kt-component kt-component-moodgroup">
             {tabgroupList.length > 0 && <>
                 <div className="kt-component-moodgroup-header">
-                    <h3>{this.props.category.meta.name}</h3>
                     <i className="description">Description...</i>
+                    <CategoryMenu category={this.props.category} categoryId={1} selected={true} renameItem={()=>{}}></CategoryMenu>
                     {openRandomButton}
                 </div>
                 {tabgroupList}
+                
             </>}
             {this.props.category.tabGroups.length == 0 &&
                 <div className="empty">

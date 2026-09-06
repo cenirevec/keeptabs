@@ -11,6 +11,11 @@ import { Services } from "./services.jsx";
 import './home.css';
 import { Settings } from "./settings/Settings.jsx";
 
+import "./i18n.js";
+import { withTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+
+
 class Home extends React.Component {
 
     //Shared Variables
@@ -118,6 +123,14 @@ class Home extends React.Component {
      */
     refresh() {
         this.forceUpdate();
+    }
+
+    //Vérifier si trop lourd
+    refreshModel(){
+        this.setState({
+            data: Services.data
+        });
+        this.data = this.state.data;
     }
 
     /***

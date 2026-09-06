@@ -23,9 +23,21 @@
     margin: 0px 1rem;
     min-height: 2.25rem;
 
+
     .tabs-count .badge {
         position: relative;
         top: -2px;
+    }
+
+    .tabs-count {
+        display: inline-grid;
+        grid-template-columns: auto 1fr;
+        gap: 5px;
+
+        img {
+            margin: auto;
+            padding-bottom: 4px;
+        }
     }
 
     /* h2 .tabs-count {

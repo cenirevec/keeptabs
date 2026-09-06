@@ -68,19 +68,27 @@
 
     .kt-component-moodgroup-header {
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: 1fr auto auto;
         padding: 12px 4px;
         margin-bottom: -30px;
         text-transform: capitalize;
-        gap: 1.5em;
 
-        h3{
+        h3 {
             margin-left: 5px;
         }
 
-        .description{
+        img {
+            width: 20px;
+            margin: auto;
+            opacity: .5;
+            padding-bottom: 2px;
+
+        }
+
+        .description {
             opacity: 0.3;
             margin: auto 0;
+            padding-left: 10px;
         }
     }
 }
