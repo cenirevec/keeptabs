@@ -61,7 +61,6 @@ export class TabModel {
         options = (options == undefined || options == null)? {}:options;
         options["url"] = tab.url;
 
-        console.log(Browser.tabs.currentTab());
         Browser.tabs.create(options);
         return true;
     }
