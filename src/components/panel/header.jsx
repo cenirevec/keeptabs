@@ -1,5 +1,4 @@
 import React from "react";
-import { webexVersion } from "../../../public/api/shared.variables.mjs";
 import { Button } from "react-bootstrap";
 import { Services } from "../../services.jsx";
 import { Settings } from "../../settings/Settings.jsx";

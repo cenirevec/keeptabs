@@ -7,7 +7,7 @@ import { FooterPanel } from "./components/panel/footer.jsx";
 import { SearchBarPanel } from "./components/panel/searchBar/searchBar.jsx";
 import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
-import { Services } from "./services.jsx";
+import { AreaToRefresh, Services } from "./services.jsx";
 import './home.css';
 import { Settings } from "./settings/Settings.jsx";
 
@@ -126,11 +126,16 @@ class Home extends React.Component {
     }
 
     //Vérifier si trop lourd
-    refreshModel(){
-        this.setState({
-            data: Services.data
-        });
-        this.data = this.state.data;
+    refreshModel(area){
+        if(area.indexOf(AreaToRefresh.All) != -1){
+            this.setState({
+                data: Services.data
+            });
+        }
+        if(area.indexOf(AreaToRefresh.SavedTabs.All) != -1){
+            console.log("famn ki plat")
+            this.data = this.state.data;
+        }
     }
 
     /***

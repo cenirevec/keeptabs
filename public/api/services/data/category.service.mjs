@@ -65,7 +65,6 @@ export class CategoryService {
         category.meta.name = newName;
         Services.data.save();
         Services.emitSignal("categoryListChange");
-        //Services.refresh();
     }
 
     /**
