@@ -1,5 +1,9 @@
 {
-    "test":{
-        "teub":"Cock!!!"
+    "common":{
+        "tabs_one":"{{count}} tab",
+        "tabs_other":"{{count}} tabs"
+    },
+    "currentTabs": {
+        "opened": "Opened tabs"
     }
 }

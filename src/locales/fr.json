@@ -1,0 +1,9 @@
+{
+    "common": {
+        "tabs_one": "{{count}} onglet",
+        "tabs_other": "{{count}} onglets"
+    },
+    "currentTabs": {
+        "opened": "Onglets ouverts"
+    }
+}

@@ -7,13 +7,14 @@ import { FooterPanel } from "./components/panel/footer.jsx";
 import { SearchBarPanel } from "./components/panel/searchBar/searchBar.jsx";
 import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
-import { AreaToRefresh, Services } from "./services.jsx";
+import { Services } from "./services.jsx";
 import './home.css';
 import { Settings } from "./settings/Settings.jsx";
 
 import "./i18n.js";
 import { withTranslation } from 'react-i18next';
 import { useTranslation } from "react-i18next";
+import i18n from "./i18n.js";
 
 
 class Home extends React.Component {
@@ -49,7 +50,7 @@ class Home extends React.Component {
         this.getMap = this.getMap.bind(this);
         this.reload = this.reload.bind(this);
         this.reloadOtherInstances = this.reloadOtherInstances.bind(this);
-
+        this.watch = this.watch.bind(this);
 
         Services.main = this;
 
@@ -58,8 +59,14 @@ class Home extends React.Component {
             setTimeout(() => { this.setSelectedCategory(this.selectedCategoryIndex); }, 0);
         });
 
+        //this.scheduler = window.setInterval(this.watch,100);
+
         // Refresh the window when the user come to it again
         document.addEventListener("focus", this.reload);
+    }
+
+    watch(){
+        console.log("In watch");
     }
 
     //Shared Methods
@@ -119,23 +126,11 @@ class Home extends React.Component {
     }
 
     /**
+     * 
      * Refresh the component
      */
     refresh() {
         this.forceUpdate();
-    }
-
-    //Vérifier si trop lourd
-    refreshModel(area){
-        if(area.indexOf(AreaToRefresh.All) != -1){
-            this.setState({
-                data: Services.data
-            });
-        }
-        if(area.indexOf(AreaToRefresh.SavedTabs.All) != -1){
-            console.log("famn ki plat")
-            this.data = this.state.data;
-        }
     }
 
     /***
@@ -186,6 +181,7 @@ class Home extends React.Component {
             <div data-bs-theme={theme} className="container">
                 <HeaderPanel />
                 <CurrentTabsPanel
+                t={this.props.t}
                     filter={this.searchFilter}
                     data={this.state.data}
                     selectedCategory={this.state.selectedCategory}
@@ -209,9 +205,10 @@ class Home extends React.Component {
     }
 }
 
+const THome = withTranslation()(Home);
 
 const root = createRoot(document.getElementById("react-target"));
-root.render(<Home />);
+root.render(<THome i18n={i18n} />);
 
 /**
  * Function to handle the signals from the web pages

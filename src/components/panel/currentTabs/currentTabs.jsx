@@ -7,7 +7,8 @@ import { Browser, icons } from "../../../../public/api/shared.variables.mjs";
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { Services } from "../../../services.jsx";
 import "./currentTabs.css";
-
+// Test
+import {t} from "i18next";
 
 export class CurrentTabsPanel extends Component {
 
@@ -29,11 +30,28 @@ export class CurrentTabsPanel extends Component {
         this.getCurrentTabs = this.getCurrentTabs.bind(this);
         this.openRandomTabGroup = this.openRandomTabGroup.bind(this);
 
+        let l = (txt)=>{
+            console.log(txt)
+        }
+
+        let wait = (func)=>{
+            window.setTimeout(func,200)
+        }
 
         //Add listeners to handle the tabs changes
         // Browser.tabs.onActivated.addListener(this.getCurrentTabs);
-        Browser.tabs.onRemoved.addListener(this.getCurrentTabs);
-        document.addEventListener("focus", this.getCurrentTabs);
+        Browser.tabs.onRemoved.addListener(()=>wait(this.getCurrentTabs));
+        // Browser.tabs.onActivated.addListener(()=>l("actvtd"))
+        // Browser.tabs.onAttached.addListener(()=>l("attached"))
+        // Browser.tabs.onCreated.addListener(()=>l("create"))
+        // Browser.tabs.onDetached.addListener(()=>l("detached"))
+        // Browser.tabs.onHighlighted.addListener(()=>l("i lited"))
+        // Browser.tabs.onMoved.addListener(()=>l("mvd"))
+        // //Browser.tabs.onRemoved.addListener(l) 
+        // Browser.tabs.onReplaced.addListener(()=>l("replaced"))
+        // Browser.tabs.onUpdated.addListener(()=>l("updated"))
+
+        //document.addEventListener("focus", this.getCurrentTabs);
     }
 
     /** Before component rerender */
@@ -58,6 +76,8 @@ export class CurrentTabsPanel extends Component {
                     return new TabModel(tab);
                 })
             }
+           // console.log("getCurrent",currentTabs);
+
             _this.setState({ currentTabs: currentTabs });
         });
     }
@@ -211,7 +231,9 @@ export class CurrentTabsPanel extends Component {
             // Return the current tabs panel
             return <section className="kt kt-panel kt-panel-current">
                 <h2>
-                    <span className="title">Opened Tabs</span>
+                    <span className="title">
+                        {t("currentTabs.opened")}
+                    </span>
                     <span className="tabs-count">
                         <img src={icons.tabs} role="img" alt=""></img>
                         <span>{this.state.currentTabs.tabs.length} tabs</span>
