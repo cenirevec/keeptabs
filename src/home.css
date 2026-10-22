@@ -1,3 +1,10 @@
 /* body{
     opacity: 0.75 !important;
 } */
+
+#react-target{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100vh;
+    width: 100vw;
+}

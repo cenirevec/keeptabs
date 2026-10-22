@@ -2,12 +2,12 @@ import React, { Component, useState } from "react";
 import { TabModel } from "../../../models/tab.model.js";
 import { TabGroup } from "../../element/tabGroup/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
-import { CreateCategory } from "../../element/createCategory/createCategory.jsx";
-import { Browser } from "../../../../public/api/shared.variables.mjs";
+import { Browser, icons } from "../../../../public/api/shared.variables.mjs";
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { Services } from "../../../services.jsx";
 import "./currentTabs.css";
-
+// Test
+import {t} from "i18next";
 
 export class CurrentTabsPanel extends Component {
 
@@ -29,11 +29,30 @@ export class CurrentTabsPanel extends Component {
         this.getCurrentTabs = this.getCurrentTabs.bind(this);
         this.openRandomTabGroup = this.openRandomTabGroup.bind(this);
 
+        let l = (txt)=>{
+            console.log(txt)
+        }
+
+        let wait = (func)=>{
+            window.setTimeout(func,200);
+        }
 
         //Add listeners to handle the tabs changes
         // Browser.tabs.onActivated.addListener(this.getCurrentTabs);
-        Browser.tabs.onRemoved.addListener(this.getCurrentTabs);
-        document.addEventListener("focus", this.getCurrentTabs);
+        Browser.tabs.onRemoved.addListener(()=>wait(this.getCurrentTabs));
+        // Browser.tabs.onActivated.addListener(()=>l("actvtd"))
+        // Browser.tabs.onAttached.addListener(()=>l("attached"))
+        // Browser.tabs.onCreated.addListener(()=>l("create"))
+        // Browser.tabs.onDetached.addListener(()=>l("detached"))
+        // Browser.tabs.onHighlighted.addListener(()=>l("i lited"))
+        // Browser.tabs.onMoved.addListener(()=>l("mvd"))
+        // //Browser.tabs.onRemoved.addListener(l) 
+        // Browser.tabs.onReplaced.addListener(()=>l("replaced"))
+        // Browser.tabs.onUpdated.addListener(()=>l("updated"))
+        //wait(this.getCurrentTabs);
+        this.getCurrentTabs();
+        
+        //document.addEventListener("focus", this.getCurrentTabs);
     }
 
     /** Before component rerender */
@@ -58,10 +77,14 @@ export class CurrentTabsPanel extends Component {
                     return new TabModel(tab);
                 })
             }
+
             _this.setState({ currentTabs: currentTabs });
         });
     }
 
+    /**
+     * Save the data model and refesh
+     */
     saveModel() {
         if (Services.data.model) {
             Services.data.save(() => {
@@ -75,9 +98,7 @@ export class CurrentTabsPanel extends Component {
      * @param {*} category 
      */
     openRandomTabGroup(category) {
-        //console.log(category,this.props.filter);
         let tabGroupId = Date.now() % category.tabGroups.length;
-        //console.log();
         let tabGroup = category.tabGroups[tabGroupId];
 
         //Delete a tabGroup if all tabs are loaded
@@ -99,7 +120,6 @@ export class CurrentTabsPanel extends Component {
      * @param {string} category Object representing the categories and his tab groups
      */
     saveCurrentTabs(category) {
-        //console.log("category",category)
         //Define function content
         let save = function (tabGroups, _this) {
             let creationDate = Date.now();
@@ -173,7 +193,7 @@ export class CurrentTabsPanel extends Component {
                         <FormControl
                             autoFocus
                             className="mx-3 my-2 w-auto"
-                            placeholder="Type to filter..."
+                            placeholder={t("currentTabs.filter")}
                             onChange={(e) => setValue(e.target.value)}
                             value={value}
                         />
@@ -184,7 +204,8 @@ export class CurrentTabsPanel extends Component {
                             )}
                         </ul>
                         <Dropdown.Divider />
-                        <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} />
+                        {/* <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} /> */}
+                        +{t("currentTabs.create",{value})}
                     </div>
                 );
             },
@@ -200,24 +221,31 @@ export class CurrentTabsPanel extends Component {
         let openRandomButton = (
             <Button variant="primary" className="kt kt-open-rand-btn"
                 onClick={() => this.openRandomTabGroup(this.props.selectedCategory)}>
-                Open random from {this.props.selectedCategory.meta.name}</Button>
+                {t("savedTabs.openRandomFrom",{category: this.props.selectedCategory.meta.name})}</Button>
         )
 
         if (this.state.currentTabs.tabs.length > 0) {
             // Return the current tabs panel
             return <section className="kt kt-panel kt-panel-current">
-                <h2><span>Current Tabs</span> <span className="badge badge-secondary">{this.state.currentTabs.tabs.length}</span></h2>
+                <h2>
+                    <span className="title">
+                        {t("currentTabs.opened")}
+                    </span>
+                    <span className="tabs-count">
+                        <img src={icons.tabs} role="img" alt=""></img>
+                        <span>{t("common.tabs",{count:this.state.currentTabs.tabs.length})}</span>
+                    </span>
+                </h2>
+
                 <TabGroup context="current"
                     filter={this.props.filter}
                     tabGroup={this.state.currentTabs}
                     saveData={this.props.saveData} />
 
-                {openRandomButton}
-
-                <Dropdown as={ButtonGroup}>
+                <Dropdown drop="end" as={ButtonGroup}>
                     <Button variant="primary"
                         onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
-                        Save in {this.props.selectedCategory.meta.name}</Button>
+                        {t("currentTabs.saveIn",{category: this.props.selectedCategory.meta.name})}</Button>
 
 
                     <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
@@ -230,8 +258,8 @@ export class CurrentTabsPanel extends Component {
         } else {
             return <section className="kt kt-panel kt-panel-current kt-panel-current-empty">
                 <div>
-                    <p>There is no tab openned</p>
-                    <small>You can choose among the saved ones or click on Open All to restore an older browsing session</small>
+                    <p>{t("currentTabs.noneOpened")}</p>
+                    <small>{t("currentTabs.noneOpenedAdvice")}</small>
                 </div>
                 {openRandomButton}
             </section>

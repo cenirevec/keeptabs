@@ -14,6 +14,7 @@
     grid-template-rows: auto 1fr;
     gap: 25px;
     backdrop-filter: blur(7px);
+    transition: 0.5s;
 
 
     .kt-settings-body {
@@ -55,4 +56,36 @@
         height: calc(100% - 100px);
         overflow-y: scroll;
     }
+}
+
+
+#settings-btn {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+
+    svg {
+        margin-right: 0.5rem;
+        margin-bottom: 2px;
+        transition: transform 0.5s cubic-bezier(.55, .06, .68, .19);
+    }
+}
+
+#settings-btn:hover svg {
+    transform: rotateZ(360deg);
+}
+
+.kt-panel-settings-closed {
+    top: 100vh;
+}
+
+.background-blur {
+    background-color: #0006;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(7px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 500;
 }

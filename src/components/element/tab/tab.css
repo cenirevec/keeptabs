@@ -1,0 +1,62 @@
+.tabs {
+    cursor: pointer;
+
+    li {
+        img {
+            max-width: 25px;
+            max-height: 25px;
+            border-radius: 5px;
+            margin: auto 0;
+        }
+
+        small {
+            margin: auto 0;
+            opacity: 0.5;
+            white-space: nowrap;
+        }
+
+    }
+}
+
+#loaded .tabs,
+section {
+    margin-bottom: 25px;
+}
+
+
+.kt-component-tab-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+     width: 100%;
+
+    div {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: auto 1fr auto;
+    }
+
+    .btn-close{
+        margin-right: -40px;
+        transition: 0.3s;
+        opacity: 0;
+        display: none; /*TO REMOVE TO IMPLEMENT DELETE BUTTON*/
+    }
+}
+
+.kt-component-tab-container:hover{
+   .btn-close{
+        margin-right: 0;
+        opacity: 0.75;
+   }
+}
+
+.kt-component-tab-container div :is(a, span) {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    min-height: 1.2rem;
+    white-space: nowrap;
+}
+
+.kt-component-tab-container div img.no-icon {
+    opacity: 0.1;
+}

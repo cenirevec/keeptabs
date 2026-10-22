@@ -2,6 +2,7 @@ import React from "react";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { CategoryList } from "./categoryList.jsx";
 import { Services } from "../../services.jsx";
+import { t } from "i18next";
 
 export class MoveToMenu extends React.Component {
   constructor(props) {
@@ -46,7 +47,7 @@ export class MoveToMenu extends React.Component {
   render() {
     return <OverlayTrigger flip="false" trigger="click" rootClose placement="bottom" overlay={this.getPopover()}>
       <Button className="category-popover-icon" variant="primary">
-        Move To
+        {t("common.moveTo")}
       </Button>
     </OverlayTrigger>
   }
