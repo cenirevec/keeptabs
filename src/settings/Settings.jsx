@@ -1,13 +1,13 @@
 import React from "react";
 import './Settings.css'
 import { GeneralSettings } from "./settings-pages/general/general-settings.jsx";
-import { TemplateSettings } from "./settings-pages/template/template.jsx";
 import { Button, CloseButton, Nav, Tab, TabContainer } from "react-bootstrap";
 import { AliasSettings } from "./settings-pages/aliases/aliases-settings.jsx";
 import { DeveloperSettings } from "./settings-pages/dev/dev-settings.jsx";
 import { Services } from "../services.jsx";
 import { FileSettings } from "./settings-pages/file/file-settings.jsx";
 import { icons } from "../../public/api/shared.variables.mjs";
+import { t } from "i18next";
 
 export class Settings extends React.Component {
 
@@ -41,7 +41,7 @@ export class Settings extends React.Component {
             return <div className="kt kt-panel kt-panel-settings">
 
                 <div className="kt kt-component kt-settings-header">
-                    <h2>Settings</h2>
+                    <h2>{t("settings.title")}</h2>
                     <CloseButton onClick={() => this.close()}></CloseButton>
                 </div>
                 <div className="kt kt-component kt-settings-body">
@@ -49,7 +49,7 @@ export class Settings extends React.Component {
                     <TabContainer defaultActiveKey="general">
                         <Nav variant="pills" className="flex-column">
                             <Nav.Item>
-                                <Nav.Link eventKey="general">General</Nav.Link>
+                                <Nav.Link eventKey="general">{t("settings.general.title")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="alias">Aliases</Nav.Link>
@@ -80,7 +80,7 @@ export class Settings extends React.Component {
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-gear-fill" viewBox="0 0 16 16">
                             <path d={icons.raw.settings} />
                         </svg>
-                        Settings
+                        {t("settings.title")}
                     </Button>
                 </>
             )

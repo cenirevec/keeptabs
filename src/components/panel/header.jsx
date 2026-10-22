@@ -1,6 +1,4 @@
 import React from "react";
-import { Button } from "react-bootstrap";
-import { Services } from "../../services.jsx";
 import { Settings } from "../../settings/Settings.jsx";
 
 

@@ -1,3 +1,5 @@
+import { t } from "i18next";
+
 //gets the type of browser
 function getNavigatorName() { 
   if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) {
@@ -40,42 +42,46 @@ export const currentDataVersion = "2.1.1"
 export function timeSince(date) {
 
     //return date;
+    console.log("timeSince triggered");
 
-    var seconds = Math.floor((new Date() - date) / 1000);
+    var secondsSince = Math.floor((new Date() - date) / 1000);
   
-    var interval = seconds / 31536000;
+    /**
+     * Time in years
+     */
+    var unitsSince = secondsSince / 31536000;
     let s = "";
-    if (interval >= 1) {
-      s = (interval >= 2) ? "s":"";
-      return Math.floor(interval) + " year"+s;
+    if (unitsSince >= 1) {
+      return t("time.year",{count:Math.floor(unitsSince)});
     }
-    interval = seconds / 2592000;
-    if (interval > 1) {
-      s = (interval >= 2) ? "s":"";
-
-      return Math.floor(interval) + " month"+s;
+    /**
+     * Time in months
+     */
+    unitsSince = secondsSince / 2592000;
+    if (unitsSince > 1) {
+      return t("time.month",{count:Math.floor(unitsSince)});
     }
-    interval = seconds / 86400;
-    if (interval > 1) {
-      s = (interval >= 2) ? "s":"";
-
-      return Math.floor(interval) + " day"+s;
+    unitsSince = secondsSince / 86400;
+    if (unitsSince > 1) {
+      if(unitsSince < 2){
+        return t("time.yesterday");
+      }
+      else if(unitsSince < 3){
+        return t("time.twoDaysAgo");
+      }
+      else{
+        return t("time.day",{count:Math.floor(unitsSince)});
+      }
     }
-    interval = seconds / 3600;
-    if (interval > 1) {
-      s = (interval >= 2) ? "s":"";
-
-      return Math.floor(interval) + " hour"+s;
+    unitsSince = secondsSince / 3600;
+    if (unitsSince > 1) {
+      return t("time.hour",{count:Math.floor(unitsSince)});
     }
-    interval = seconds / 60;
-    if (interval > 1) {
-      s = (interval >= 2) ? "s":"";
-
-      return Math.floor(interval) + " minute"+s;
+    unitsSince = secondsSince / 60;
+    if (unitsSince > 1) {
+      return t("time.minute",{count:Math.floor(unitsSince)});
     }
-    s = (interval >= 2) ? "s":"";
-
-    return Math.floor(seconds) + " second"+s;
+    return t("time.second",{count:Math.floor(unitsSince)});
   }
 
   /**

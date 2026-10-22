@@ -17,6 +17,50 @@ import { useTranslation } from "react-i18next";
 import i18n from "./i18n.js";
 
 
+function getObjectDiff(original, current) {
+  const changes = {};
+
+  // Check current object's properties
+  for (const [key, value] of Object.entries(current)) {
+    if (!(key in original)) {
+      changes[key] = {
+        oldValue: undefined,
+        newValue: value
+      };
+      continue;
+    }
+
+    const originalValue = original[key];
+    const currentValue = value;
+
+    // Handle different types of comparisons
+    if (
+      originalValue !== currentValue &&
+      String(originalValue) !== String(currentValue) &&
+      JSON.stringify(originalValue) !== JSON.stringify(currentValue)
+    ) {
+      changes[key] = {
+        oldValue: originalValue,
+        newValue: currentValue
+      };
+    }
+  }
+
+  // Check for removed properties
+  for (const key of Object.keys(original)) {
+    if (!(key in current)) {
+      changes[key] = {
+        oldValue: original[key],
+        newValue: undefined
+      };
+    }
+  }
+
+  return Object.keys(changes).length === 0 ? null : changes;
+}
+
+
+
 class Home extends React.Component {
 
     //Shared Variables
@@ -27,7 +71,7 @@ class Home extends React.Component {
     /** Identifier of a KeepTabs instance */
     instanceId = undefined;
     /** Selected category index */
-    selectedCategoryIndex = 0;
+    category = 0;
 
 
     /**
@@ -37,10 +81,12 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
 
+        // Come back to last visited category
+        this.category = parseInt(localStorage.selectedCategory) ?? 0;
+
         this.state = {
             data: {},
-            selectedCategory: null,
-            selectedCategoryIndex: 0
+            category: this.category
         };
         this.setMoods = this.setMoods.bind(this);
         this.refresh = this.refresh.bind(this);
@@ -56,7 +102,8 @@ class Home extends React.Component {
 
         Services.data.load(() => {
             this.setMoods(Services.data.model);
-            setTimeout(() => { this.setSelectedCategory(this.selectedCategoryIndex); }, 0);
+            setTimeout(() => { this.setSelectedCategory(this.category); }, 0);
+            this.forceUpdate();
         });
 
         //this.scheduler = window.setInterval(this.watch,100);
@@ -64,6 +111,13 @@ class Home extends React.Component {
         // Refresh the window when the user come to it again
         document.addEventListener("focus", this.reload);
     }
+
+    /** Just before update */
+    shouldComponentUpdate(nextProps, nextStates) {
+        return !(this.props.data == nextProps.data &&
+             this.state.category == nextStates.category)
+    }
+
 
     watch(){
         console.log("In watch");
@@ -82,7 +136,7 @@ class Home extends React.Component {
         if (this.state.selectedCategory == null) {
             this.setState({
                 selectedCategory: loadedTabs.categories[0],
-                selectedCategoryIndex: 0
+                category: 0
             });
         }
     }
@@ -93,6 +147,7 @@ class Home extends React.Component {
      */
     saveData() {
         if (Services.data.model) {
+            console.log("goes there")
             Services.data.save(() => {
                 this.setMoods(Services.data.model);
                 this.refresh();
@@ -106,13 +161,14 @@ class Home extends React.Component {
      */
     setSelectedCategory(index) {
         index = parseInt(index);
-        this.selectedCategoryIndex = index;
+        this.category = index;
         let category = this.data.categories[index];
         //console.log(index,category);
         this.setState({
-            selectedCategory: category,
-            selectedCategoryIndex: index
+            //selectedCategory: category,
+            category: index
         });
+        localStorage.selectedCategory = index;
     }
 
     /**
@@ -130,6 +186,7 @@ class Home extends React.Component {
      * Refresh the component
      */
     refresh() {
+        console.debug("home.refresh()");
         this.forceUpdate();
     }
 
@@ -139,8 +196,9 @@ class Home extends React.Component {
     reload() {
         Services.data.load(() => {
             this.setMoods(Services.data.model);
-            setTimeout(() => { this.setSelectedCategory(this.selectedCategoryIndex); }, 0);
+            setTimeout(() => { this.setSelectedCategory(this.category); }, 0);
         });
+        console.debug("home.reload()");
         this.forceUpdate();
     }
 
@@ -176,15 +234,16 @@ class Home extends React.Component {
      * @returns Rendered content
      */
     render() {
+        if(!this.state.data?.categories) return;
+        //console.warn("Render all")
         let theme = window.matchMedia('(prefers-color-scheme: dark)').matches? "dark": "light";
         return (
             <div data-bs-theme={theme} className="container">
                 <HeaderPanel />
                 <CurrentTabsPanel
-                t={this.props.t}
                     filter={this.searchFilter}
                     data={this.state.data}
-                    selectedCategory={this.state.selectedCategory}
+                    selectedCategory={this.state.data.categories[this.state.category]}
                     saveData={this.saveData} />
 
                 <SearchBarPanel
@@ -197,7 +256,7 @@ class Home extends React.Component {
                     data={this.data}
                     saveData={this.saveData}
                     setSelectedCategory={this.setSelectedCategory}
-                    selected={this.state.selectedCategoryIndex}
+                    selected={this.state.category}
                     setMoods={this.setMoods} />
                 <FooterPanel />
             </div>

@@ -1,9 +1,59 @@
 {
-    "common":{
-        "tabs_one":"{{count}} tab",
-        "tabs_other":"{{count}} tabs"
+    "common": {
+        "add": "Ajouter",
+        "tabs_one": "{{count}} tab",
+        "tabs_other": "{{count}} tabs",
+        "search": "Search",
+        "desc": "Description",
+        "delete": "Delete",
+        "moveTo": "Move to",
+        "open": "Open",
+        "openAll": "Open All"
+    },
+    "time": {
+        "ago": "{{time}} ago",
+        "yesterday": "yesterday",
+        "twoDaysAgo": "two days ago",
+        "second_one": "{{count}} second ago",
+        "second_other": "{{count}} seconds ago",
+        "minute_one": "{{count}} minute",
+        "minute_other": "{{count}} minutes ago",
+        "hour_one": "{{count}} hour ago",
+        "hour_other": "{{count}} hours ago",
+        "day_one": "{{count}} day ago",
+        "day_other": "{{count}} days ago",
+        "month_one": "{{count}} month ago",
+        "month_other": "{{count}} months ago",
+        "year_one": "{{count}} year ago",
+        "year_other": "{{count}} years ago"
+    },
+    "category": {
+        "add": "Add category"
     },
     "currentTabs": {
-        "opened": "Opened tabs"
+        "opened": "Opened tabs",
+        "create": "Create {{value}}",
+        "filter": "Type to filter...",
+        "saveIn": "Save in {{category}}",
+        "moreTabs_one": "{{count}} onglet en plus",
+        "moreTabs_other": "{{count}} onglets en plus",
+        "showLess": "Show less",
+        "noneOpened": "There is no tab openned",
+        "noneOpenedAdvice": "You can choose among the saved ones or click on Open All to restore an older browsing session"
+    },
+    "savedTabs": {
+        "extract": "Extract",
+        "noTabsIn": "There is no tab saved in {{category}}",
+        "noTabsInAdvice": "You can add the current tabs by clicking on the <1>Save<1/> button",
+        "notifyExpiracy": "The following tab groups will soon reach expiration date and will be removed",
+        "openRandom": "Open random",
+        "openRandomFrom": "Open random from {{category}}"
+    },
+    "settings": {
+        "title": "Settings",
+        "general": {
+            "title": "General",
+            "description": "General settings"
+        }
     }
 }

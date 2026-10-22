@@ -1,7 +1,7 @@
 import React from "react";
-import { Browser, timeSince } from "../../../../public/api/shared.variables.mjs";
 import { Services } from "../../../services.jsx";
 import './tabReduced.css'
+import { t } from "i18next";
 
 export class TabReduced extends React.Component {
 
@@ -85,10 +85,10 @@ export class TabReduced extends React.Component {
         return <li onClick={()=>this.toggleShowMore()} className="kt kt-component kt-component-tab-reduced list-group-item list-group-item-action">
             {!this.props.expand && <>
                     <span className="kt-component-tab-reduced-imgs">{reducedTabs}</span>
-                    <b> {this.props.tabs.length} more tabs</b>
+                    <b>{t("currentTabs.moreTabs",{count: this.props.tabs.length})}</b>
                 </>}
 
-            {this.props.expand && <b>Show less</b>}
+            {this.props.expand && <b>{t("currentTabs.showLess")}</b>}
         </li>
     }
 }

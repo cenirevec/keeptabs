@@ -1,9 +1,62 @@
 {
     "common": {
+        "add": "Ajouter",
         "tabs_one": "{{count}} onglet",
-        "tabs_other": "{{count}} onglets"
+        "tabs_other": "{{count}} onglets",
+        "search": "Rechercher",
+        "desc": "Description",
+        "delete": "Effacer",
+        "moveTo": "Déplacer",
+        "open": "Ouvrir",
+        "openAll": "Ouvrir"
+    },
+    "time": {
+        "ago": "Il y a {{time}}",
+        "yesterday": "hier",
+        "twoDaysAgo": "avant-hier",
+        "lastYear": "l'an dernier",
+        "lastMonth": "le mois dernier",
+        "lastWeek": "l'an dernier",
+        "second_one": "Il y a {{count}} s",
+        "second_other": "Il y a {{count}} s",
+        "minute_one": "Il y a {{count}} min",
+        "minute_other": "Il y a {{count}} min",
+        "hour_one": "Il y a {{count}}h",
+        "hour_other": "Il y a {{count}}h",
+        "day_one": "Il y a {{count}} jour",
+        "day_other": "Il y a {{count}} jours",
+        "month_one": "Il y a {{count}} mois",
+        "month_other": "Il y a {{count}} mois",
+        "year_one": "Il y a {{count}} an",
+        "year_other": "Il y a {{count}} ans"
+    },
+    "category": {
+        "add": "Ajouter catégorie"
     },
     "currentTabs": {
-        "opened": "Onglets ouverts"
+        "opened": "Onglets ouverts",
+        "create": "Créer {{value}}",
+        "filter": "Filter par nom...",
+        "saveIn": "Enregistrer dans {{category}}",
+        "moreTabs_one": "{{count}} onglet de plus",
+        "moreTabs_other": "{{count}} onglets de plus",
+        "showLess": "En afficher moins",
+        "noneOpened": "Aucun onglet ouvert",
+        "noneOpenedAdvice": "Vous pouvez en choisir parmi ceux enregistrés ou par groupe d'onglets en cliquant sur un bouton \"Tout ouvrir\""
+    },
+    "savedTabs": {
+        "extract": "Extraire",
+        "noTabsIn": "Aucun onglets n'est sauvegardé dans {{category}}",
+        "noTabsInAdviced": "Vous pouvez en ajouter en cliquant sur le bouton <1>Enregistrer<1/>",
+        "notifyExpiracy": "Les groupes d'onglets suivant vont bientôt atteindre leur date d'expiration et seront supprimés",
+        "openRandom": "Ouvrir aléatoirement",
+        "openRandomFrom": "Ouvrir aléatoirement depuis {{category}}"
+    },
+    "settings": {
+        "title": "Paramètres",
+        "general": {
+            "title": "Général",
+            "description": "Paramètres généraux"
+        }
     }
 }

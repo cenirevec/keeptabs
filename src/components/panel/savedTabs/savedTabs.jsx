@@ -158,7 +158,7 @@ export class SavedTabsPanel extends React.Component {
         //Create the mood list
         let categoryIndex = this.props.selected;
         let categoryName = (this.props.data != undefined) ? this.props.data.categories[categoryIndex].meta.name : "Untitled";
-
+        console.warn("render savedTabs panel")
         return <section className="kt kt-panel kt-panel-saved group-by-moodID">
             <MoodNavBar
                 selectCategory={this.selectCategory}
