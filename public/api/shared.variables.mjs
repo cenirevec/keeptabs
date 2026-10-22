@@ -42,7 +42,7 @@ export const currentDataVersion = "2.1.1"
 export function timeSince(date) {
 
     //return date;
-    console.log("timeSince triggered");
+    //console.log("timeSince triggered");
 
     var secondsSince = Math.floor((new Date() - date) / 1000);
   
@@ -52,36 +52,36 @@ export function timeSince(date) {
     var unitsSince = secondsSince / 31536000;
     let s = "";
     if (unitsSince >= 1) {
-      return t("time.year",{count:Math.floor(unitsSince)});
+      return t("timeAgo.year",{count:Math.floor(unitsSince)});
     }
     /**
      * Time in months
      */
     unitsSince = secondsSince / 2592000;
     if (unitsSince > 1) {
-      return t("time.month",{count:Math.floor(unitsSince)});
+      return t("timeAgo.month",{count:Math.floor(unitsSince)});
     }
     unitsSince = secondsSince / 86400;
     if (unitsSince > 1) {
       if(unitsSince < 2){
-        return t("time.yesterday");
+        return t("timeAgo.yesterday");
       }
       else if(unitsSince < 3){
-        return t("time.twoDaysAgo");
+        return t("timeAgo.twoDaysAgo");
       }
       else{
-        return t("time.day",{count:Math.floor(unitsSince)});
+        return t("timeAgo.day",{count:Math.floor(unitsSince)});
       }
     }
     unitsSince = secondsSince / 3600;
     if (unitsSince > 1) {
-      return t("time.hour",{count:Math.floor(unitsSince)});
+      return t("timeAgo.hour",{count:Math.floor(unitsSince)});
     }
     unitsSince = secondsSince / 60;
     if (unitsSince > 1) {
-      return t("time.minute",{count:Math.floor(unitsSince)});
+      return t("timeAgo.minute",{count:Math.floor(unitsSince)});
     }
-    return t("time.second",{count:Math.floor(unitsSince)});
+    return t("timeAgo.second",{count:Math.floor(unitsSince)});
   }
 
   /**

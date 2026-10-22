@@ -1,6 +1,7 @@
 {
     "common": {
         "add": "Ajouter",
+        "tabs": "onglets",
         "tabs_one": "{{count}} onglet",
         "tabs_other": "{{count}} onglets",
         "search": "Rechercher",
@@ -10,15 +11,14 @@
         "open": "Ouvrir",
         "openAll": "Ouvrir"
     },
-    "time": {
-        "ago": "Il y a {{time}}",
+    "timeAgo": {
         "yesterday": "hier",
         "twoDaysAgo": "avant-hier",
         "lastYear": "l'an dernier",
         "lastMonth": "le mois dernier",
         "lastWeek": "l'an dernier",
-        "second_one": "Il y a {{count}} s",
-        "second_other": "Il y a {{count}} s",
+        "second_one": "Il y a {{count}}s",
+        "second_other": "Il y a {{count}}s",
         "minute_one": "Il y a {{count}} min",
         "minute_other": "Il y a {{count}} min",
         "hour_one": "Il y a {{count}}h",
@@ -31,7 +31,13 @@
         "year_other": "Il y a {{count}} ans"
     },
     "category": {
-        "add": "Ajouter catégorie"
+        "add": "Ajouter catégorie",
+        "temporary": "temporaire",
+        "faves": "favoris",
+        "delete": "Effacer {{category}}",
+        "menu":{
+            "deleteAfter": "Effacer les onglets après"
+        }
     },
     "currentTabs": {
         "opened": "Onglets ouverts",
@@ -46,6 +52,7 @@
     },
     "savedTabs": {
         "extract": "Extraire",
+        "scrollTop": "Retourner en haut de page",
         "noTabsIn": "Aucun onglets n'est sauvegardé dans {{category}}",
         "noTabsInAdviced": "Vous pouvez en ajouter en cliquant sur le bouton <1>Enregistrer<1/>",
         "notifyExpiracy": "Les groupes d'onglets suivant vont bientôt atteindre leur date d'expiration et seront supprimés",
@@ -56,7 +63,24 @@
         "title": "Paramètres",
         "general": {
             "title": "Général",
-            "description": "Paramètres généraux"
+            "description": "Paramètres généraux",
+            "loadingMode": {
+                "title": "Méthode d'ouverture d'onglets",
+                "differed": "Cadencé",
+                "lazy": "Limité"
+            },
+            "cadence": "Cadence d'ouverture (en ms)",
+            "autofocus": "Toujours aller sur le dernier onglet ouvert",
+            "storage":{
+                "title": "Stockage",
+                "import": "Importer des données",
+                "export": "Exporter des données",
+                "clear": "Effacer toutes les données"
+            }
+        },
+        "alias":{
+            "title": "Paramétrage des alias",
+            "add": "Ajouter un alias"
         }
     }
 }

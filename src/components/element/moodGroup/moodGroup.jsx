@@ -264,7 +264,7 @@ export class MoodGroup extends React.Component {
         if (this.props.category.tabGroups == undefined)
             return;
 
-        console.warn("MoodGroup refresh")
+        //console.warn("MoodGroup refresh")
 
         this.cleanDataModel();
 
@@ -284,7 +284,6 @@ export class MoodGroup extends React.Component {
                 onClick={() => this.openRandomTabGroup(this.props.category)}>
                 {t("savedTabs.openRandom")}</Button>
         )
-        console.log("render Mood group");
 
 
         return <div className="kt kt-component kt-component-moodgroup">

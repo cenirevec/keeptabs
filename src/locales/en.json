@@ -1,6 +1,7 @@
 {
     "common": {
         "add": "Ajouter",
+        "tabs": "tabs",
         "tabs_one": "{{count}} tab",
         "tabs_other": "{{count}} tabs",
         "search": "Search",
@@ -10,8 +11,7 @@
         "open": "Open",
         "openAll": "Open All"
     },
-    "time": {
-        "ago": "{{time}} ago",
+    "timeAgo": {
         "yesterday": "yesterday",
         "twoDaysAgo": "two days ago",
         "second_one": "{{count}} second ago",
@@ -28,7 +28,13 @@
         "year_other": "{{count}} years ago"
     },
     "category": {
-        "add": "Add category"
+        "add": "Add category",
+        "temporary": "temporary",
+        "faves": "favorites",
+        "delete": "Remove {{category}}",
+        "menu": {
+            "deleteAfter": "Delete tabs after"
+        }
     },
     "currentTabs": {
         "opened": "Opened tabs",
@@ -43,6 +49,7 @@
     },
     "savedTabs": {
         "extract": "Extract",
+        "scrollTop": "Scroll to the top",
         "noTabsIn": "There is no tab saved in {{category}}",
         "noTabsInAdvice": "You can add the current tabs by clicking on the <1>Save<1/> button",
         "notifyExpiracy": "The following tab groups will soon reach expiration date and will be removed",
@@ -53,7 +60,25 @@
         "title": "Settings",
         "general": {
             "title": "General",
-            "description": "General settings"
+            "description": "General settings",
+            "loadingMode": {
+                "title": "Loading mode",
+                "differed": "Differed",
+                "lazy": "Lazy"
+            },
+            "cadence": "Time before loading the next tab in ms",
+            "autofocus": "Focus on the last opened tab",
+            "storage":{
+                "title": "Storage",
+                "import": "Import data",
+                "export": "Export data",
+                "clear": "Clear all data"
+            }
+        },
+        "alias":{
+            "title": "Alias settings",
+            "add": "Add alias",
+            "description": "description of those settings usage"
         }
     }
 }
