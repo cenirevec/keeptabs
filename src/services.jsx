@@ -1,6 +1,7 @@
 import BackgroundService from "../public/api/services/data/background.service.mjs";
 import CategoryService from "../public/api/services/data/category.service.mjs";
 import DataService from "../public/api/services/data/data.service.mjs";
+import { refreshStatus } from "../public/api/services/data/refresh.service.mjs";
 import TabService from "../public/api/services/data/tabs.services.mjs";
 import { IconReferencer } from "./models/iconReferencer.model";
 
@@ -11,6 +12,7 @@ class AllServices{
     category = new CategoryService();
     tabs = new TabService();
     background = new BackgroundService();
+    refresh = refreshStatus
     webexManifest;
 
     /**
@@ -27,9 +29,6 @@ class AllServices{
     constructor(){
     }
 
-    refresh(){
-        this.main.refreshModel();
-    }
 
     //Improve to auto update all elements working with categories for example
     emitSignal(name){

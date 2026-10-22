@@ -1,14 +1,14 @@
 import React from "react";
-import { Badge, Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
+import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { Tab } from "../tab/tab.jsx";
-import { Browser, icons, timeSince } from "../../../../public/api/shared.variables.mjs";
+import {  icons, timeSince } from "../../../../public/api/shared.variables.mjs";
 import { Renamable } from "../../shared/renamable/renamable.jsx";
 import { Services } from "../../../services.jsx";
-import { LoadingMode } from "../../../../public/api/defaultData.mjs";
 import { MoveToMenu } from "../moveToMenu.jsx";
 import { TabReduced } from "../tabReduced/tabReduced.jsx";
 import "./tabGroup.css";
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
+import { t } from "i18next";
 
 export class TabGroup extends React.Component {
 
@@ -110,7 +110,7 @@ export class TabGroup extends React.Component {
             Services.data.save();
         }
     }
-
+    
     expandCurrentTabs(showMore) {
         this.setState({
             expand: showMore
@@ -151,11 +151,12 @@ export class TabGroup extends React.Component {
                             key={tabGroupKey}
                             value={this.props.tabGroup.meta.name}
                             onSubmit={(value) => { this.renameGroup(value) }}></Renamable>
-                        <span className="time-ago" >{timeSince(date)} ago</span>
+                        <span className="time-ago" >
+                            {timeSince(date)}
+                        </span>
                         <span className="tabs-count">
                             <img src={icons.tabs} role="img" alt=""></img>
-                            {/* <Badge pill bg="secondary">{filteredTabs.length}</Badge> */}
-                            <span>{filteredTabs.length} tabs</span>
+                            <span>{t("common.tabs",{count: filteredTabs.length})}</span>
                         </span>
                     </span>
                 </div>
@@ -181,17 +182,17 @@ export class TabGroup extends React.Component {
             {/* Show the action buttons */}
             {areSavedTabs &&
                 <ButtonGroup>
-                    <Button onClick={this.openAll}>Open all</Button>
+                    <Button onClick={this.openAll}>{t("common.openAll")}</Button>
                     <MoveToMenu
                         tabGroup={this.props.tabGroup}
                         filteredTabs={filteredTabs}
                         category={this.props.category}
                     ></MoveToMenu>
-                    <Button onClick={(event) => { this.delete(event, filteredTabs) }}>Delete</Button>
+                    <Button onClick={(event) => { this.delete(event, filteredTabs) }}>{t("common.delete")}</Button>
 
                     <DropdownButton as={ButtonGroup} title="" id="bg-nested-dropdown">
-                        <Dropdown.Item eventKey="1">Move to category</Dropdown.Item>
-                        <Dropdown.Item eventKey="2">Split on match</Dropdown.Item>
+                        <Dropdown.Item eventKey="1"><i>***deprecated***</i></Dropdown.Item>
+                        <Dropdown.Item eventKey="2">{t("savedTabs.extract")}</Dropdown.Item>
                     </DropdownButton>
                 </ButtonGroup>
             }

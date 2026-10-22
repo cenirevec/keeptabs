@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { Services } from "../../../services.jsx";
 import './createCategory.css';
+import { t } from "i18next";
 
 export class CreateCategory extends Component {
 
@@ -75,13 +76,13 @@ export class CreateCategory extends Component {
         return <React.Fragment>
             {!this.state.edition &&
                 <Button variant="outline-secondary" className="kt kt-element kt-add-category-bttn" onClick={() => { this.toggleEditionMode(true) }}>
-                    + Add category
+                    + {t("category.add")}
                 </Button>
             }
             {this.state.edition &&
                 <Form className="kt kt-element kt-add-category-inputs" onSubmit={this.createCategory}>
                     <InputGroup>
-                        <Form.Control placeholder="Add..."
+                        <Form.Control placeholder={t("common.add")+"..."}
                             aria-describedby="add-category-input"
                             value={this.state.name}
                             autoFocus
@@ -89,7 +90,7 @@ export class CreateCategory extends Component {
                         ></Form.Control>
                         <Button onClick={this.createCategory}
                             id="add-category-input"
-                        >Add</Button>
+                        >{t("common.add")}</Button>
                     </InputGroup>
                 </Form>
             }

@@ -82,7 +82,12 @@
             margin: auto;
             opacity: .5;
             padding-bottom: 2px;
+            transition: 0.1s;
 
+        }
+
+        img:hover, img.active{
+            opacity: 1;
         }
 
         .description {

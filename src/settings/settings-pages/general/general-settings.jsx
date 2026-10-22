@@ -1,18 +1,16 @@
 import React from "react";
-import { Accordion, ListGroup, ListGroupItem, Offcanvas } from "react-bootstrap";
+import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Services } from "../../../services.jsx"
-import AccordionItem from "react-bootstrap/esm/AccordionItem.js";
-import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
-import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
 import { SettingOption } from "../../../components/element/settingOption/settingOption.jsx";
 import { LoadingMode } from "../../../../public/api/defaultData.mjs";
+import { t } from "i18next";
 
 export class GeneralSettings extends React.Component {
 
 
   options = [
-    { name: 'Differed', value: LoadingMode.DIFFERED },
-    { name: 'Lazy', value: LoadingMode.LAZY }
+    { name: t("settings.general.loadingMode.differed"), value: LoadingMode.DIFFERED },
+    { name: t("settings.general.loadingMode.lazy"), value: LoadingMode.LAZY }
   ];
 
   savedOptions = {
@@ -70,41 +68,42 @@ export class GeneralSettings extends React.Component {
   }
 
   render() {
+    let path = "settings.general";
     return (
       <>
-        <h4>General Settings</h4>
-        <h5>Tabs</h5>
+        <h4>{t(`${path}.description`)}</h4>
+        <h5>{t("common.tabs")}</h5>
         <ListGroup>
           <ListGroupItem>
             <SettingOption type="options"
               value={this.savedOptions?.tabs?.mode}
               onChange={(value) => { this.onOptionUpdate(this.savedOptions?.tabs, "mode", value) }}
-              options={this.options}> Loading mode </SettingOption>
+              options={this.options}> {t(`${path}.loadingMode.title`)}</SettingOption>
           </ListGroupItem>
           <ListGroupItem>
             <SettingOption type="number"
               value={this.savedOptions?.tabs?.interval}
               onChange={(value) => { this.onOptionUpdate(this.savedOptions?.tabs, "interval", value) }}
               min="0" max="1000" step="25">
-              Time before loading the next tab in ms
+              {t(`${path}.cadence`)}
             </SettingOption>
           </ListGroupItem>
           <ListGroupItem>
             <SettingOption type="checkbox"
               value={this.savedOptions?.tabs?.makeOpenedTabActive}
               onChange={(value) => { this.onOptionUpdate(this.savedOptions?.tabs, "makeOpenedTabActive", value) }}
-            > Make last opened tab active </SettingOption>
+            > {t(`${path}.autofocus`)} </SettingOption>
           </ListGroupItem>
         </ListGroup>
         <br></br>
-        <h5>Storage</h5>
+        <h5>{t(`${path}.storage.title`)}</h5>
         <ListGroup>
           <ListGroup>
             <ListGroupItem action >
-              <SettingOption type="upload" onUpload={this.handleFileUpload}> Import data </SettingOption>
+              <SettingOption type="upload" onUpload={this.handleFileUpload}> {t(`${path}.storage.import`)} </SettingOption>
             </ListGroupItem>
             <ListGroupItem action onClick={Services.data.download}>
-              Export data</ListGroupItem>
+             {t(`${path}.storage.export`)}</ListGroupItem>
           </ListGroup>
 
           <br></br>
@@ -114,7 +113,7 @@ export class GeneralSettings extends React.Component {
 
               location.reload();
 
-            }}>Clear all data</ListGroupItem>
+            }}>{t(`${path}.storage.clear`)}</ListGroupItem>
           </ListGroup>
         </ListGroup>
 

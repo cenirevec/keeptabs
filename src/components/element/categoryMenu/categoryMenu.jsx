@@ -6,6 +6,7 @@ import { Services } from "../../../services.jsx";
 import ConfirmationModal from "../confirmationModal.jsx";
 import './categoryMenu.css';
 import { icons } from "../../../../public/api/shared.variables.mjs";
+import { t } from "i18next";
 
 export class CategoryMenu extends React.Component{
   
@@ -78,14 +79,14 @@ export class CategoryMenu extends React.Component{
                     unit="day"
                     id="expiration"
                     >
-                    Delete tabs after
+                    {t("category.menu.deleteAfter")}
                 </SettingOption>
             </ListGroupItem>
           </ListGroup>
           {this.props.category.meta.translationLabel != "categories.names.temporary" && <ListGroup>
             <ListGroupItem id="remove-category" variant="danger" action onClick={()=>{
                 this.setState({showModal: true});}}
-            >Remove {this.props.category.meta.name}</ListGroupItem>
+            >{t("category.delete",{category:this.props.category.meta.name})}</ListGroupItem>
           </ListGroup>}
         </Popover.Body>
       </Popover>

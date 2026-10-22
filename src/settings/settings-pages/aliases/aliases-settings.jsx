@@ -1,10 +1,10 @@
 import React from "react";
-import { Modal, Button, Table, ListGroup, ListGroupItem, ButtonGroup } from "react-bootstrap"
+import {ListGroup, ListGroupItem } from "react-bootstrap"
 
 import { AliasEditor } from "../../setting-component/alias-editor/alias-editor.jsx";
 import { Services } from "../../../services.jsx";
-import Chip from "../../../components/element/chip/chip.jsx";
 import "./alias-settings.css";
+import { t } from "i18next";
 
 export class AliasSettings extends React.Component {
     aliases = {};
@@ -86,6 +86,7 @@ export class AliasSettings extends React.Component {
      */
     render() {
 
+        let tPath = "settings.alias";
         let aliasesList = Object.entries(this.state.aliases).sort(this.compareAliases).map((alias, index) =>
             <AliasEditor
                 key={alias}
@@ -98,10 +99,11 @@ export class AliasSettings extends React.Component {
 
         return (
             <div className="kt kt-settings-pane kt-alias-settings">
-                <h4>Alias Settings</h4>
+                <h4>{t(`${tPath}.title`)}</h4>
+                <p>{t(`${tPath}.description`)}</p>
                 <ListGroup>
                     {aliasesList}
-                    <ListGroupItem onClick={this.addAlias}>+Add alias</ListGroupItem>
+                    <ListGroupItem onClick={this.addAlias}>+{t(`${tPath}.add`)}</ListGroupItem>
                 </ListGroup>
                 {/* <div className="kt kt-alias-options">
                     <ButtonGroup>

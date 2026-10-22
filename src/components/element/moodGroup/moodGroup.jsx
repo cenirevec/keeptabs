@@ -1,13 +1,12 @@
 import React from "react";
-import { Accordion, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { TabGroup } from "../tabGroup/tabGroup.jsx";
-import AccordionHeader from "react-bootstrap/esm/AccordionHeader.js";
-import AccordionBody from "react-bootstrap/esm/AccordionBody.js";
 import { Services } from "../../../services.jsx";
 import "./moodGroup.css"
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
-import { icons } from "../../../../public/api/shared.variables.mjs";
 import { CategoryMenu } from "../categoryMenu/categoryMenu.jsx";
+import { t } from "i18next";
+import { Trans } from "react-i18next";
 
 export class MoodGroup extends React.Component {
     /**
@@ -34,6 +33,11 @@ export class MoodGroup extends React.Component {
      * Default number of loaded tabs
      */
     DEFAULT_LOADED_TABS = 10;
+
+    loadedTabs = {
+        shown: [],
+        hidden: []
+    }
 
     /**
  * Constructor
@@ -176,52 +180,6 @@ export class MoodGroup extends React.Component {
         this.props.saveData();
     }
 
-    /**
-     *
-     * @returns
-     */
-    renderTabs() {
-
-        this.renderableTabs = this.props.category.tabGroups
-            .filter((tabGroup, index) => !this.checkHidden(tabGroup))
-
-        return this.renderableTabs
-            .slice(0, this.state.loadedTabGroups)
-            .map(
-                (tabGroup, index, array) =>
-                    <TabGroup key={index}
-                        id={index}
-                        category={this.props.category}
-                        saveData={this.props.saveData}
-                        onUpdate={this.props.onUpdate}
-                        deleteFunction={() => { this.removeTabGroup(index) }}
-                        filter={this.props.filter}
-                        tabGroup={tabGroup} context="saved" />);
-    }
-
-    /**
-     *
-     * @returns
-     */
-    renderHiddenTabs() {
-        let hiddenTabsToRender = Math.max(0, this.state.loadedTabGroups - this.renderableTabs.length);
-        //console.log(hiddenTabsToRender)
-        //return;
-        return this.props.category.tabGroups
-            .filter((tabGroup, index) => this.checkHidden(tabGroup))
-            .slice(0, hiddenTabsToRender)
-            .map(
-                (tabGroup, index, array) =>
-                    <TabGroup key={index}
-                        id={index}
-                        inBasket={true}
-                        category={this.props.category.meta.name}
-                        saveData={this.props.saveData}
-                        onUpdate={this.props.onUpdate}
-                        deleteFunction={() => { this.removeTabGroup(index) }}
-                        filter={this.props.filter}
-                        tabGroup={tabGroup} context="saved" />);
-    }
 
     /**
      * Open a random tab group from the category
@@ -247,6 +205,57 @@ export class MoodGroup extends React.Component {
         )
     }
 
+    /************************************************
+     *                  RENDER METHODS
+     **************************************************/
+
+    /**
+     *
+     * @returns
+     */
+    renderTabs() {
+
+        this.renderableTabs = this.props.category.tabGroups
+            .filter((tabGroup) => !this.checkHidden(tabGroup))
+
+        return this.renderableTabs
+            .slice(0, this.state.loadedTabGroups)
+            .map(
+                (tabGroup, index) =>
+                    <TabGroup key={index}
+                        id={index}
+                        category={this.props.category}
+                        saveData={this.props.saveData}
+                        onUpdate={this.props.onUpdate}
+                        deleteFunction={() => { this.removeTabGroup(index) }}
+                        filter={this.props.filter}
+                        tabGroup={tabGroup} context="saved" />);
+    }
+
+    /**
+     *
+     * @returns
+     */
+    renderHiddenTabs() {
+        let hiddenTabsToRender = Math.max(0, this.state.loadedTabGroups - this.renderableTabs.length);
+        //console.log(hiddenTabsToRender)
+        //return;
+        return this.props.category.tabGroups
+            .filter((tabGroup) => this.checkHidden(tabGroup))
+            .slice(0, hiddenTabsToRender)
+            .map(
+                (tabGroup, index) =>
+                    <TabGroup key={index}
+                        id={index}
+                        inBasket={true}
+                        category={this.props.category.meta.name}
+                        saveData={this.props.saveData}
+                        onUpdate={this.props.onUpdate}
+                        deleteFunction={() => { this.removeTabGroup(index) }}
+                        filter={this.props.filter}
+                        tabGroup={tabGroup} context="saved" />);
+    }
+
     /**
      * React rendering function
      * @returns Rendered content
@@ -254,6 +263,8 @@ export class MoodGroup extends React.Component {
     render() {
         if (this.props.category.tabGroups == undefined)
             return;
+
+        //console.warn("MoodGroup refresh")
 
         this.cleanDataModel();
 
@@ -271,31 +282,34 @@ export class MoodGroup extends React.Component {
         let openRandomButton = (
             <Button variant="outline-secondary" className="kt kt-open-rand-btn"
                 onClick={() => this.openRandomTabGroup(this.props.category)}>
-                Open random tabs</Button>
+                {t("savedTabs.openRandom")}</Button>
         )
-
 
 
         return <div className="kt kt-component kt-component-moodgroup">
             {tabgroupList.length > 0 && <>
                 <div className="kt-component-moodgroup-header">
-                    <i className="description">Description...</i>
-                    <CategoryMenu category={this.props.category} categoryId={1} selected={true} renameItem={()=>{}}></CategoryMenu>
+                    <i className="description">{t("common.desc")}...</i>
+                    <CategoryMenu category={this.props.category} categoryId={1} selected={true} renameItem={() => { }}></CategoryMenu>
                     {openRandomButton}
                 </div>
                 {tabgroupList}
-                
+
             </>}
             {this.props.category.tabGroups.length == 0 &&
                 <div className="empty">
-                    <p>There is no tab saved in {this.props.category.meta.name}</p>
-                    <small>You can add the current tabs by clicking on the <Button className="disabled">Save</Button> button</small>
+                    <p>{t("savedTabs.noTabsIn", { category: this.props.category.meta.name })}</p>
+                    <small>
+                        <Trans i18nKey="savedTabs.noTabsInAdvice">
+                            You can add the current tabs by clicking on the <Button className="disabled">Save</Button> button
+                        </Trans>
+                    </small>
                 </div>
             }
 
 
             {hiddenTabgroupList.length > 0 &&
-                <h3 className="notify-expiracy">The following tab groups will soon reach expiration date and will be removed</h3>
+                <h3 className="notify-expiracy">{t("savedTabs.notifyExpiracy")}</h3>
             }
             {hiddenTabgroupList}
             <Button className={"scroll-top-bttn " + classForScrollBtn} onClick={this.scrollToTop}>
