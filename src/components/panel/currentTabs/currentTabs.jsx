@@ -7,12 +7,17 @@ import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { Services } from "../../../services.jsx";
 import "./currentTabs.css";
 // Test
-import {t} from "i18next";
+import { t } from "i18next";
 
 export class CurrentTabsPanel extends Component {
 
     /** Number of favicons taken in account */
     faviconTakenInAccount = 0;
+
+    /**
+     * Last list of current tabs
+     */
+    lastTabs = [];
 
     /**
      * Constructor
@@ -29,30 +34,8 @@ export class CurrentTabsPanel extends Component {
         this.getCurrentTabs = this.getCurrentTabs.bind(this);
         this.openRandomTabGroup = this.openRandomTabGroup.bind(this);
 
-        let l = (txt)=>{
-            console.log(txt)
-        }
-
-        let wait = (func)=>{
-            window.setTimeout(func,200);
-        }
-
         //Add listeners to handle the tabs changes
-        // Browser.tabs.onActivated.addListener(this.getCurrentTabs);
-        Browser.tabs.onRemoved.addListener(()=>wait(this.getCurrentTabs));
-        // Browser.tabs.onActivated.addListener(()=>l("actvtd"))
-        // Browser.tabs.onAttached.addListener(()=>l("attached"))
-        // Browser.tabs.onCreated.addListener(()=>l("create"))
-        // Browser.tabs.onDetached.addListener(()=>l("detached"))
-        // Browser.tabs.onHighlighted.addListener(()=>l("i lited"))
-        // Browser.tabs.onMoved.addListener(()=>l("mvd"))
-        // //Browser.tabs.onRemoved.addListener(l) 
-        // Browser.tabs.onReplaced.addListener(()=>l("replaced"))
-        // Browser.tabs.onUpdated.addListener(()=>l("updated"))
-        //wait(this.getCurrentTabs);
-        this.getCurrentTabs();
-        
-        //document.addEventListener("focus", this.getCurrentTabs);
+        window.setInterval(this.getCurrentTabs,100);
     }
 
     /** Before component rerender */
@@ -68,17 +51,23 @@ export class CurrentTabsPanel extends Component {
      */
     getCurrentTabs() {
         // Get the currently openned tabs
-        Browser.tabs.query({ currentWindow: true, active: false }, (tabs, _this = this) => {
-            let currentTabs = {
-                meta: {
-                    name: "<current>"
-                },
-                tabs: tabs.map(tab => {
-                    return new TabModel(tab);
-                })
-            }
+        Browser.tabs.query({ currentWindow: true, active: false }, (tabs, _this = this) => {           
+            if (this.lastTabs == tabs) {
+                return;
+            } else {
+                let currentTabs = {
+                    meta: {
+                        name: "<current>"
+                    },
+                    tabs: tabs.map(tab => {
+                        return new TabModel(tab);
+                    })
+                }
 
-            _this.setState({ currentTabs: currentTabs });
+                _this.setState({ currentTabs: currentTabs });
+
+                this.lastTabs = tabs;
+            }
         });
     }
 
@@ -205,7 +194,7 @@ export class CurrentTabsPanel extends Component {
                         </ul>
                         <Dropdown.Divider />
                         {/* <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} /> */}
-                        +{t("currentTabs.create",{value})}
+                        +{t("currentTabs.create", { value })}
                     </div>
                 );
             },
@@ -221,7 +210,7 @@ export class CurrentTabsPanel extends Component {
         let openRandomButton = (
             <Button variant="primary" className="kt kt-open-rand-btn"
                 onClick={() => this.openRandomTabGroup(this.props.selectedCategory)}>
-                {t("savedTabs.openRandomFrom",{category: this.props.selectedCategory.meta.name})}</Button>
+                {t("savedTabs.openRandomFrom", { category: this.props.selectedCategory.meta.name })}</Button>
         )
 
         if (this.state.currentTabs.tabs.length > 0) {
@@ -233,7 +222,7 @@ export class CurrentTabsPanel extends Component {
                     </span>
                     <span className="tabs-count">
                         <img src={icons.tabs} role="img" alt=""></img>
-                        <span>{t("common.tabs",{count:this.state.currentTabs.tabs.length})}</span>
+                        <span>{t("common.tabs", { count: this.state.currentTabs.tabs.length })}</span>
                     </span>
                 </h2>
 
@@ -245,7 +234,7 @@ export class CurrentTabsPanel extends Component {
                 <Dropdown drop="end" as={ButtonGroup}>
                     <Button variant="primary"
                         onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
-                        {t("currentTabs.saveIn",{category: this.props.selectedCategory.meta.name})}</Button>
+                        {t("currentTabs.saveIn", { category: this.props.selectedCategory.meta.name })}</Button>
 
 
                     <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
