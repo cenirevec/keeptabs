@@ -37,15 +37,6 @@ export class SavedTabsPanel extends React.Component {
      * Get the list of all categories in the local storage
      */
     getMoods() {
-        /*         var callback = (array)=>{
-                    TabService.loadMoods(array,this.updateMood);
-                }
-                callback = callback.bind(this); */
-
-        // Load old elements*
-        /* 
-        DataService.load(callback); */
-
         // Get the length of moods
         this.getMoodLengths();
     }
@@ -169,6 +160,7 @@ export class SavedTabsPanel extends React.Component {
             {this.props.data && this.props.data.categories[categoryIndex] != undefined &&
                 <MoodGroup //name={categoryName} 
                     category={this.props.data.categories[categoryIndex]}
+                    categoryId={categoryIndex}
                     // tabGroups={this.props.data.categories[categoryIndex].tabGroups}
                     onUpdate={(tabGroups) => { this.updateMood(categoryIndex, tabGroups) }}
                     saveData={this.props.saveData}

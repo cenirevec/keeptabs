@@ -9,11 +9,15 @@
         "delete": "Delete",
         "moveTo": "Move to",
         "open": "Open",
-        "openAll": "Open All"
+        "openAll": "Open All",
+        "askConfirm": "Ask for confirmation",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
     },
     "timeAgo": {
         "yesterday": "yesterday",
         "twoDaysAgo": "two days ago",
+        "second_zero": "right now",
         "second_one": "{{count}} second ago",
         "second_other": "{{count}} seconds ago",
         "minute_one": "{{count}} minute",
@@ -29,11 +33,19 @@
     },
     "category": {
         "add": "Add category",
-        "temporary": "temporary",
-        "faves": "favorites",
+        "temporary": {
+            "title": "Temporary",
+            "description": "Your tabs for a temporary usage"
+        },
+        "faves": {
+            "title": "Favorites",
+            "description": "Your bookmarked tabs"
+        },
         "delete": "Remove {{category}}",
         "menu": {
-            "deleteAfter": "Delete tabs after"
+            "deleteAfter": "Delete tabs after",
+            "deleteImpossible": "You cannot remove the {{category}} category",
+            "deleteConfirm": "Do you really want to remove {{category}}"
         }
     },
     "currentTabs": {
@@ -68,14 +80,14 @@
             },
             "cadence": "Time before loading the next tab in ms",
             "autofocus": "Focus on the last opened tab",
-            "storage":{
+            "storage": {
                 "title": "Storage",
                 "import": "Import data",
                 "export": "Export data",
                 "clear": "Clear all data"
             }
         },
-        "alias":{
+        "alias": {
             "title": "Alias settings",
             "add": "Add alias",
             "description": "description of those settings usage"

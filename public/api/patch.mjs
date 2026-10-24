@@ -1,5 +1,5 @@
 import { IconReferencer } from "../../src/models/iconReferencer.model.js";
-import { defaultData } from "./defaultData.mjs";
+import { defaultData, defaultModel } from "./defaultData.mjs";
 
 export const PatchListPath = {
     OBJECT_FOREACH: "#"
@@ -8,8 +8,8 @@ export const PatchListPath = {
 let iconReferencer = new IconReferencer();
 
 const patchList = {
-    versions: ["1.0.0", "2.0.0", "2.0.2", "2.0.3", "2.0.4", "2.1.0", "2.1.0.1","2.1.1","2.1.2"], //Versions prises en charge
-    //          0       1       2       3           4       5           6       7       8
+    versions: ["1.0.0", "2.0.0", "2.0.2", "2.0.3", "2.0.4", "2.1.0", "2.1.0.1", "2.1.1", "2.1.2", "2.1.3"], //Versions prises en charge
+    //          0       1       2       3           4       5           6       7       8           9
     patchs: [
         {
             path: "meta",
@@ -23,10 +23,10 @@ const patchList = {
                 "7": (meta) => {
                     for (const key in meta.shortcuts) {
                         if (!Object.hasOwn(meta.shortcuts, key)) continue;
-                        
+
                         meta.shortcuts[key].description = "";
                     }
-                }
+                },
             }
         },
         {
@@ -40,6 +40,16 @@ const patchList = {
         },
         {
             path: "categories",
+            operations: {
+                "9": (categories)=>{
+                    let categoriesArray = Object.values(categories);
+                    //Adding faves category
+                    console.log("categoriesArray",categoriesArray);
+                    categoriesArray.splice(1,0,defaultModel.model.categories["1"]);
+
+                    categories = {...categoriesArray};
+                }
+            },
             forEach: {
                 _path: "category",
                 children: [
@@ -50,18 +60,27 @@ const patchList = {
                                 categoryMeta.deleteOnOpening = true;
                             },
                             "6": (categoryMeta) => {
-                                if(categoryMeta.translationLabel == "categories.names.temporary"){
+                                if (categoryMeta.translationLabel == "categories.names.temporary") {
                                     delete categoryMeta.hidding;
                                     categoryMeta.expiration = 30
                                     categoryMeta.hidden = 14
-                                }else{
+                                } else {
                                     categoryMeta.expiration = -1
                                     categoryMeta.hidden = -1
                                 }
                             },
-                            "8":(categoryMeta)=>{
+                            "8": (categoryMeta) => {
                                 categoryMeta.description = "";
+                            },
+                            "9": (meta) => {
+                                if (meta.translationLabel == "categories.names.temporary") {
+                                    meta.translationLabel = "category.temporary";
+                                    meta.pinned = true;
+                                }else{
+                                    meta.pinned = false;
+                                }
                             }
+
                         }
                     },
                     {
@@ -87,7 +106,7 @@ const patchList = {
                                         _path: "tab",
                                         operations: {
                                             "5": (tab) => {
-                                                if(tab.favicon)
+                                                if (tab.favicon)
                                                     tab.faviconId = iconReferencer.getFaviconIdByURL(tab.favicon);
 
                                                 tab.favicon = "";
@@ -96,10 +115,10 @@ const patchList = {
                                     }
                                 }
                             ]
-                        }                        
+                        }
                     }
                 ]
-            
+
             }
         }
     ]

@@ -5,6 +5,7 @@ import { Renamable } from "../../shared/renamable/renamable.jsx";
 import { Services } from "../../../services.jsx";
 import { CategoryMenu } from "../categoryMenu/categoryMenu.jsx";
 import './moodNavBar.css';
+import { t } from "i18next";
 
 class EditionInProgress {
   status = true;
@@ -103,9 +104,10 @@ export class MoodNavBar extends Component {
             onClick={() => { this.selectCategory(index) }}
             onDoubleClick={() => { this.renameItem(index) }}>
             <span className="mood-name">
-              <Renamable value={category.meta.name}
+              {!category.meta.translationLabel && <Renamable value={category.meta.name}
                 onSubmit={(newName) => this.renameItem(category, newName)}
-              ></Renamable>
+              ></Renamable>}
+              {category.meta.translationLabel && t(category.meta.translationLabel)}
             </span>
             {index == this.props.selected
               && <Badge pill bg="undefined" className="selected"> {length} </Badge>}

@@ -151,12 +151,12 @@ export class TabGroup extends React.Component {
                             key={tabGroupKey}
                             value={this.props.tabGroup.meta.name}
                             onSubmit={(value) => { this.renameGroup(value) }}></Renamable>
-                        <span className="time-ago" >
-                            {timeSince(date)}
-                        </span>
                         <span className="tabs-count">
                             <img src={icons.tabs} role="img" alt=""></img>
                             <span>{t("common.tabs",{count: filteredTabs.length})}</span>
+                        </span>
+                        <span className="time-ago" >
+                            {timeSince(date)}
                         </span>
                     </span>
                 </div>

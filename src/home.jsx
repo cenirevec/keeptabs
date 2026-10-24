@@ -1,4 +1,7 @@
 import React from "react";
+import { withTranslation } from 'react-i18next';
+import i18n from "./i18n.js";
+import "./i18n.js";
 import { createRoot } from "react-dom/client";
 import { HeaderPanel } from "./components/panel/header.jsx";
 import { CurrentTabsPanel } from "./components/panel/currentTabs/currentTabs.jsx";
@@ -9,56 +12,6 @@ import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
 import { Services } from "./services.jsx";
 import './home.css';
-import { Settings } from "./settings/Settings.jsx";
-
-import "./i18n.js";
-import { withTranslation } from 'react-i18next';
-import { useTranslation } from "react-i18next";
-import i18n from "./i18n.js";
-
-
-function getObjectDiff(original, current) {
-  const changes = {};
-
-  // Check current object's properties
-  for (const [key, value] of Object.entries(current)) {
-    if (!(key in original)) {
-      changes[key] = {
-        oldValue: undefined,
-        newValue: value
-      };
-      continue;
-    }
-
-    const originalValue = original[key];
-    const currentValue = value;
-
-    // Handle different types of comparisons
-    if (
-      originalValue !== currentValue &&
-      String(originalValue) !== String(currentValue) &&
-      JSON.stringify(originalValue) !== JSON.stringify(currentValue)
-    ) {
-      changes[key] = {
-        oldValue: originalValue,
-        newValue: currentValue
-      };
-    }
-  }
-
-  // Check for removed properties
-  for (const key of Object.keys(original)) {
-    if (!(key in current)) {
-      changes[key] = {
-        oldValue: original[key],
-        newValue: undefined
-      };
-    }
-  }
-
-  return Object.keys(changes).length === 0 ? null : changes;
-}
-
 
 
 class Home extends React.Component {
@@ -186,7 +139,21 @@ class Home extends React.Component {
      * Refresh the component
      */
     refresh() {
-        console.debug("home.refresh()");
+        /* Check for a correct category to show */
+        let index = this.state.category;
+
+            console.log(index,this.state.category)
+
+        if(!this.state.data.categories[0]){
+            console.error("Corrupted dataset: No 'temporary' category")
+        }
+        while(!this.state.data.categories[index] && index > 0){
+            index--;
+        }
+        
+        this.setSelectedCategory(index);
+
+        /* Actual update */
         this.forceUpdate();
     }
 

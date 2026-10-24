@@ -7,6 +7,7 @@ import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { CategoryMenu } from "../categoryMenu/categoryMenu.jsx";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
+import { REFRESH_RATE } from "../../../../public/api/shared.variables.mjs";
 
 export class MoodGroup extends React.Component {
     /**
@@ -99,7 +100,7 @@ export class MoodGroup extends React.Component {
             }
         }
 
-        setInterval(hasReachedBottom, 100);
+        setInterval(hasReachedBottom, REFRESH_RATE);
     }
 
     scrollToTop() {
@@ -238,8 +239,7 @@ export class MoodGroup extends React.Component {
      */
     renderHiddenTabs() {
         let hiddenTabsToRender = Math.max(0, this.state.loadedTabGroups - this.renderableTabs.length);
-        //console.log(hiddenTabsToRender)
-        //return;
+
         return this.props.category.tabGroups
             .filter((tabGroup) => this.checkHidden(tabGroup))
             .slice(0, hiddenTabsToRender)
@@ -284,17 +284,29 @@ export class MoodGroup extends React.Component {
                 onClick={() => this.openRandomTabGroup(this.props.category)}>
                 {t("savedTabs.openRandom")}</Button>
         )
+        // Improve readability
+        let defaultDesc = this.props.category.meta.translationDescription;
 
 
         return <div className="kt kt-component kt-component-moodgroup">
+            <div className="kt-component-moodgroup-header">
+                <p className="description">
+                    {defaultDesc &&
+                        <> {t(defaultDesc)}</>}
+                    {!defaultDesc && <>
+                        {(this.props.category.meta.description) ?
+                            this.props.category.meta.description
+                            : <i>{t("common.desc")}...</i>}</>}
+                </p>
+                <CategoryMenu
+                    category={this.props.category}
+                    categoryId={this.props.categoryId}
+                    selected={true}
+                    renameItem={() => { }}></CategoryMenu>
+                {tabgroupList.length > 0 && openRandomButton}
+            </div>
             {tabgroupList.length > 0 && <>
-                <div className="kt-component-moodgroup-header">
-                    <i className="description">{t("common.desc")}...</i>
-                    <CategoryMenu category={this.props.category} categoryId={1} selected={true} renameItem={() => { }}></CategoryMenu>
-                    {openRandomButton}
-                </div>
                 {tabgroupList}
-
             </>}
             {this.props.category.tabGroups.length == 0 &&
                 <div className="empty">

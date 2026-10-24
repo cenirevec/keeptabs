@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { TabModel } from "../../../models/tab.model.js";
 import { TabGroup } from "../../element/tabGroup/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
-import { Browser, icons } from "../../../../public/api/shared.variables.mjs";
+import { Browser, icons, REFRESH_RATE } from "../../../../public/api/shared.variables.mjs";
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { Services } from "../../../services.jsx";
 import "./currentTabs.css";
@@ -35,7 +35,7 @@ export class CurrentTabsPanel extends Component {
         this.openRandomTabGroup = this.openRandomTabGroup.bind(this);
 
         //Add listeners to handle the tabs changes
-        window.setInterval(this.getCurrentTabs,100);
+        window.setInterval(this.getCurrentTabs, REFRESH_RATE);
     }
 
     /** Before component rerender */
@@ -51,7 +51,7 @@ export class CurrentTabsPanel extends Component {
      */
     getCurrentTabs() {
         // Get the currently openned tabs
-        Browser.tabs.query({ currentWindow: true, active: false }, (tabs, _this = this) => {           
+        Browser.tabs.query({ currentWindow: true, active: false }, (tabs, _this = this) => {
             if (this.lastTabs == tabs) {
                 return;
             } else {
@@ -201,6 +201,9 @@ export class CurrentTabsPanel extends Component {
         );
 
         let categories = new Array();
+        let categoryNameLabel = (this.props.selectedCategory.meta.translationLabel) ?
+            t(this.props.selectedCategory.meta.translationLabel) :
+            this.props.selectedCategory.meta.name;
 
         Object.keys(this.props.data.categories).forEach((categoryId, index) => {
             let category = this.props.data.categories[categoryId];
@@ -210,7 +213,7 @@ export class CurrentTabsPanel extends Component {
         let openRandomButton = (
             <Button variant="primary" className="kt kt-open-rand-btn"
                 onClick={() => this.openRandomTabGroup(this.props.selectedCategory)}>
-                {t("savedTabs.openRandomFrom", { category: this.props.selectedCategory.meta.name })}</Button>
+                {t("savedTabs.openRandomFrom", { category: categoryNameLabel })}</Button>
         )
 
         if (this.state.currentTabs.tabs.length > 0) {
@@ -234,7 +237,7 @@ export class CurrentTabsPanel extends Component {
                 <Dropdown drop="end" as={ButtonGroup}>
                     <Button variant="primary"
                         onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
-                        {t("currentTabs.saveIn", { category: this.props.selectedCategory.meta.name })}</Button>
+                        {t("currentTabs.saveIn", { category: categoryNameLabel })}</Button>
 
 
                     <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
