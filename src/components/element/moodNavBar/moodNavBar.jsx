@@ -104,10 +104,12 @@ export class MoodNavBar extends Component {
             onClick={() => { this.selectCategory(index) }}
             onDoubleClick={() => { this.renameItem(index) }}>
             <span className="mood-name">
-              {!category.meta.translationLabel && <Renamable value={category.meta.name}
-                onSubmit={(newName) => this.renameItem(category, newName)}
-              ></Renamable>}
-              {category.meta.translationLabel && t(category.meta.translationLabel)}
+              {!category.meta.translationLabel &&
+                <Renamable value={category.meta.name}
+                  onSubmit={(newName) => this.renameItem(category, newName)}
+                ></Renamable>}
+              {category.meta.translationLabel &&
+                t(category.meta.translationLabel)}
             </span>
             {index == this.props.selected
               && <Badge pill bg="undefined" className="selected"> {length} </Badge>}

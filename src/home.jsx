@@ -165,7 +165,7 @@ class Home extends React.Component {
             this.setMoods(Services.data.model);
             setTimeout(() => { this.setSelectedCategory(this.category); }, 0);
         });
-        console.debug("home.reload()");
+       // console.debug("home.reload()");
         this.forceUpdate();
     }
 
