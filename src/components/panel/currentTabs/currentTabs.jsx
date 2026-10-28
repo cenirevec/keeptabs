@@ -20,6 +20,11 @@ export class CurrentTabsPanel extends Component {
     lastTabs = [];
 
     /**
+     * Last list of current tabs
+     */
+    currentTabs = { tabs: [] };
+
+    /**
      * Constructor
      * @param {Object} props Component's attributes
      */
@@ -27,7 +32,8 @@ export class CurrentTabsPanel extends Component {
         super(props);
 
         this.state = {
-            currentTabs: []
+            currentTabs: [],
+            toggleRefresh: false
         };
 
         this.saveCurrentTabs = this.saveCurrentTabs.bind(this);
@@ -51,7 +57,7 @@ export class CurrentTabsPanel extends Component {
      */
     getCurrentTabs() {
         // Get the currently openned tabs
-        Browser.tabs.query({ currentWindow: true, active: false }, (tabs, _this = this) => {
+        Browser.tabs.query({ currentWindow: true }, (tabs, _this = this) => {
             if (this.lastTabs == tabs) {
                 return;
             } else {
@@ -59,13 +65,16 @@ export class CurrentTabsPanel extends Component {
                     meta: {
                         name: "<current>"
                     },
-                    tabs: tabs.map(tab => {
+                    tabs: tabs.filter(tab => tab.url != document.URL).map(tab => {
                         return new TabModel(tab);
                     })
                 }
 
-                _this.setState({ currentTabs: currentTabs });
+                if (this.lastTabs.length !== tabs.length) {
+                    _this.setState({ toggleRefresh: !this.state.toggleRefresh });
+                }
 
+                this.currentTabs = currentTabs;
                 this.lastTabs = tabs;
             }
         });
@@ -149,21 +158,11 @@ export class CurrentTabsPanel extends Component {
     }
 
     /**
-     * Update the currently opened tab list
-     * @param {Array<TabModel>} tabs Tabs opened
-     */
-    updateState(tabs) {
-        this.setState({
-            currentTabs: tabs
-        });
-    }
-
-    /**
      * React rendering function
      * @returns Rendered content
      */
     render() {
-        if (this.props.data.categories == undefined || this.props.data.icons == undefined || this.state.currentTabs.tabs == undefined) {
+        if (this.props.data.categories == undefined || this.props.data.icons == undefined || this.currentTabs.tabs == undefined) {
             return;
         }
 
@@ -216,7 +215,7 @@ export class CurrentTabsPanel extends Component {
                 {t("savedTabs.openRandomFrom", { category: categoryNameLabel })}</Button>
         )
 
-        if (this.state.currentTabs.tabs.length > 0) {
+        if (this.currentTabs.tabs.length > 0) {
             // Return the current tabs panel
             return <section className="kt kt-panel kt-panel-current">
                 <h2>
@@ -225,13 +224,13 @@ export class CurrentTabsPanel extends Component {
                     </span>
                     <span className="tabs-count">
                         <img src={icons.tabs} role="img" alt=""></img>
-                        <span>{t("common.tabs", { count: this.state.currentTabs.tabs.length })}</span>
+                        <span>{t("common.tabs", { count: this.currentTabs.tabs.length })}</span>
                     </span>
                 </h2>
 
                 <TabGroup context="current"
                     filter={this.props.filter}
-                    tabGroup={this.state.currentTabs}
+                    tabGroup={this.currentTabs}
                     saveData={this.props.saveData} />
 
                 <Dropdown drop="end" as={ButtonGroup}>

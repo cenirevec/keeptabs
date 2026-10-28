@@ -115,8 +115,6 @@ class Home extends React.Component {
     setSelectedCategory(index) {
         index = parseInt(index);
         this.category = index;
-        let category = this.data.categories[index];
-        //console.log(index,category);
         this.setState({
             //selectedCategory: category,
             category: index
@@ -142,8 +140,6 @@ class Home extends React.Component {
         /* Check for a correct category to show */
         let index = this.state.category;
 
-            console.log(index,this.state.category)
-
         if(!this.state.data.categories[0]){
             console.error("Corrupted dataset: No 'temporary' category")
         }
@@ -165,7 +161,6 @@ class Home extends React.Component {
             this.setMoods(Services.data.model);
             setTimeout(() => { this.setSelectedCategory(this.category); }, 0);
         });
-       // console.debug("home.reload()");
         this.forceUpdate();
     }
 
