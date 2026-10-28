@@ -18,7 +18,7 @@
 /* Header of the Tab Group*/
 .tab-group-header {
     display: grid;
-    grid-template-columns: max-content auto max-content;
+    grid-template-columns: auto max-content max-content;
     gap: 1rem;
     margin: 0px 1rem;
     min-height: 2.25rem;
@@ -48,5 +48,9 @@
         margin-top: auto;
         opacity: 0.7;
         margin-bottom: .15rem;
+    }
+
+    .time-ago{
+        margin-bottom: 0.3rem;
     }
 }

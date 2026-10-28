@@ -26,20 +26,15 @@ export class CategoryMenu extends React.Component{
 
     handleRemoveModalAction(actionName){
       let index = Services.data.model.categories;
-      // if(this.props.category.meta?.translationLabel == "categories.names.temporary"){
-      //   this.setState({showModal:false})
-      //   return;
-      // }
+      if(this.props.category.meta?.translationLabel == "categories.names.temporary"){
+        this.setState({showModal:false})
+        return;
+      }
 
-      // if(actionName == "confirm"){
-      //   Services.category.delete(this.props.categoryId);
-
-      //   if(parseInt(this.props.selected) == parseInt(this.props.categoryId)){
-      //     Services.main?.setSelectedCategory(this.props.categoryId - 1);
-      //   }
-      //   Services.main?.refresh();
-      // }
-      console.error("category id has to be defined")
+      if(actionName == "confirm"){
+        Services.category.delete(this.props.categoryId);
+        Services.main.refresh();
+      }
     }
 
     getPopover(){
@@ -106,8 +101,8 @@ export class CategoryMenu extends React.Component{
             >
               {
                 this.props.category.meta?.translationLabel == "categories.names.temporary" ?
-                `You cannot remove the temporary category`:
-                `Do you really want to remove ${this.props.category.meta.name}`
+                `${t("category.menu.deleteImpossible",{category: this.props.category.meta.name})}`:
+                `${t("category.menu.deleteConfirm",{category: this.props.category.meta.name})}`
               }
             </ConfirmationModal>
         </>

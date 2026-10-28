@@ -9,7 +9,10 @@
         "delete": "Effacer",
         "moveTo": "Déplacer",
         "open": "Ouvrir",
-        "openAll": "Ouvrir"
+        "openAll": "Ouvrir",
+        "askConfirm": "Demande de confirmation",
+        "cancel": "Annuler",
+        "confirm": "Confirmer"
     },
     "timeAgo": {
         "yesterday": "hier",
@@ -17,6 +20,7 @@
         "lastYear": "l'an dernier",
         "lastMonth": "le mois dernier",
         "lastWeek": "l'an dernier",
+        "second_zero": "à l'instant",
         "second_one": "Il y a {{count}}s",
         "second_other": "Il y a {{count}}s",
         "minute_one": "Il y a {{count}} min",
@@ -32,11 +36,19 @@
     },
     "category": {
         "add": "Ajouter catégorie",
-        "temporary": "temporaire",
-        "faves": "favoris",
+        "temporary": {
+            "title": "Temporaire",
+            "description": "Vos onglets destinés à un usage temporaire"
+        },
+        "faves": {
+            "title": "Favoris",
+            "description": "Vos onglets mis en favoris"
+        },
         "delete": "Effacer {{category}}",
-        "menu":{
-            "deleteAfter": "Effacer les onglets après"
+        "menu": {
+            "deleteAfter": "Effacer les onglets après",
+            "deleteImpossible": "Vous ne pouvez pas effacer la catégorie {{category}}",
+            "deleteConfirm": "Voulez-vous vraiment effacer {{category}}"
         }
     },
     "currentTabs": {
@@ -54,7 +66,7 @@
         "extract": "Extraire",
         "scrollTop": "Retourner en haut de page",
         "noTabsIn": "Aucun onglets n'est sauvegardé dans {{category}}",
-        "noTabsInAdviced": "Vous pouvez en ajouter en cliquant sur le bouton <1>Enregistrer<1/>",
+        "noTabsInAdvice": "Vous pouvez en ajouter en cliquant sur le bouton <1>Enregistrer<1/>",
         "notifyExpiracy": "Les groupes d'onglets suivant vont bientôt atteindre leur date d'expiration et seront supprimés",
         "openRandom": "Ouvrir aléatoirement",
         "openRandomFrom": "Ouvrir aléatoirement depuis {{category}}"
@@ -71,14 +83,14 @@
             },
             "cadence": "Cadence d'ouverture (en ms)",
             "autofocus": "Toujours aller sur le dernier onglet ouvert",
-            "storage":{
+            "storage": {
                 "title": "Stockage",
                 "import": "Importer des données",
                 "export": "Exporter des données",
                 "clear": "Effacer toutes les données"
             }
         },
-        "alias":{
+        "alias": {
             "title": "Paramétrage des alias",
             "add": "Ajouter un alias"
         }

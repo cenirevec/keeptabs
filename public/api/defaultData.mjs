@@ -28,11 +28,11 @@ export const defaultData = {
                 "www.bing.com",
                 "www.duckduckgo.com"
             ],
-            description:"Search Engines"
+            description: "Search Engines"
         },
-        n:{
-            value:["www.youtube.com","reddit.com","facebook.com"],
-            description:"Social Networks"
+        n: {
+            value: ["www.youtube.com", "reddit.com", "facebook.com"],
+            description: "Social Networks"
         }
     },
 
@@ -51,7 +51,7 @@ export const defaultModel = {
             settings: defaultData.settings,
             shortcuts: defaultData.shortcuts
         },
-        icons:{
+        icons: {
             references: [],
             default: defaultData.icons
         },
@@ -61,8 +61,20 @@ export const defaultModel = {
                     expiration: 30,
                     hidden: 14,
                     name: "temporary",
-                    translationLabel: "categories.names.temporary",
-                    deleteOnOpening: true
+                    translationLabel: "category.temporary.title",
+                    translationDescription: "category.temporary.description",
+                    deleteOnOpening: true,
+                    pinned: true
+                },
+                tabGroups: []
+            },
+            "1": {
+                meta: {
+                    name: "faves",
+                    translationLabel: "category.faves.title",
+                    translationDescription: "category.faves.description",
+                    deleteOnOpening: true,
+                    pinned: true
                 },
                 tabGroups: []
             }
