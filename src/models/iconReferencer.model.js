@@ -25,7 +25,7 @@ export class IconReferencer{
      */
     getFaviconIdByURL(imageURL){
 
-        if(imageURL == undefined){
+        if(imageURL == undefined || imageURL == ""){
             imageURL = this.default.unknown;
         }
         else if(imageURL.startsWith("chrome://")){

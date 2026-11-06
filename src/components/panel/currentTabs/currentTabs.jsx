@@ -130,8 +130,7 @@ export class CurrentTabsPanel extends Component {
                 },
                 "tabs": tabGroups
             };
-            console.log(newTabGroup);
-            console.log(category);
+
             category.tabGroups.unshift(newTabGroup);
             //Save the model
             _this.props.saveData();
@@ -142,15 +141,9 @@ export class CurrentTabsPanel extends Component {
             tabs = tabs.filter(tab => tab.url != document.URL).map(tab => {
                         return new TabModel(tab);
                     });
-                    
-            let tabList = new Array();
-            for (let i = 0; i < tabs.length; i++) {
-                tabList.push(new TabModel(tabs[i]));
-            }
             
-
             //Filter the list
-            let toSave = tabList.filter(
+            let toSave = tabs.filter(
                 tab => _this.props.filter.filter(tab));
 
 

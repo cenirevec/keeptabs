@@ -65,7 +65,7 @@ export class Tab extends React.Component {
         if (this.props.tab == undefined)
             return;
 
-        let addedClasses = "";
+        let addedClasses = "verge ";
         const { url, title, lastAccessed } = this.props.tab;
 
         let favicon;
@@ -74,6 +74,8 @@ export class Tab extends React.Component {
         } else {
             favicon = this.props.tab.faviconUrl;
         }
+        
+
 
         let date = new Date(lastAccessed);
 

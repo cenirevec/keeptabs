@@ -35,7 +35,8 @@ class Home extends React.Component {
         super(props);
 
         // Come back to last visited category
-        this.category = parseInt(localStorage.selectedCategory) ?? 0;
+        this.category = (isNaN(localStorage.selectedCategory))? 
+            0 : parseInt(localStorage.selectedCategory);
 
         this.state = {
             data: {},
@@ -58,8 +59,6 @@ class Home extends React.Component {
             setTimeout(() => { this.setSelectedCategory(this.category); }, 0);
             this.forceUpdate();
         });
-
-        //this.scheduler = window.setInterval(this.watch,100);
 
         // Refresh the window when the user come to it again
         document.addEventListener("focus", this.reload);
@@ -116,10 +115,11 @@ class Home extends React.Component {
         index = parseInt(index);
         this.category = index;
         this.setState({
-            //selectedCategory: category,
             category: index
         });
-        localStorage.selectedCategory = index;
+        
+        //Save the focus on category and fix potential selected category bug with NaN
+        localStorage.selectedCategory = (isNaN(index)) ? 0 : index;
     }
 
     /**
@@ -198,7 +198,7 @@ class Home extends React.Component {
      */
     render() {
         if(!this.state.data?.categories) return;
-        //console.warn("Render all")
+        
         let theme = window.matchMedia('(prefers-color-scheme: dark)').matches? "dark": "light";
         return (
             <div data-bs-theme={theme} className="container">
