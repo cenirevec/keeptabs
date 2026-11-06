@@ -157,6 +157,7 @@ class Home extends React.Component {
      * Reload data and refresh
      */
     reload() {
+        console.log("home.reload()");
         Services.data.load(() => {
             this.setMoods(Services.data.model);
             setTimeout(() => { this.setSelectedCategory(this.category); }, 0);

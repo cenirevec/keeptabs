@@ -130,6 +130,8 @@ export class CurrentTabsPanel extends Component {
                 },
                 "tabs": tabGroups
             };
+            console.log(newTabGroup);
+            console.log(category);
             category.tabGroups.unshift(newTabGroup);
             //Save the model
             _this.props.saveData();
