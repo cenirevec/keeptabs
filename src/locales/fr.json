@@ -38,11 +38,11 @@
         "add": "Ajouter catégorie",
         "temporary": {
             "title": "Temporaire",
-            "description": "Vos onglets destinés à un usage temporaire"
+            "description": "Dans cette catégorie vous trouvez vos onglets temporaires. Ils seront automatiquement effacés au bout de 30 jours"
         },
         "faves": {
             "title": "Favoris",
-            "description": "Vos onglets mis en favoris"
+            "description": "Dans cette catégorie vous trouvez vos onglets favoris"
         },
         "delete": "Effacer {{category}}",
         "menu": {
@@ -66,7 +66,7 @@
         "extract": "Extraire",
         "scrollTop": "Retourner en haut de page",
         "noTabsIn": "Aucun onglets n'est sauvegardé dans {{category}}",
-        "noTabsInAdvice": "Vous pouvez en ajouter en cliquant sur le bouton <1>Enregistrer<1/>",
+        "noTabsInAdvice": "Vous pouvez en ajouter en cliquant sur le bouton <1>Enregistrer</1>",
         "notifyExpiracy": "Les groupes d'onglets suivant vont bientôt atteindre leur date d'expiration et seront supprimés",
         "openRandom": "Ouvrir aléatoirement",
         "openRandomFrom": "Ouvrir aléatoirement depuis {{category}}"
@@ -92,7 +92,8 @@
         },
         "alias": {
             "title": "Paramétrage des alias",
-            "add": "Ajouter un alias"
+            "add": "Ajouter un alias",
+            "description": ""
         }
     }
 }

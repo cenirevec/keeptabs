@@ -137,10 +137,15 @@ export class CurrentTabsPanel extends Component {
         /*   Get tabs   */
         // This code is redundant to ensure the privacy on ope
         let ReadTabs = function (tabs, _this) {
+            tabs = tabs.filter(tab => tab.url != document.URL).map(tab => {
+                        return new TabModel(tab);
+                    });
+                    
             let tabList = new Array();
             for (let i = 0; i < tabs.length; i++) {
                 tabList.push(new TabModel(tabs[i]));
             }
+            
 
             //Filter the list
             let toSave = tabList.filter(
@@ -154,7 +159,7 @@ export class CurrentTabsPanel extends Component {
             save(toSave, _this);
         }
         // Get the open tabs
-        Browser.tabs.query({ currentWindow: true, active: false }, (tabs) => ReadTabs(tabs, this));
+        Browser.tabs.query({ currentWindow: true }, (tabs) => ReadTabs(tabs, this));
     }
 
     /**
