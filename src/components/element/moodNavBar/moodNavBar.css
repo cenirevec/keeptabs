@@ -25,6 +25,11 @@
             white-space: nowrap;
         }
 
+        .nav-item:hover{
+            background-color: color-mix(in srgb, var(--font-color) 8%, rgba(0, 0, 0, 0) 92%) !important;
+            border-radius: 15px 15px 0 0;
+        }
+
         .nav-link {
             color: var(--font-color);
             border: none;

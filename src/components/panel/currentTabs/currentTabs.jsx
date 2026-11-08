@@ -38,7 +38,7 @@ export class CurrentTabsPanel extends Component {
 
         this.saveCurrentTabs = this.saveCurrentTabs.bind(this);
         this.refreshCurrentTabs = this.refreshCurrentTabs.bind(this);
-        
+
         //Add listeners to handle the tabs changes
         window.setInterval(this.refreshCurrentTabs, REFRESH_RATE);
     }
@@ -97,8 +97,8 @@ export class CurrentTabsPanel extends Component {
     //// UI ///////////////
 
     /**
- * Get the currently opened tabs
- */
+     * Get the currently opened tabs
+     */
     refreshCurrentTabs() {
         // Get the currently openned tabs
         this._getCurrentTabs((tabs) => {
@@ -112,7 +112,6 @@ export class CurrentTabsPanel extends Component {
 
             if (this.lastTabs.length !== tabs.length) {
                 this.setState({ toggleRefresh: !this.state.toggleRefresh });
-                console.log("whole refresh")
             }
 
             this.lastTabs = tabs;
@@ -188,7 +187,12 @@ export class CurrentTabsPanel extends Component {
         let categories = new Array();
         Object.keys(this.props.data.categories).forEach((categoryId, index) => {
             let category = this.props.data.categories[categoryId];
-            categories.push(<Dropdown.Item key={index} onClick={() => this.saveCurrentTabs(category)}>{category.meta.name}</Dropdown.Item>);
+            categories.push(
+                <Dropdown.Item key={index} onClick={() => this.saveCurrentTabs(category)}>
+                    {(category.meta.translationLabel != undefined) ?
+                        t(category.meta.translationLabel) :
+                        category.meta.name}
+                </Dropdown.Item>);
         })
 
         //Actually render the dropdown menu
@@ -244,9 +248,27 @@ export class CurrentTabsPanel extends Component {
             t(this.props.selectedCategory.meta.translationLabel) :
             this.props.selectedCategory.meta.name;
 
+        let filteredTabs = TabService.filter(this.currentTabs.tabs, this.props.filter);
+
         if (this.currentTabs.tabs.length > 0) {
-            // Return the current tabs panel
-            return this.renderCurrentTabs(categoryNameLabel);
+            if (filteredTabs.length > 0) {
+                // Return the current tabs panel
+                return this.renderCurrentTabs(categoryNameLabel);
+            } else {
+                return <section className="kt kt-panel kt-panel-current kt-panel-current-empty">
+                    <div>
+                        <p>{t("currentTabs.noneInFilter")}</p>
+                        <small>{t("currentTabs.noneInFilterAdvice")}</small>
+                    </div>
+                    {/* Open random tab button*/}
+                    <Button variant="primary" className="kt kt-open-rand-btn"
+                        onClick={() =>
+                            TabService.openRandomTabGroup(
+                                this.props.selectedCategory,
+                                this.props.filter)}>
+                        {t("savedTabs.openRandomFrom", { category: categoryNameLabel })}</Button>
+                </section>
+            }
         } else {
             return <section className="kt kt-panel kt-panel-current kt-panel-current-empty">
                 <div>

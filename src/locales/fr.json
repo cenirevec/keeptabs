@@ -60,7 +60,9 @@
         "moreTabs_other": "{{count}} onglets de plus",
         "showLess": "En afficher moins",
         "noneOpened": "Aucun onglet ouvert",
-        "noneOpenedAdvice": "Vous pouvez en choisir parmi ceux enregistrés ou par groupe d'onglets en cliquant sur un bouton \"Tout ouvrir\""
+        "noneOpenedAdvice": "Vous pouvez en choisir parmi ceux enregistrés ou par groupe d'onglets en cliquant sur un bouton \"Tout ouvrir\"",
+        "noneInFilter": "Aucune correspondance",
+        "noneInFilterAdvice": "Il ne reste aucun onglet correspond aux filtres. Vous pouvez revoir le contenu de la barre de recherche"
     },
     "savedTabs": {
         "extract": "Extraire",
@@ -93,7 +95,8 @@
         "alias": {
             "title": "Paramétrage des alias",
             "add": "Ajouter un alias",
-            "description": ""
+            "description": "Vous pouvez configurer les alias ici.",
+            "useCase" :" Les alias permettent de prédéfinir des filtres sur les nom de domaine et ainsi faciliter vos recherche ou le tri de groupes d'onglets"
         }
     }
 }

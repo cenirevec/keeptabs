@@ -8,103 +8,108 @@ import './categoryMenu.css';
 import { icons } from "../../../../public/api/shared.variables.mjs";
 import { t } from "i18next";
 
-export class CategoryMenu extends React.Component{
-  
-    constructor(props){
-        super(props);
+export class CategoryMenu extends React.Component {
 
-        this.state = {
-          showModal: false
-        }
+  constructor(props) {
+    super(props);
 
-        this.handleRemoveModalAction = this.handleRemoveModalAction.bind(this);
+    this.state = {
+      showModal: false
     }
 
-    renameItem(newName){
-      Services.category.rename(this.props.category,newName);
+    this.handleRemoveModalAction = this.handleRemoveModalAction.bind(this);
+  }
+
+  renameItem(newName) {
+    Services.category.rename(this.props.category, newName);
+  }
+
+  handleRemoveModalAction(actionName) {
+    let index = Services.data.model.categories;
+    if (this.props.category.meta?.translationLabel == "categories.names.temporary") {
+      this.setState({ showModal: false })
+      return;
     }
 
-    handleRemoveModalAction(actionName){
-      let index = Services.data.model.categories;
-      if(this.props.category.meta?.translationLabel == "categories.names.temporary"){
-        this.setState({showModal:false})
-        return;
-      }
-
-      if(actionName == "confirm"){
-        Services.category.delete(this.props.categoryId);
-        Services.main.refresh();
-      }
+    if (actionName == "confirm") {
+      Services.category.delete(this.props.categoryId);
+      Services.main.refresh();
     }
+  }
 
-    getPopover(){
-      
-        return <Popover className="kt-popover-menu" id="category-popover">
-        <Popover.Header as="h3">
-            <Renamable value={this.props.category.meta.name} 
-                           onSubmit={(newName)=>{
-                            if(this.renameItem){
-                                this.renameItem(newName)
-                            }
-                           }}
-                ></Renamable>
-        </Popover.Header>
-        <Popover.Body>
+  getPopover() {
 
-          <b>Auto-deletion</b>
-          <ListGroup className="withSettings">
-            <ListGroupItem>
-                <SettingOption type="duration"
-                    value={this.props.category.meta.hidden}
-                    min="0"
-                    step="1"
-                    allowedUnits="dwM"
-                    unit="day"
-                    id="hidden"
-                    >
-                    Hide tabs after
-                </SettingOption>
-            </ListGroupItem>
-            <ListGroupItem>
-                <SettingOption type="duration"
-                    value={this.props.category.meta.expiration}
-                    min="0"
-                    step="1"
-                    allowedUnits="dwM"
-                    unit="day"
-                    id="expiration"
-                    >
-                    {t("category.menu.deleteAfter")}
-                </SettingOption>
-            </ListGroupItem>
-          </ListGroup>
-          {this.props.category.meta.translationLabel != "categories.names.temporary" && <ListGroup>
-            <ListGroupItem id="remove-category" variant="danger" action onClick={()=>{
-                this.setState({showModal: true});}}
-            >{t("category.delete",{category:this.props.category.meta.name})}</ListGroupItem>
-          </ListGroup>}
-        </Popover.Body>
-      </Popover>
-    }
-
-    render(){
-        return <>
-          <OverlayTrigger trigger="click" rootClose  placement="bottom" overlay={this.getPopover()}>
-            <Button className="category-popover-icon" variant="link">
-              <img src={icons.settings}></img>
-            </Button>
-          </OverlayTrigger>
-          <ConfirmationModal 
-            show={this.state.showModal} 
-            onClose={()=>{this.setState({showModal:false})}}
-            onAction={this.handleRemoveModalAction}
-            >
-              {
-                this.props.category.meta?.translationLabel == "categories.names.temporary" ?
-                `${t("category.menu.deleteImpossible",{category: this.props.category.meta.name})}`:
-                `${t("category.menu.deleteConfirm",{category: this.props.category.meta.name})}`
+    return <Popover className="kt-popover-menu" id="category-popover">
+      <Popover.Header as="h3">
+        {this.props.category.meta.translationLabel == undefined &&
+          <Renamable value={this.props.category.meta.name}
+            onSubmit={(newName) => {
+              if (this.renameItem) {
+                this.renameItem(newName)
               }
-            </ConfirmationModal>
-        </>
-    }
+            }}
+          ></Renamable>}
+        {this.props.category.meta.translationLabel != undefined &&
+          t(this.props.category.meta.translationLabel)
+        }
+      </Popover.Header>
+      <Popover.Body>
+
+        <b>Auto-deletion</b>
+        <ListGroup className="withSettings">
+          <ListGroupItem>
+            <SettingOption type="duration"
+              value={this.props.category.meta.hidden}
+              min="0"
+              step="1"
+              allowedUnits="dwM"
+              unit="day"
+              id="hidden"
+            >
+              Hide tabs after
+            </SettingOption>
+          </ListGroupItem>
+          <ListGroupItem>
+            <SettingOption type="duration"
+              value={this.props.category.meta.expiration}
+              min="0"
+              step="1"
+              allowedUnits="dwM"
+              unit="day"
+              id="expiration"
+            >
+              {t("category.menu.deleteAfter")}
+            </SettingOption>
+          </ListGroupItem>
+        </ListGroup>
+        {this.props.category.meta.translationLabel == undefined && <ListGroup>
+          <ListGroupItem id="remove-category" variant="danger" action onClick={() => {
+            this.setState({ showModal: true });
+          }}
+          >{t("category.delete", { category: this.props.category.meta.name })}</ListGroupItem>
+        </ListGroup>}
+      </Popover.Body>
+    </Popover>
+  }
+
+  render() {
+    return <>
+      <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={this.getPopover()}>
+        <Button className="category-popover-icon" variant="link">
+          <img src={icons.settings}></img>
+        </Button>
+      </OverlayTrigger>
+      <ConfirmationModal
+        show={this.state.showModal}
+        onClose={() => { this.setState({ showModal: false }) }}
+        onAction={this.handleRemoveModalAction}
+      >
+        {
+          this.props.category.meta?.translationLabel != undefined ?
+            `${t("category.menu.deleteImpossible", { category: this.props.category.meta.name })}` :
+            `${t("category.menu.deleteConfirm", { category: this.props.category.meta.name })}`
+        }
+      </ConfirmationModal>
+    </>
+  }
 }

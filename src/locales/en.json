@@ -57,7 +57,9 @@
         "moreTabs_other": "{{count}} more tabs",
         "showLess": "Show less",
         "noneOpened": "There is no tab openned",
-        "noneOpenedAdvice": "You can choose among the saved ones or click on Open All to restore an older browsing session"
+        "noneOpenedAdvice": "You can choose among the saved ones or click on Open All to restore an older browsing session",
+        "noneInFilter": "No match",
+        "noneInFilterAdvice": "There are not tabs matching the filter. You can review the content of the search bar"
     },
     "savedTabs": {
         "extract": "Extract",
@@ -90,7 +92,8 @@
         "alias": {
             "title": "Alias settings",
             "add": "Add alias",
-            "description": "description of those settings usage"
+            "description": "You can set up aliases here.",
+            "useCase" :"Aliases make it possible to predefine filters on domain names and thus facilitate your searches or the sorting of tab groups."
         }
     }
 }

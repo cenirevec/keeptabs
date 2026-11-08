@@ -101,6 +101,7 @@ export class AliasSettings extends React.Component {
             <div className="kt kt-settings-pane kt-alias-settings">
                 <h4>{t(`${tPath}.title`)}</h4>
                 <p>{t(`${tPath}.description`)}</p>
+                <p>{t(`${tPath}.useCase`)}</p>
                 <ListGroup>
                     {aliasesList}
                     <ListGroupItem onClick={this.addAlias}>+{t(`${tPath}.add`)}</ListGroupItem>

@@ -10,7 +10,7 @@ export class AliasEditor extends React.Component {
         super(props);
 
         this.key = this.props.alias[0];
-        this.values = this.props.alias[1].value.join();
+        this.values = this.props.alias[1].value.join(", ");
         this.description = "";
 
         let savedDescription = this.props.alias[1].description;
@@ -75,7 +75,7 @@ export class AliasEditor extends React.Component {
      */
     setEditingValues(isEditingValues) {
         if (this.state.editingValues) {
-            Services.data.setValuesForAlias(this.key, this.state.values.split(","));
+            Services.data.setValuesForAlias(this.key, this.state.values.split(/ *, */gm));
             this.refresh();
         }
 
