@@ -53,8 +53,8 @@
         "create": "Create {{value}}",
         "filter": "Type to filter...",
         "saveIn": "Save in {{category}}",
-        "moreTabs_one": "{{count}} onglet en plus",
-        "moreTabs_other": "{{count}} onglets en plus",
+        "moreTabs_one": "{{count}} more tab",
+        "moreTabs_other": "{{count}} more tabs",
         "showLess": "Show less",
         "noneOpened": "There is no tab openned",
         "noneOpenedAdvice": "You can choose among the saved ones or click on Open All to restore an older browsing session"

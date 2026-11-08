@@ -181,31 +181,6 @@ export class MoodGroup extends React.Component {
         this.props.saveData();
     }
 
-
-    /**
-     * Open a random tab group from the category
-     * @param {*} category
-     */
-    openRandomTabGroup(category) {
-        //console.log(category,this.props.filter);
-        let tabGroupId = Date.now() % category.tabGroups.length;
-        //console.log();
-        let tabGroup = category.tabGroups[tabGroupId];
-
-        //Delete a tabGroup if all tabs are loaded
-        let onDelete = () => {
-            category.tabGroups.splice(tabGroupId, 1);
-            this.props.saveData();
-        };
-
-        TabService.openTabGroup(
-            tabGroup.tabs,
-            this.props.filter,
-            (tabs) => { tabGroup.tabs = tabs; Services.main?.refresh() },
-            onDelete
-        )
-    }
-
     /************************************************
      *                  RENDER METHODS
      **************************************************/
@@ -281,7 +256,7 @@ export class MoodGroup extends React.Component {
 
         let openRandomButton = (
             <Button variant="outline-secondary" className="kt kt-open-rand-btn"
-                onClick={() => this.openRandomTabGroup(this.props.category)}>
+                onClick={() => TabService.openRandomTabGroup(this.props.category,this.props.filter)}>
                 {t("savedTabs.openRandom")}</Button>
         )
         // Improve readability
