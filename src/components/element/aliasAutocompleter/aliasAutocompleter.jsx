@@ -27,9 +27,7 @@ export class AliasAutocompleter extends React.Component {
     }
 
     render() {
-        //console.log(this.props.filter.values)
         let input = this.props.filter.values[this.props.filter.values.length - 1];
-        //console.log(/:([^:]*)$/g.test(input),RegExp.$1);
         let lastTypeAlias = /:(!?[^:]*)$/g.test(input);
 
         return this.renderAliasesList(RegExp.$1);
