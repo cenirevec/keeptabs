@@ -1,3 +1,4 @@
+import { icons } from "../../public/api/shared.variables.mjs";
 
 export class IconReferencer{
 
@@ -5,13 +6,7 @@ export class IconReferencer{
     references = [];
 
     // Extension related icon references
-    default = {
-        "unknown": "./media/icons/unknown.svg",
-        "settings": "./media/icons/settings.svg",
-        "new_tab": "./media/icons/new_tab.svg",
-        "addons": "./media/icons/addons.svg",
-        "keeptabs": "./media/ico.png",
-    }
+    default = icons
 
     // Constructor
     constructor(references = []){
@@ -26,12 +21,12 @@ export class IconReferencer{
     getFaviconIdByURL(imageURL){
 
         if(imageURL == undefined || imageURL == ""){
-            imageURL = this.default.unknown;
+            imageURL = icons.unknown;
         }
         else if(imageURL.startsWith("chrome://")){
             // Add an icon for addons page
             if(imageURL.indexOf("extension") != -1){
-                imageURL = this.default.addons;
+                imageURL = icons.addons;
             }
         }
 
@@ -51,7 +46,7 @@ export class IconReferencer{
      * @returns URL of a favicon
      */
     getURLByFaviconId(faviconId){
-        return this.references[faviconId] ?? this.default.unknown;
+        return this.references[faviconId] ?? icons.unknown;
     }
 
 }

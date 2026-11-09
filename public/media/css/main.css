@@ -120,3 +120,7 @@ br {
     color: var(--list-font-color) !important;
     border-color: var(--body-color) !important;
 }
+
+.monochrome-svg{
+    filter: var(--monochrome-svg-effect);
+}

@@ -96,7 +96,7 @@ export class CategoryMenu extends React.Component {
     return <>
       <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={this.getPopover()}>
         <Button className="category-popover-icon" variant="link">
-          <img src={icons.settings}></img>
+          <img className="monochrome-svg" src={icons.kt_settings}></img>
         </Button>
       </OverlayTrigger>
       <ConfirmationModal

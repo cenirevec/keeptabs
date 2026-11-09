@@ -209,7 +209,7 @@ export class CurrentTabsPanel extends Component {
                     {t("currentTabs.opened")}
                 </span>
                 <span className="tabs-count">
-                    <img src={icons.tabs} role="img" alt=""></img>
+                    <img className="monochrome-svg" src={icons.tabs} role="img" alt=""></img>
                     <span>{t("common.tabs", { count: this.currentTabs.tabs.length })}</span>
                 </span>
             </h2>

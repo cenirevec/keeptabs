@@ -30,7 +30,9 @@
         --primary-bttn-color: hsl(231.19, 60.34%, 16.47%);
         --primary-pill-color: hsla(231.19, 60.34%, 16.47%, 20%);
         --primary-pill-text-color: hsl(231.19, 60.34%, 56.47%);
-        --primary-dropdown-bttn-color: hsl(227.93, 66.67%, 26.24%);;
+        --primary-dropdown-bttn-color: hsl(227.93, 66.67%, 26.24%);
+
+        --monochrome-svg-effect: invert();
     }
 }
 @media (prefers-color-scheme: light) {
@@ -56,5 +58,7 @@
         --primary-pill-color: hsla(231.19, 40.34%, 50.47%, 7%);
         --primary-pill-text-color: hsl(231.49, 80.57%, 34.31%);
         --primary-dropdown-bttn-color: hsl(227.93, 66.67%, 48.24%);
+
+        --monochrome-svg-effect: none;
     }
 }

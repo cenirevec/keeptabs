@@ -1,8 +1,9 @@
-import React,{ Component } from "react";
+import React, { Component } from "react";
 import { searchParameters } from "../../../models/searchFilter.model.js";
 import Chip from "../../element/chip/chip.jsx";
 import { t } from "i18next";
 import "./searchBar.css";
+import { AliasAutocompleter } from "../../element/aliasAutocompleter/aliasAutocompleter.jsx";
 
 export class SearchBarPanel extends Component {
     /** Parameters linked to the searchbar */
@@ -118,6 +119,8 @@ export class SearchBarPanel extends Component {
                     </svg>
                 </div>
             </div>
+            <AliasAutocompleter filter={this.params}></AliasAutocompleter>
+
 
         </section>
     }

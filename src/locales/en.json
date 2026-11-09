@@ -70,6 +70,11 @@
         "openRandom": "Open random",
         "openRandomFrom": "Open random from {{category}}"
     },
+    "searchbar": {
+        "aliases": {
+            "notin": "NOT in"
+        }
+    },
     "settings": {
         "title": "Settings",
         "general": {
@@ -93,7 +98,7 @@
             "title": "Alias settings",
             "add": "Add alias",
             "description": "You can set up aliases here.",
-            "useCase" :"Aliases make it possible to predefine filters on domain names and thus facilitate your searches or the sorting of tab groups."
+            "useCase": "Aliases make it possible to predefine filters on domain names and thus facilitate your searches or the sorting of tab groups."
         }
     }
 }

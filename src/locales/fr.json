@@ -73,6 +73,11 @@
         "openRandom": "Ouvrir aléatoirement",
         "openRandomFrom": "Ouvrir aléatoirement depuis {{category}}"
     },
+    "searchbar": {
+        "aliases": {
+            "notin": "PAS dans"
+        }
+    },
     "settings": {
         "title": "Paramètres",
         "general": {
@@ -96,7 +101,7 @@
             "title": "Paramétrage des alias",
             "add": "Ajouter un alias",
             "description": "Vous pouvez configurer les alias ici.",
-            "useCase" :" Les alias permettent de prédéfinir des filtres sur les nom de domaine et ainsi faciliter vos recherche ou le tri de groupes d'onglets"
+            "useCase": " Les alias permettent de prédéfinir des filtres sur les nom de domaine et ainsi faciliter vos recherche ou le tri de groupes d'onglets"
         }
     }
 }
