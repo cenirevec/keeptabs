@@ -1,4 +1,7 @@
 import React from "react";
+import { withTranslation } from 'react-i18next';
+import i18n from "./i18n.js";
+import "./i18n.js";
 import { createRoot } from "react-dom/client";
 import { HeaderPanel } from "./components/panel/header.jsx";
 import { CurrentTabsPanel } from "./components/panel/currentTabs/currentTabs.jsx";
@@ -9,56 +12,8 @@ import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
 import { Services } from "./services.jsx";
 import './home.css';
-import { Settings } from "./settings/Settings.jsx";
-
-import "./i18n.js";
-import { withTranslation } from 'react-i18next';
-import { useTranslation } from "react-i18next";
-import i18n from "./i18n.js";
-
-
-function getObjectDiff(original, current) {
-  const changes = {};
-
-  // Check current object's properties
-  for (const [key, value] of Object.entries(current)) {
-    if (!(key in original)) {
-      changes[key] = {
-        oldValue: undefined,
-        newValue: value
-      };
-      continue;
-    }
-
-    const originalValue = original[key];
-    const currentValue = value;
-
-    // Handle different types of comparisons
-    if (
-      originalValue !== currentValue &&
-      String(originalValue) !== String(currentValue) &&
-      JSON.stringify(originalValue) !== JSON.stringify(currentValue)
-    ) {
-      changes[key] = {
-        oldValue: originalValue,
-        newValue: currentValue
-      };
-    }
-  }
-
-  // Check for removed properties
-  for (const key of Object.keys(original)) {
-    if (!(key in current)) {
-      changes[key] = {
-        oldValue: original[key],
-        newValue: undefined
-      };
-    }
-  }
-
-  return Object.keys(changes).length === 0 ? null : changes;
-}
-
+import { Alert } from "react-bootstrap";
+import { t } from "i18next";
 
 
 class Home extends React.Component {
@@ -82,11 +37,13 @@ class Home extends React.Component {
         super(props);
 
         // Come back to last visited category
-        this.category = parseInt(localStorage.selectedCategory) ?? 0;
+        this.category = (isNaN(localStorage.selectedCategory)) ?
+            0 : parseInt(localStorage.selectedCategory);
 
         this.state = {
             data: {},
-            category: this.category
+            category: this.category,
+            tabsToOpen: 0
         };
         this.setMoods = this.setMoods.bind(this);
         this.refresh = this.refresh.bind(this);
@@ -97,6 +54,7 @@ class Home extends React.Component {
         this.reload = this.reload.bind(this);
         this.reloadOtherInstances = this.reloadOtherInstances.bind(this);
         this.watch = this.watch.bind(this);
+        //this.setTabsToOpen = this.setTabsToOpen.bind(this);
 
         Services.main = this;
 
@@ -106,21 +64,29 @@ class Home extends React.Component {
             this.forceUpdate();
         });
 
-        //this.scheduler = window.setInterval(this.watch,100);
-
         // Refresh the window when the user come to it again
         document.addEventListener("focus", this.reload);
     }
 
     /** Just before update */
-    shouldComponentUpdate(nextProps, nextStates) {
-        return !(this.props.data == nextProps.data &&
-             this.state.category == nextStates.category)
+    // shouldComponentUpdate(nextProps, nextStates) {
+    //     return !(this.props.data == nextProps.data &&
+    //         this.state.category == nextStates.category)
+    // }
+
+
+    watch() {
+        console.log("In watch");
     }
 
-
-    watch(){
-        console.log("In watch");
+    /**
+     * Indicates that tabs are opening and how much
+     * @param {*} remaining How much tabs remaining to open
+     */
+    setTabsToOpen(remaining) {
+        this.setState({
+            tabsToOpen: remaining
+        })
     }
 
     //Shared Methods
@@ -162,13 +128,12 @@ class Home extends React.Component {
     setSelectedCategory(index) {
         index = parseInt(index);
         this.category = index;
-        let category = this.data.categories[index];
-        //console.log(index,category);
         this.setState({
-            //selectedCategory: category,
             category: index
         });
-        localStorage.selectedCategory = index;
+
+        //Save the focus on category and fix potential selected category bug with NaN
+        localStorage.selectedCategory = (isNaN(index)) ? 0 : index;
     }
 
     /**
@@ -186,7 +151,19 @@ class Home extends React.Component {
      * Refresh the component
      */
     refresh() {
-        console.debug("home.refresh()");
+        /* Check for a correct category to show */
+        let index = this.state.category;
+
+        if (!this.state.data.categories[0]) {
+            console.error("Corrupted dataset: No 'temporary' category")
+        }
+        while (!this.state.data.categories[index] && index > 0) {
+            index--;
+        }
+
+        this.setSelectedCategory(index);
+
+        /* Actual update */
         this.forceUpdate();
     }
 
@@ -194,11 +171,11 @@ class Home extends React.Component {
      * Reload data and refresh
      */
     reload() {
+        console.log("home.reload()");
         Services.data.load(() => {
             this.setMoods(Services.data.model);
             setTimeout(() => { this.setSelectedCategory(this.category); }, 0);
         });
-        console.debug("home.reload()");
         this.forceUpdate();
     }
 
@@ -234,11 +211,13 @@ class Home extends React.Component {
      * @returns Rendered content
      */
     render() {
-        if(!this.state.data?.categories) return;
-        //console.warn("Render all")
-        let theme = window.matchMedia('(prefers-color-scheme: dark)').matches? "dark": "light";
+        if (!this.state.data?.categories) return;
+
+        let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
+        document.body.dataset.bsTheme = theme;
+
         return (
-            <div data-bs-theme={theme} className="container">
+            <div className="container">
                 <HeaderPanel />
                 <CurrentTabsPanel
                     filter={this.searchFilter}
@@ -259,6 +238,10 @@ class Home extends React.Component {
                     selected={this.state.category}
                     setMoods={this.setMoods} />
                 <FooterPanel />
+                {this.state.tabsToOpen > 0 &&
+                    <Alert className="tabsToOpen">
+                        {t("alert.remainingTabsToOpen", { count: this.state.tabsToOpen })}
+                    </Alert>}
             </div>
         )
     }

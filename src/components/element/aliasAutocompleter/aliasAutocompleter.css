@@ -1,0 +1,21 @@
+.kt-component-alias-autocompleter {
+    position: absolute;
+    background: var(--list-bg-color);
+    padding: 0;
+    border-radius: 0 0 25px 25px;
+    left: 15vw;
+    margin-top: -25px;
+    box-shadow: var(--default-box-shadow);
+    overflow: hidden;
+
+    li:first-of-type {
+        color: white;
+        background-color: var(--primary-dropdown-bttn-color);
+    }
+
+    li {
+        list-style: none;
+        font-size: 1.2em;
+        padding: 5px 20px;
+    }
+}

@@ -2,17 +2,27 @@ import React, { Component, useState } from "react";
 import { TabModel } from "../../../models/tab.model.js";
 import { TabGroup } from "../../element/tabGroup/tabGroup.jsx";
 import { Dropdown, Button, ButtonGroup, FormControl } from "react-bootstrap";
-import { Browser, icons } from "../../../../public/api/shared.variables.mjs";
+import { Browser, icons, REFRESH_RATE } from "../../../../public/api/shared.variables.mjs";
 import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { Services } from "../../../services.jsx";
 import "./currentTabs.css";
 // Test
-import {t} from "i18next";
+import { t } from "i18next";
 
 export class CurrentTabsPanel extends Component {
 
     /** Number of favicons taken in account */
     faviconTakenInAccount = 0;
+
+    /**
+     * Last list of current tabs
+     */
+    lastTabs = [];
+
+    /**
+     * Last list of current tabs
+     */
+    currentTabs = { tabs: [] };
 
     /**
      * Constructor
@@ -22,64 +32,55 @@ export class CurrentTabsPanel extends Component {
         super(props);
 
         this.state = {
-            currentTabs: []
+            currentTabs: [],
+            toggleRefresh: false
         };
 
         this.saveCurrentTabs = this.saveCurrentTabs.bind(this);
-        this.getCurrentTabs = this.getCurrentTabs.bind(this);
-        this.openRandomTabGroup = this.openRandomTabGroup.bind(this);
-
-        let l = (txt)=>{
-            console.log(txt)
-        }
-
-        let wait = (func)=>{
-            window.setTimeout(func,200);
-        }
+        this.refreshCurrentTabs = this.refreshCurrentTabs.bind(this);
 
         //Add listeners to handle the tabs changes
-        // Browser.tabs.onActivated.addListener(this.getCurrentTabs);
-        Browser.tabs.onRemoved.addListener(()=>wait(this.getCurrentTabs));
-        // Browser.tabs.onActivated.addListener(()=>l("actvtd"))
-        // Browser.tabs.onAttached.addListener(()=>l("attached"))
-        // Browser.tabs.onCreated.addListener(()=>l("create"))
-        // Browser.tabs.onDetached.addListener(()=>l("detached"))
-        // Browser.tabs.onHighlighted.addListener(()=>l("i lited"))
-        // Browser.tabs.onMoved.addListener(()=>l("mvd"))
-        // //Browser.tabs.onRemoved.addListener(l) 
-        // Browser.tabs.onReplaced.addListener(()=>l("replaced"))
-        // Browser.tabs.onUpdated.addListener(()=>l("updated"))
-        //wait(this.getCurrentTabs);
-        this.getCurrentTabs();
-        
-        //document.addEventListener("focus", this.getCurrentTabs);
+        window.setInterval(this.refreshCurrentTabs, REFRESH_RATE);
     }
 
     /** Before component rerender */
     componentDidUpdate() {
         if (this.props.data.icons?.references?.length > this.faviconTakenInAccount) {
             this.faviconTakenInAccount = this.props.data.icons?.references?.length;
-            this.getCurrentTabs();
+            this.refreshCurrentTabs();
         }
     }
 
     /**
      * Get the currently opened tabs
+     * @param {*} func 
+     * @param {*} options 
      */
-    getCurrentTabs() {
-        // Get the currently openned tabs
-        Browser.tabs.query({ currentWindow: true, active: false }, (tabs, _this = this) => {
-            let currentTabs = {
-                meta: {
-                    name: "<current>"
-                },
-                tabs: tabs.map(tab => {
-                    return new TabModel(tab);
-                })
+    _getCurrentTabs(func, options) {
+        Browser.tabs.query({ currentWindow: true }, (tabs, _this = this) => {
+            //@TODO vérifier que changement ?
+            if (this.lastTabs == tabs && options.triggerIfNew) {
+                console.log("S'arrête là")
+                return;
             }
 
-            _this.setState({ currentTabs: currentTabs });
+
+
+            tabs = tabs.filter(tab => tab.url != document.URL).map(tab => {
+                return new TabModel(tab);
+            });
+
+
+            //Filter based on searchbar input
+            if (options.filtered) {
+                tabs = tabs.filter(
+                    tab => _this.props.filter.filter(tab));
+            }
+
+            //Execute function with the given data
+            func(tabs, _this);
         });
+
     }
 
     /**
@@ -93,26 +94,30 @@ export class CurrentTabsPanel extends Component {
         }
     }
 
+    //// UI ///////////////
+
     /**
-     * Open a random tab group from the category
-     * @param {*} category 
+     * Get the currently opened tabs
      */
-    openRandomTabGroup(category) {
-        let tabGroupId = Date.now() % category.tabGroups.length;
-        let tabGroup = category.tabGroups[tabGroupId];
+    refreshCurrentTabs() {
+        // Get the currently openned tabs
+        this._getCurrentTabs((tabs) => {
+            //console.log("spam or not to spam?")
+            let currentTabs = {
+                meta: {
+                    name: "<current>"
+                },
+                tabs
+            }
 
-        //Delete a tabGroup if all tabs are loaded
-        let onDelete = () => {
-            category.tabGroups.splice(tabGroupId, 1);
-            this.props.saveData();
-        };
+            if (this.lastTabs.length !== tabs.length) {
+                this.setState({ toggleRefresh: !this.state.toggleRefresh });
+            }
 
-        TabService.openTabGroup(
-            tabGroup.tabs,
-            this.props.filter,
-            (tabs) => { tabGroup.tabs = tabs; Services.main?.refresh() },
-            onDelete
-        )
+            this.lastTabs = tabs;
+            this.currentTabs = currentTabs;
+
+        }, { triggerIfNew: true })
     }
 
     /**
@@ -120,8 +125,12 @@ export class CurrentTabsPanel extends Component {
      * @param {string} category Object representing the categories and his tab groups
      */
     saveCurrentTabs(category) {
-        //Define function content
-        let save = function (tabGroups, _this) {
+        // Get the open tabs
+        this._getCurrentTabs((tabs) => {
+            //Remove saved tabs
+            Browser.tabs.remove(tabs.map(tab => parseInt(tab.id)), null);
+
+            //Create a tab group based on current tabs
             let creationDate = Date.now();
             let newTabGroup = {
                 "meta": {
@@ -130,54 +139,17 @@ export class CurrentTabsPanel extends Component {
                     "name": null,
                     "deleteOnOpening": "true"
                 },
-                "tabs": tabGroups
+                "tabs": tabs
             };
+
             category.tabGroups.unshift(newTabGroup);
             //Save the model
-            _this.props.saveData();
-        }
-        /*   Get tabs   */
-        // This code is redundant to ensure the privacy on ope
-        let ReadTabs = function (tabs, _this) {
-            let tabList = new Array();
-            for (let i = 0; i < tabs.length; i++) {
-                tabList.push(new TabModel(tabs[i]));
-            }
-
-            //Filter the list
-            let toSave = tabList.filter(
-                tab => _this.props.filter.filter(tab));
-
-
-            //Remove saved tabs
-            Browser.tabs.remove(toSave.map(tab => parseInt(tab.id)), null);
-
-            //Callback
-            save(toSave, _this);
-        }
-        // Get the open tabs
-        Browser.tabs.query({ currentWindow: true, active: false }, (tabs) => ReadTabs(tabs, this));
+            this.props.saveData();
+        }, { filtered: true });
     }
 
-    /**
-     * Update the currently opened tab list
-     * @param {Array<TabModel>} tabs Tabs opened
-     */
-    updateState(tabs) {
-        this.setState({
-            currentTabs: tabs
-        });
-    }
-
-    /**
-     * React rendering function
-     * @returns Rendered content
-     */
-    render() {
-        if (this.props.data.categories == undefined || this.props.data.icons == undefined || this.state.currentTabs.tabs == undefined) {
-            return;
-        }
-
+    //////////////// RENDERING ////////////
+    renderDropdownMenu() {
         // Dropdown needs access to the DOM of the Menu to measure it
         const CustomMenu = React.forwardRef(
             ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
@@ -205,63 +177,111 @@ export class CurrentTabsPanel extends Component {
                         </ul>
                         <Dropdown.Divider />
                         {/* <CreateCategory type="contextual" context-value={value} onCreated={(name) => this.saveCurrentTabs(name)} /> */}
-                        +{t("currentTabs.create",{value})}
+                        + {t("currentTabs.create", { value })}
                     </div>
                 );
             },
         );
 
+        //Generate an item by existing category
         let categories = new Array();
-
         Object.keys(this.props.data.categories).forEach((categoryId, index) => {
             let category = this.props.data.categories[categoryId];
-            categories.push(<Dropdown.Item key={index} onClick={() => this.saveCurrentTabs(category)}>{category.meta.name}</Dropdown.Item>);
+            categories.push(
+                <Dropdown.Item key={index} onClick={() => this.saveCurrentTabs(category)}>
+                    {(category.meta.translationLabel != undefined) ?
+                        t(category.meta.translationLabel) :
+                        category.meta.name}
+                </Dropdown.Item>);
         })
 
-        let openRandomButton = (
-            <Button variant="primary" className="kt kt-open-rand-btn"
-                onClick={() => this.openRandomTabGroup(this.props.selectedCategory)}>
-                {t("savedTabs.openRandomFrom",{category: this.props.selectedCategory.meta.name})}</Button>
-        )
+        //Actually render the dropdown menu
+        return (<Dropdown.Menu as={CustomMenu}>
+            {categories}
+        </Dropdown.Menu>)
 
-        if (this.state.currentTabs.tabs.length > 0) {
-            // Return the current tabs panel
-            return <section className="kt kt-panel kt-panel-current">
-                <h2>
-                    <span className="title">
-                        {t("currentTabs.opened")}
-                    </span>
-                    <span className="tabs-count">
-                        <img src={icons.tabs} role="img" alt=""></img>
-                        <span>{t("common.tabs",{count:this.state.currentTabs.tabs.length})}</span>
-                    </span>
-                </h2>
+    }
 
-                <TabGroup context="current"
-                    filter={this.props.filter}
-                    tabGroup={this.state.currentTabs}
-                    saveData={this.props.saveData} />
+    renderCurrentTabs(categoryNameLabel) {
+        return <section className="kt kt-panel kt-panel-current">
+            <h2>
+                <span className="title">
+                    {t("currentTabs.opened")}
+                </span>
+                <span className="tabs-count">
+                    <img className="monochrome-svg" src={icons.tabs} role="img" alt=""></img>
+                    <span>{t("common.tabs", { count: this.currentTabs.tabs.length })}</span>
+                </span>
+            </h2>
 
-                <Dropdown drop="end" as={ButtonGroup}>
-                    <Button variant="primary"
-                        onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
-                        {t("currentTabs.saveIn",{category: this.props.selectedCategory.meta.name})}</Button>
+            <TabGroup context="current"
+                filter={this.props.filter}
+                tabGroup={this.currentTabs}
+                saveData={this.props.saveData} />
+
+            <Dropdown drop="end" as={ButtonGroup}>
+                <Button variant="primary"
+                    onClick={() => this.saveCurrentTabs(this.props.selectedCategory)}>
+                    {t("currentTabs.saveIn", { category: categoryNameLabel })}</Button>
 
 
-                    <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
+                <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
 
-                    <Dropdown.Menu as={CustomMenu}>
-                        {categories}
-                    </Dropdown.Menu>
-                </Dropdown>
-            </section>
+                {this.renderDropdownMenu()}
+                {/* <Dropdown.Menu as={CustomMenu}>
+                    {categories}
+                </Dropdown.Menu> */}
+            </Dropdown>
+        </section>
+    }
+
+    /**
+     * React rendering function
+     * @returns Rendered content
+     */
+    render() {
+        if (this.props.data.categories == undefined || this.props.data.icons == undefined || this.currentTabs.tabs == undefined) {
+            return;
+        }
+
+        let categoryNameLabel = (this.props.selectedCategory.meta.translationLabel) ?
+            t(this.props.selectedCategory.meta.translationLabel) :
+            this.props.selectedCategory.meta.name;
+
+        let filteredTabs = TabService.filter(this.currentTabs.tabs, this.props.filter);
+
+        if (this.currentTabs.tabs.length > 0) {
+            if (filteredTabs.length > 0) {
+                // Return the current tabs panel
+                return this.renderCurrentTabs(categoryNameLabel);
+            } else {
+                return <section className="kt kt-panel kt-panel-current kt-panel-current-empty">
+                    <div>
+                        <p>{t("currentTabs.noneInFilter")}</p>
+                        <small>{t("currentTabs.noneInFilterAdvice")}</small>
+                    </div>
+                    {/* Open random tab button*/}
+                    <Button variant="primary" className="kt kt-open-rand-btn"
+                        onClick={() =>
+                            TabService.openRandomTabGroup(
+                                this.props.selectedCategory,
+                                this.props.filter)}>
+                        {t("savedTabs.openRandomFrom", { category: categoryNameLabel })}</Button>
+                </section>
+            }
         } else {
             return <section className="kt kt-panel kt-panel-current kt-panel-current-empty">
                 <div>
                     <p>{t("currentTabs.noneOpened")}</p>
                     <small>{t("currentTabs.noneOpenedAdvice")}</small>
                 </div>
-                {openRandomButton}
+                {/* Open random tab button*/}
+                <Button variant="primary" className="kt kt-open-rand-btn"
+                    onClick={() =>
+                        TabService.openRandomTabGroup(
+                            this.props.selectedCategory,
+                            this.props.filter)}>
+                    {t("savedTabs.openRandomFrom", { category: categoryNameLabel })}</Button>
             </section>
         }
     }

@@ -9,11 +9,19 @@
         "delete": "Delete",
         "moveTo": "Move to",
         "open": "Open",
-        "openAll": "Open All"
+        "openAll": "Open All",
+        "askConfirm": "Ask for confirmation",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+    },
+    "alert":{
+        "remainingTabsToOpen_one": "Currently opening the last tab...",
+        "remainingTabsToOpen_other": "Currently opening {{count}} tabs..."
     },
     "timeAgo": {
         "yesterday": "yesterday",
-        "twoDaysAgo": "two days ago",
+        "twoDaysAgo": "2 days ago",
+        "second_zero": "right now",
         "second_one": "{{count}} second ago",
         "second_other": "{{count}} seconds ago",
         "minute_one": "{{count}} minute",
@@ -29,11 +37,19 @@
     },
     "category": {
         "add": "Add category",
-        "temporary": "temporary",
-        "faves": "favorites",
+        "temporary": {
+            "title": "Temporary",
+            "description": "Find in this category your temporary tabs. They will automatically be removed after 30 days since their creation"
+        },
+        "faves": {
+            "title": "Favorites",
+            "description": "Find in this category your bookmarked tabs"
+        },
         "delete": "Remove {{category}}",
         "menu": {
-            "deleteAfter": "Delete tabs after"
+            "deleteAfter": "Delete tabs after",
+            "deleteImpossible": "You cannot remove the {{category}} category",
+            "deleteConfirm": "Do you really want to remove {{category}}"
         }
     },
     "currentTabs": {
@@ -41,20 +57,27 @@
         "create": "Create {{value}}",
         "filter": "Type to filter...",
         "saveIn": "Save in {{category}}",
-        "moreTabs_one": "{{count}} onglet en plus",
-        "moreTabs_other": "{{count}} onglets en plus",
+        "moreTabs_one": "{{count}} more tab",
+        "moreTabs_other": "{{count}} more tabs",
         "showLess": "Show less",
         "noneOpened": "There is no tab openned",
-        "noneOpenedAdvice": "You can choose among the saved ones or click on Open All to restore an older browsing session"
+        "noneOpenedAdvice": "You can choose among the saved ones or click on Open All to restore an older browsing session",
+        "noneInFilter": "No match",
+        "noneInFilterAdvice": "There are not tabs matching the filter. You can review the content of the search bar"
     },
     "savedTabs": {
         "extract": "Extract",
         "scrollTop": "Scroll to the top",
         "noTabsIn": "There is no tab saved in {{category}}",
-        "noTabsInAdvice": "You can add the current tabs by clicking on the <1>Save<1/> button",
+        "noTabsInAdvice": "You can add the current tabs by clicking on the <1>Save</1> button",
         "notifyExpiracy": "The following tab groups will soon reach expiration date and will be removed",
         "openRandom": "Open random",
         "openRandomFrom": "Open random from {{category}}"
+    },
+    "searchbar": {
+        "aliases": {
+            "notin": "NOT in"
+        }
     },
     "settings": {
         "title": "Settings",
@@ -68,17 +91,18 @@
             },
             "cadence": "Time before loading the next tab in ms",
             "autofocus": "Focus on the last opened tab",
-            "storage":{
+            "storage": {
                 "title": "Storage",
                 "import": "Import data",
                 "export": "Export data",
                 "clear": "Clear all data"
             }
         },
-        "alias":{
+        "alias": {
             "title": "Alias settings",
             "add": "Add alias",
-            "description": "description of those settings usage"
+            "description": "You can set up aliases here.",
+            "useCase": "Aliases make it possible to predefine filters on domain names and thus facilitate your searches or the sorting of tab groups."
         }
     }
 }

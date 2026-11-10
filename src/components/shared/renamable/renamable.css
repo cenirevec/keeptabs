@@ -14,13 +14,12 @@
 .mood-name .kt-component-renamable input{
 	background-color: #fff2;
 	border-color: #fff6;
-	color: white;
+	color: var(--font-color);;
 }
 
 
 .kt-component-renamable{
     display: inline-flex;
-	color: var(--font-color);
 }
 
 .kt-component-renamable input{

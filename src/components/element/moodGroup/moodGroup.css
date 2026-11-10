@@ -71,7 +71,6 @@
         grid-template-columns: 1fr auto auto;
         padding: 12px 4px;
         margin-bottom: -30px;
-        text-transform: capitalize;
 
         h3 {
             margin-left: 5px;
@@ -91,9 +90,13 @@
         }
 
         .description {
-            opacity: 0.3;
+            opacity: 0.8;
             margin: auto 0;
             padding-left: 10px;
+
+            i{
+                opacity: 0.3;
+            }
         }
     }
 }

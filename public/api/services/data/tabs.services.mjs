@@ -7,45 +7,6 @@ export class TabService {
     currentTabs = [];
 
     constructor() {
-        //Set the handlers in order to know when the tab list is refreshed
-
-        //Add listeners to handle the tabs changes
-        /*  Browser.tabs.onActivated.addListener(this.getCurrentTabs);
-         Browser.tabs.onRemoved.addListener(this.getCurrentTabs); */
-         //this.filter = this.filter.bind(this);
-         //this.openTabGroup = this.openTabGroup.bind(this);
-    }
-
-    getCurrentTabs() {
-        /*   Get tabs   */
-        // This code is redundant to ensure the privacy on ope
-        /*         let ReadTabs = function(tabs){//console.log("ReadTab(tabs)=>tabs",tabs)
-                    let tabList = new Array();
-                    for (let i = 0; i < tabs.length; i++) {
-                        tabList.push(""+tabs[i].id);
-        
-                        if (TabService.current[tabs[i].id] == undefined) {
-                            TabService.current[tabs[i].id] = new Tab(tabs[i]);
-                        } else {
-                            //console.log("Trying to update",tabs)
-                            TabService.current[tabs[i].id].update(tabs[i],"current");
-                        }
-                    }
-                    //Remove the tabs that are already closed
-                    /* let toDeleteIDs = Object.keys(TabService.current).filter(
-                        x => !tabList.includes(x));
-        
-                    toDeleteIDs.forEach(id=>{
-                        TabService.current[id].tokenForDeletion();
-                    }); 
-        
-                    //TabService.renderCurrentTabs();
-                    callback(objectToArray(TabService.current,(tabId,tab)=>{
-                        return tab.id == tabId;
-                    }));
-                }
-                // Get the open tabs
-                Browser.tabs.query({currentWindow: true, active: false},ReadTabs);   */
     }
 
     /**
@@ -53,7 +14,7 @@ export class TabService {
      * @param {searchBarParameters} params Searchbar filters
      * @returns 
      */
-    static filter(source,params) {
+    static filter(source, params) {
         let filteredTabs = [];
 
         if (source != undefined) {
@@ -63,13 +24,51 @@ export class TabService {
         return filteredTabs;
     }
 
-    static openTabGroupById(id,filter,onRefresh){
+    /**
+     * Open a random tab group within a category
+     * @param {*} category Category to pick a tab group from
+     * @param {*} filter Filter on the tabs
+     */
+    static openRandomTabGroup(category, filter) {
+        let tabGroupId = Date.now() % category.tabGroups.length;
+        let tabGroup = category.tabGroups[tabGroupId];
+
+        //Delete a tabGroup if all tabs are loaded
+        let onDelete = () => {
+            category.tabGroups.splice(tabGroupId, 1);
+            //Save the modification
+            Services.data.save();
+        };
+
+        //Open the selected tabs
+        TabService.openTabGroup(
+            tabGroup.tabs,
+            filter,
+            (tabs) => { tabGroup.tabs = tabs; Services.main?.refresh() },
+            onDelete
+        )
+    }
+
+    /**
+     * TO BE DEFINED
+     * @param {*} id 
+     * @param {*} filter 
+     * @param {*} onRefresh 
+     */
+    static openTabGroupById(id, filter, onRefresh) {
         let tabGroup;
     }
 
-    static openTabGroup(tabs,filter,onRefresh,onGroupDelete) {
+    /**
+     * Open a tab group
+     * @param {*} tabs Actual tab group
+     * @param {*} filter Filter on the tabs
+     * @param {*} onRefresh Function to trigger to refesh the view
+     * @param {*} onGroupDelete Function to trigger on tab group deletion
+     */
+    static openTabGroup(tabs, filter, onRefresh, onGroupDelete) {
         //let filter; //Get filter from searchbar entries
-        let filteredTabs = TabService.filter(tabs,filter);
+        let filteredTabs = TabService.filter(tabs, filter);
         let tokenForDeletion = [];
 
         //Lock window closure
@@ -120,6 +119,8 @@ export class TabService {
                         options.windowId = windowId;
                     }
                     browser.tabs.create(options).then(loadNext, loadNext);
+
+                    Services.main.setTabsToOpen(filteredTabs.length - index - 1);
                 }
 
                 //Create tabs where the user started the open all feature when possible
@@ -144,15 +145,19 @@ export class TabService {
         //Remove openned tabs
         tabs = tabs.filter(
             (tab, index) => tokenForDeletion.indexOf(index) == -1);
-        if(onRefresh) onRefresh(tabs);
+        if (onRefresh) onRefresh(tabs);
 
         //Delete the tabgroup if all tabs have been openned and/or deleted
         if (tabs.length == 0) {
-            if(onGroupDelete) onGroupDelete();
+            if (onGroupDelete) onGroupDelete();
         }
 
         //Save the modification
         Services.data.save();
+    }
+
+    getCurrentTabs(handler,options){
+
     }
 
     saveCurrentTabs(category) {

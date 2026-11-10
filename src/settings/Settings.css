@@ -56,6 +56,12 @@
         height: calc(100% - 100px);
         overflow-y: scroll;
     }
+
+    .form-check-input[type="checkbox"] {
+        width: 25px;
+        height: 25px;
+        margin-top: 0px;
+    }
 }
 
 

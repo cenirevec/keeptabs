@@ -1,5 +1,5 @@
 import React from "react";
-import { Browser, timeSince } from "../../../../public/api/shared.variables.mjs";
+import { Browser, icons, timeSince } from "../../../../public/api/shared.variables.mjs";
 import { Services } from "../../../services.jsx";
 import './tab.css'
 import { CloseButton } from "react-bootstrap";
@@ -68,11 +68,23 @@ export class Tab extends React.Component {
         let addedClasses = "";
         const { url, title, lastAccessed } = this.props.tab;
 
+        // Get the favicon path
         let favicon;
         if (this.props.tab.faviconId != undefined) {
             favicon = Services.favicons.getURLByFaviconId(this.props.tab.faviconId);
         } else {
             favicon = this.props.tab.faviconUrl;
+        }
+
+        //Replace the not found favicon
+        if(favicon == "chrome://branding/content/icon32.png"){
+            favicon = icons.unknown;
+        }
+        
+        //Detect if it is a locally stored svg and style it properly
+        let mediaRegex = /media\/icons\/.*\.svg/gm;
+        if(favicon.match(mediaRegex)){
+            addedClasses += "monochrome-svg";
         }
 
         let date = new Date(lastAccessed);

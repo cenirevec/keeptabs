@@ -6,7 +6,7 @@ import { AliasSettings } from "./settings-pages/aliases/aliases-settings.jsx";
 import { DeveloperSettings } from "./settings-pages/dev/dev-settings.jsx";
 import { Services } from "../services.jsx";
 import { FileSettings } from "./settings-pages/file/file-settings.jsx";
-import { icons } from "../../public/api/shared.variables.mjs";
+import { icons, rawIcons } from "../../public/api/shared.variables.mjs";
 import { t } from "i18next";
 
 export class Settings extends React.Component {
@@ -78,7 +78,7 @@ export class Settings extends React.Component {
                 <>
                     <Button id="settings-btn" variant="outline-primary" onClick={() => this.open()}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-gear-fill" viewBox="0 0 16 16">
-                            <path d={icons.raw.settings} />
+                            <path d={rawIcons.settings} />
                         </svg>
                         {t("settings.title")}
                     </Button>

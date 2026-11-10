@@ -7,6 +7,7 @@ import TabService from "../../../../public/api/services/data/tabs.services.mjs";
 import { CategoryMenu } from "../categoryMenu/categoryMenu.jsx";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
+import { REFRESH_RATE } from "../../../../public/api/shared.variables.mjs";
 
 export class MoodGroup extends React.Component {
     /**
@@ -46,6 +47,7 @@ export class MoodGroup extends React.Component {
     constructor(props) {
         super(props);
 
+        this.ref = React.createRef();
         this.state = {
             tabGroups: this.props.category.tabGroups,
             enableScrollToTop: false,
@@ -99,7 +101,7 @@ export class MoodGroup extends React.Component {
             }
         }
 
-        setInterval(hasReachedBottom, 100);
+        setInterval(hasReachedBottom, REFRESH_RATE);
     }
 
     scrollToTop() {
@@ -180,29 +182,14 @@ export class MoodGroup extends React.Component {
         this.props.saveData();
     }
 
-
     /**
-     * Open a random tab group from the category
-     * @param {*} category
+     * Search for tab groups in the DOM after filter being applied
+     * @returns Whether or not there are still tab groups
      */
-    openRandomTabGroup(category) {
-        //console.log(category,this.props.filter);
-        let tabGroupId = Date.now() % category.tabGroups.length;
-        //console.log();
-        let tabGroup = category.tabGroups[tabGroupId];
-
-        //Delete a tabGroup if all tabs are loaded
-        let onDelete = () => {
-            category.tabGroups.splice(tabGroupId, 1);
-            this.props.saveData();
-        };
-
-        TabService.openTabGroup(
-            tabGroup.tabs,
-            this.props.filter,
-            (tabs) => { tabGroup.tabs = tabs; Services.main?.refresh() },
-            onDelete
-        )
+    hasNoneInFilter() {
+        let node = this.ref.current;
+        return !!node &&
+            node.getElementsByClassName("kt-component-tabgroup").length == 0;
     }
 
     /************************************************
@@ -238,8 +225,7 @@ export class MoodGroup extends React.Component {
      */
     renderHiddenTabs() {
         let hiddenTabsToRender = Math.max(0, this.state.loadedTabGroups - this.renderableTabs.length);
-        //console.log(hiddenTabsToRender)
-        //return;
+
         return this.props.category.tabGroups
             .filter((tabGroup) => this.checkHidden(tabGroup))
             .slice(0, hiddenTabsToRender)
@@ -264,8 +250,6 @@ export class MoodGroup extends React.Component {
         if (this.props.category.tabGroups == undefined)
             return;
 
-        //console.warn("MoodGroup refresh")
-
         this.cleanDataModel();
 
         //Create the list of visible tab groups
@@ -281,20 +265,35 @@ export class MoodGroup extends React.Component {
 
         let openRandomButton = (
             <Button variant="outline-secondary" className="kt kt-open-rand-btn"
-                onClick={() => this.openRandomTabGroup(this.props.category)}>
+                onClick={() => TabService.openRandomTabGroup(this.props.category, this.props.filter)}>
                 {t("savedTabs.openRandom")}</Button>
         )
+        // Improve readability
+        let defaultDesc = this.props.category.meta.translationDescription;
+
+        //Check if there are tabgroups after applying filter
+        let hasNoneInFilter = this.hasNoneInFilter();
 
 
-        return <div className="kt kt-component kt-component-moodgroup">
+        return <div ref={this.ref} className="kt kt-component kt-component-moodgroup">
+            <div className="kt-component-moodgroup-header">
+                <p className="description">
+                    {defaultDesc &&
+                        <> {t(defaultDesc)}</>}
+                    {!defaultDesc && <>
+                        {(this.props.category.meta.description) ?
+                            this.props.category.meta.description
+                            : <i>{t("common.desc")}...</i>}</>}
+                </p>
+                <CategoryMenu
+                    category={this.props.category}
+                    categoryId={this.props.categoryId}
+                    selected={true}
+                    renameItem={() => { }}></CategoryMenu>
+                {tabgroupList.length > 0 && openRandomButton}
+            </div>
             {tabgroupList.length > 0 && <>
-                <div className="kt-component-moodgroup-header">
-                    <i className="description">{t("common.desc")}...</i>
-                    <CategoryMenu category={this.props.category} categoryId={1} selected={true} renameItem={() => { }}></CategoryMenu>
-                    {openRandomButton}
-                </div>
                 {tabgroupList}
-
             </>}
             {this.props.category.tabGroups.length == 0 &&
                 <div className="empty">
@@ -306,9 +305,17 @@ export class MoodGroup extends React.Component {
                     </small>
                 </div>
             }
+            {hasNoneInFilter &&
+                <div className="empty">
+                    <div>
+                        <p>{t("currentTabs.noneInFilter")}</p>
+                        <small>{t("currentTabs.noneInFilterAdvice")}</small>
+                    </div>
+                </div>
+            }
 
 
-            {hiddenTabgroupList.length > 0 &&
+            {(!hasNoneInFilter && hiddenTabgroupList.length > 0) &&
                 <h3 className="notify-expiracy">{t("savedTabs.notifyExpiracy")}</h3>
             }
             {hiddenTabgroupList}

@@ -6,7 +6,7 @@ export class Renamable extends React.Component {
     callbacks = {
         onChange: null,
         onSubmit: null
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -31,6 +31,7 @@ export class Renamable extends React.Component {
 
         // Reference to the input
         this.textInput = React.createRef();
+        this.renamableRef = React.createRef();
     }
 
     componentDidUpdate(newProps) {
@@ -47,7 +48,7 @@ export class Renamable extends React.Component {
         setTimeout((_self = this) => {
             _self.textInput.current.select();
             // When the user clicks outside of the input
-            document.body.onclick = this.handleOutsideClick
+            document.body.onclick = this.handleOutsideClick;
         }, 0)
     }
 
@@ -81,9 +82,16 @@ export class Renamable extends React.Component {
         }
     }
 
+    /**
+     * 
+     * @param {*} event 
+     */
     handleOutsideClick(event) {
         document.body.onclick = null;
-        this.handleSubmit();
+
+        if(!this.renamableRef.current.contains(event.target)){
+            this.handleSubmit(event);
+        }
     }
 
     /**
@@ -94,7 +102,7 @@ export class Renamable extends React.Component {
         let innerText = (this.state.value?.length === 0) ?
             this.props.placeholder : this.state.value;
 
-        return <span className="kt-component-renamable" onDoubleClick={this.enableEdition}>
+        return <span ref={this.renamableRef} className="kt-component-renamable" onDoubleClick={this.enableEdition}>
             {!this.state.edition && innerText}
             {this.state.edition &&
                 <form className="kt-component-renamable" onSubmit={this.handleSubmit}>

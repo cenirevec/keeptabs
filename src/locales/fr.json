@@ -9,7 +9,14 @@
         "delete": "Effacer",
         "moveTo": "Déplacer",
         "open": "Ouvrir",
-        "openAll": "Ouvrir"
+        "openAll": "Ouvrir",
+        "askConfirm": "Demande de confirmation",
+        "cancel": "Annuler",
+        "confirm": "Confirmer"
+    },
+    "alert":{
+        "remainingTabsToOpen_one": "Ouverture du dernier onglet...",
+        "remainingTabsToOpen_other": "Ouvre en ce moment {{count}} onglets..."
     },
     "timeAgo": {
         "yesterday": "hier",
@@ -17,6 +24,7 @@
         "lastYear": "l'an dernier",
         "lastMonth": "le mois dernier",
         "lastWeek": "l'an dernier",
+        "second_zero": "à l'instant",
         "second_one": "Il y a {{count}}s",
         "second_other": "Il y a {{count}}s",
         "minute_one": "Il y a {{count}} min",
@@ -32,11 +40,19 @@
     },
     "category": {
         "add": "Ajouter catégorie",
-        "temporary": "temporaire",
-        "faves": "favoris",
+        "temporary": {
+            "title": "Temporaire",
+            "description": "Dans cette catégorie vous trouvez vos onglets temporaires. Ils seront automatiquement effacés au bout de 30 jours"
+        },
+        "faves": {
+            "title": "Favoris",
+            "description": "Dans cette catégorie vous trouvez vos onglets favoris"
+        },
         "delete": "Effacer {{category}}",
-        "menu":{
-            "deleteAfter": "Effacer les onglets après"
+        "menu": {
+            "deleteAfter": "Effacer les onglets après",
+            "deleteImpossible": "Vous ne pouvez pas effacer la catégorie {{category}}",
+            "deleteConfirm": "Voulez-vous vraiment effacer {{category}}"
         }
     },
     "currentTabs": {
@@ -48,16 +64,23 @@
         "moreTabs_other": "{{count}} onglets de plus",
         "showLess": "En afficher moins",
         "noneOpened": "Aucun onglet ouvert",
-        "noneOpenedAdvice": "Vous pouvez en choisir parmi ceux enregistrés ou par groupe d'onglets en cliquant sur un bouton \"Tout ouvrir\""
+        "noneOpenedAdvice": "Vous pouvez en choisir parmi ceux enregistrés ou par groupe d'onglets en cliquant sur un bouton \"Tout ouvrir\"",
+        "noneInFilter": "Aucune correspondance",
+        "noneInFilterAdvice": "Il ne reste aucun onglet correspond aux filtres. Vous pouvez revoir le contenu de la barre de recherche"
     },
     "savedTabs": {
         "extract": "Extraire",
         "scrollTop": "Retourner en haut de page",
         "noTabsIn": "Aucun onglets n'est sauvegardé dans {{category}}",
-        "noTabsInAdviced": "Vous pouvez en ajouter en cliquant sur le bouton <1>Enregistrer<1/>",
+        "noTabsInAdvice": "Vous pouvez en ajouter en cliquant sur le bouton <1>Enregistrer</1>",
         "notifyExpiracy": "Les groupes d'onglets suivant vont bientôt atteindre leur date d'expiration et seront supprimés",
         "openRandom": "Ouvrir aléatoirement",
         "openRandomFrom": "Ouvrir aléatoirement depuis {{category}}"
+    },
+    "searchbar": {
+        "aliases": {
+            "notin": "PAS dans"
+        }
     },
     "settings": {
         "title": "Paramètres",
@@ -71,16 +94,18 @@
             },
             "cadence": "Cadence d'ouverture (en ms)",
             "autofocus": "Toujours aller sur le dernier onglet ouvert",
-            "storage":{
+            "storage": {
                 "title": "Stockage",
                 "import": "Importer des données",
                 "export": "Exporter des données",
                 "clear": "Effacer toutes les données"
             }
         },
-        "alias":{
+        "alias": {
             "title": "Paramétrage des alias",
-            "add": "Ajouter un alias"
+            "add": "Ajouter un alias",
+            "description": "Vous pouvez configurer les alias ici.",
+            "useCase": " Les alias permettent de prédéfinir des filtres sur les nom de domaine et ainsi faciliter vos recherche ou le tri de groupes d'onglets"
         }
     }
 }
