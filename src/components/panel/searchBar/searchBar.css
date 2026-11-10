@@ -31,9 +31,19 @@
     border-radius: 2em;
 }
 
-#searchbox .searchbar svg {
-    height: 35px;
-    width: 35px;
+#searchbox .searchbar .monochrome-svg {
+    height: 25px;
+    margin-right: 10px;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+#searchbox .searchbar .monochrome-svg:hover {
+    opacity: 1;
+}
+
+#searchbox .searchbar .monochrome-svg:active {
+    opacity: 0.3;
 }
 
 #searchbox .searchbar .p-inputtext {

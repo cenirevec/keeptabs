@@ -5,6 +5,7 @@ import { t } from "i18next";
 import "./searchBar.css";
 import { AliasAutocompleter } from "../../element/aliasAutocompleter/aliasAutocompleter.jsx";
 import { Services } from "../../../services.jsx";
+import { icons } from "../../../../public/api/shared.variables.mjs";
 
 export class SearchBarPanel extends Component {
     /** Parameters linked to the searchbar */
@@ -24,23 +25,8 @@ export class SearchBarPanel extends Component {
         this.setValue = this.setValue.bind(this);
         this.addValue = this.addValue.bind(this);
         this.removeValue = this.removeValue.bind(this);
-        //this.updateFilter = this.updateFilter.bind(this);
         this.clear = this.clear.bind(this);
     }
-
-    /**
-     * Use search algorithm to filter the tabs
-     * @param {*} expression 
-     *
-    search(expression){
-       /*  var searchAlgorithm = new SearchAlgorithm();
-
-        searchAlgorithm.init(TabService.loadedTabs.main);
-        searchAlgorithm.search(expression);        
-
-        TabService.renderSavedTabs(); *
-        console.log(expression)
-    }*/
 
     /**
      * Set a value
@@ -62,6 +48,11 @@ export class SearchBarPanel extends Component {
         this.props.onFilter(this.params);
     }
 
+    /**
+     * Add a filter value
+     * @param {*} event 
+     * @returns 
+     */
     addValue(event) {
         let processInput = (value) => {
             this.clearSearchbar();
@@ -91,17 +82,27 @@ export class SearchBarPanel extends Component {
         }
     }
 
+    /**
+     * Remove a filter value by index
+     * @param {*} index Index of the value
+     */
     removeValue(index) {
         this.params.removeValue(index);
         this.updateFilter();
     }
 
+    /**
+     * Remove all filter values
+     */
     clear() {
         this.params.clearValues();
         this.clearSearchbar();
         this.updateFilter();
     }
 
+    /**
+     * Reset the searchbar input
+     */
     clearSearchbar() {
         this.setState({
             searchbarContent: ""
@@ -121,6 +122,8 @@ export class SearchBarPanel extends Component {
             }
         });
 
+        let icon = (this.params.isEmpty())? icons.search: icons.editClear;
+
         return <section id="searchbox" className={(this.params.values.length > 1) ? 'asValues' : ''}>
             <div>
                 {valueChips}
@@ -134,15 +137,10 @@ export class SearchBarPanel extends Component {
                     onChange={(e) => this.setValue(e.target.value)}
                     onKeyDown={this.addValue}></input>
                 <div className="actions">
-                    <svg onClick={this.clear} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-circle erase" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                    </svg>
+                    <img className="monochrome-svg" src={icon} onClick={this.clear}/>
                 </div>
             </div>
             <AliasAutocompleter filter={this.params}></AliasAutocompleter>
-
-
         </section>
     }
 }

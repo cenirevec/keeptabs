@@ -33,7 +33,9 @@ export const icons = {
   settings: "./media/icons/settings.svg",
   new_tab: "./media/icons/new_tab.svg",
   addons: "./media/icons/addons.svg",
-  keeptabs: "./media/ico.png"
+  keeptabs: "./media/ico.png",
+  search: "./media/icons/search.svg",
+  editClear: "./media/icons/edit-clear.svg"
 }
 
 

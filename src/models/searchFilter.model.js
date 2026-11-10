@@ -12,6 +12,12 @@ export class searchParameters {
         revertSelection: false
     }
 
+    isEmpty(){
+        return this.values[0] == '' 
+            && this.values.length == 1;
+
+    }
+
     /**
      * Research algorithm
      * @param {*} source data to filter
@@ -19,8 +25,7 @@ export class searchParameters {
      */
     filter(tab) {
         //Directly skip if the value is empty
-        if (this.values[0] == '' 
-            && this.values.length == 1) return true;
+        if (this.isEmpty()) return true;
 
         //Text on which the filter is going to find a match
         let searchText = `"${tab.title} ${tab.url}"`.toLowerCase();
@@ -55,7 +60,6 @@ export class searchParameters {
 
             //Check if we can found this filter value in the tab information
             if (searchText.indexOf(value.toLowerCase()) != -1) {
-                console.log("hum! pénis"+value)
                 doesMatch = !startsWithBang;
                 solved = true;
             }

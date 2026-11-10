@@ -1,6 +1,6 @@
 import { IconReferencer } from "../../../../src/models/iconReferencer.model.js";
 import { Services } from "../../../../src/services.jsx";
-import { defaultModel } from "../../defaultData.mjs";
+import { defaultData, defaultModel } from "../../defaultData.mjs";
 import patchList, { PatchListPath } from "../../patch.mjs";
 import { currentDataVersion } from "../../shared.variables.mjs";
 import { navigatorName } from "../../shared.variables.mjs";
@@ -321,15 +321,26 @@ export class DataService {
 
         switch (method) {
             case DataUploadMethodEnum.MERGE:
+                //Merging favicon database
                 let currentlySavedFavicons = Services.data?.model?.icons?.references.length ?? 0;
                 this.mergeIconReferences(content.icons);
 
+                //Merging categories
                 let importedCategories = Object.keys(content.categories).map(categoryid => content.categories[categoryid]);
                 importedCategories.forEach(category => {
                     this.mergeWithCategory(category, currentlySavedFavicons);
                 });
 
-                //Services.main.reload();
+                //Merging aliases
+                //let importedAliases = Object.keys(content.shortcuts).map(shortcut => content.shortcuts[shortcut]);
+                for (const key in content.meta.shortcuts) {
+                    if (!Object.hasOwn(content.meta.shortcuts, key)) continue;
+
+                    const alias = content.meta.shortcuts[key];
+                    this.mergeAliases(key, alias);
+                }
+
+                //Save the new data
                 Services.data.save();
                 break;
             case DataUploadMethodEnum.REPLACE:
@@ -386,8 +397,15 @@ export class DataService {
     /**
      * TO BE DEFINED Merge aliases
      */
-    mergeAliases(toMerge) {
-
+    mergeAliases(name, toMerge) {
+        let alias = this.model.meta.shortcuts[name];
+        if (alias) {
+            alias.value = alias.value.concat(toMerge.value)
+                                    .filter((e, i, self) => i === self.indexOf(e));
+            alias.description = toMerge.description;
+        } else {
+            this.model.meta.shortcuts[name] = toMerge;
+        }
     }
 
     // ---------------- SETTINGS ------------- //

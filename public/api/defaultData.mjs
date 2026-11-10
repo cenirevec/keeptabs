@@ -22,11 +22,11 @@ export const defaultData = {
     shortcuts: {
         s: {
             value: [
-                "www.qwant.com",
-                "www.lilo.org",
-                "www.google.com",
-                "www.bing.com",
-                "www.duckduckgo.com"
+                "qwant.com",
+                "lilo.org",
+                "google.com",
+                "bing.com",
+                "duckduckgo.com"
             ],
             description: "Search Engines"
         },

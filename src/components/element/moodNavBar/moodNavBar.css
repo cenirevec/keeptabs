@@ -4,14 +4,10 @@
     margin: 0 25px;
 
     .kt-component-mood-navbar {
-        /* --popover-width: 27px;
-
-        padding-right: var(--popover-width); */
         flex-wrap: nowrap;
         overflow-x: scroll;
         overflow-y: hidden;
         padding-top: 15px;
-        border-radius: 0 40px 25px 0;
         border: none;
         padding-right: 15px;
 

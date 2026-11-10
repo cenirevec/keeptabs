@@ -75,7 +75,7 @@ export class AliasEditor extends React.Component {
      */
     setEditingValues(isEditingValues) {
         if (this.state.editingValues) {
-            Services.data.setValuesForAlias(this.key, this.state.values.replaceAll(" ","").split(/ *, */gm));
+            Services.data.setValuesForAlias(this.key, this.state.values.replaceAll(" ", "").split(/ *, */gm));
             this.refresh();
         }
 
@@ -111,11 +111,18 @@ export class AliasEditor extends React.Component {
     }
 
     render() {
-        let description = (this.state.description == "") ?
-            "Description here..." : this.state.description;
 
-        let values = (this.state.values == "") ?
-            "example.com" : this.state.values;
+        let savedDescription = this.props.alias[1].description;
+        let empty = new RegExp(" *");
+        if (savedDescription
+            && savedDescription.split(empty).join().length > 0) {
+            this.description = savedDescription;
+        }
+
+        let description = (savedDescription) ?? "Description here...";
+
+        let values = (this.props.alias[1].value.join(", ") == "") ?
+            "example.com" : this.props.alias[1].value.join(", ");
 
         return (
             <ListGroupItem className="kt kt-component kt-alias-editor">
@@ -138,7 +145,7 @@ export class AliasEditor extends React.Component {
                     </div>
 
                     {!this.state.editingValues &&
-                        <div onClick={() => this.setEditingValues(true)}
+                        <div key={`${this.props.alias}.values`} onClick={() => this.setEditingValues(true)}
                             className="kt kt-alias-value">
                             {values}</div>
                     }

@@ -17,25 +17,23 @@ export class AliasSettings extends React.Component {
         this.refresh = this.refresh.bind(this);
 
         this.state = {
-            aliases: Services.data.getAliases()
+            toggleRefresh: false
         }
     }
 
-    /**
-     * Action to do when the componenent is mounted
-     */
-    componentDidMount() {
-        this.setState({
-            aliases: Services.data.getAliases()
-        })
-    }
+    // componentDidUpdate(newProps){
+    //     if(this.props.refresher != newProps.refresher){
+    //         this.refresh();
+    //     }
+    //     return true;
+    // }
 
     /**
      * Actions to do to to refresh the pane
      */
     refresh() {
         this.setState({
-            aliases: Services.data.getAliases()
+            toggleRefresh: !this.state.toggleRefresh
         })
     }
 
@@ -86,8 +84,11 @@ export class AliasSettings extends React.Component {
      */
     render() {
 
+        let aliases = Services.data.getAliases();
+        console.log(aliases)
+
         let tPath = "settings.alias";
-        let aliasesList = Object.entries(this.state.aliases).sort(this.compareAliases).map((alias, index) =>
+        let aliasesList = Object.entries(aliases).sort(this.compareAliases).map((alias, index) =>
             <AliasEditor
                 key={alias}
                 alias={alias}
