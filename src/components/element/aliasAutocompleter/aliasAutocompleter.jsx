@@ -9,27 +9,21 @@ export class AliasAutocompleter extends React.Component {
         super(props);
     }
 
-    renderAliasesList(input) {
-        let aliases = Services.data.getAliases();
+    /**
+     * Render function
+     * @returns 
+     */
+    render() {
+        const {aliases,list,meta} = Services.data.getAliasesFiltered(this.props.filter);
+        let reversed = meta.reversed;
 
-        let reversed = input.indexOf("!") == 0
-
-        let list = Object.keys(aliases)
-            .filter(x => x.indexOf(input.replace("!", "")) != -1)
-            .map(alias => {
+        let aliasList = list.map(alias => {
                 return <li key={alias}>
                     <b>:{reversed && <>!</>}{alias}</b> - {reversed && <i>{t("searchbar.aliases.notin")}</i>} {aliases[alias].description}</li>
             })
 
         return <ul className='kt-component kt-component-alias-autocompleter'>
-            {list}
+            {aliasList}
         </ul>
-    }
-
-    render() {
-        let input = this.props.filter.values[this.props.filter.values.length - 1];
-        let lastTypeAlias = /:(!?[^:]*)$/g.test(input);
-
-        return this.renderAliasesList(RegExp.$1);
     }
 }

@@ -51,8 +51,8 @@ export class DataService {
         /** Load the data in the manifest file */
         fetch("../../../manifest.json")
             .then(response => response.json())
-            .then(json => {this.webexManifest = json;})
-            .catch(error=>console.error);
+            .then(json => { this.webexManifest = json; })
+            .catch(error => console.error);
     }
 
     /**
@@ -99,7 +99,7 @@ export class DataService {
                 .filter((value, index) => index > currentVersionId);
 
             // Function to apply to a level of the tree
-            function runOperation (patchBranch, levelObject) {
+            function runOperation(patchBranch, levelObject) {
                 //Return if there are no operation to run
                 if (!patchBranch?.operations) return;
 
@@ -143,7 +143,7 @@ export class DataService {
             //     // Initialize next recursion variable
             //     let nextModelPath = modelPath;
             //     console.log(patchBranch,modelPath,patchBranch.path)
-                
+
 
             //     if (patchBranch.path) {
             //         // Define which object to use for the next recursion
@@ -187,47 +187,47 @@ export class DataService {
             //             goFurther(childPathBranch, nextModelPath, level + 1));
             //     }
             // }
-            
-            function goFurther(patches,model){
+
+            function goFurther(patches, model) {
                 //Traitement du patch
-                if(Array.isArray(patches)){
-                    patches.forEach(_patch=>{
+                if (Array.isArray(patches)) {
+                    patches.forEach(_patch => {
                         let _model = model[_patch.path];
                         //model.visited += "case 1" +_patch.path;
                         //Create the model branch if doesn't exists
-                        if(!_model){
+                        if (!_model) {
                             model[_patch.path] = {};
                             _model = model[_patch.path];
                         }
                         // Run the operation as defined in patches file
                         runOperation(_patch, _model);
-                        
+
                         // Go to the next step
-                        goFurther(_patch,_model);
+                        goFurther(_patch, _model);
                     })
                 }
-                else if(patches.forEach || patches.children){
-                    
-                    let _patch = (patches.forEach) ? patches.forEach: patches.children;
-                    
+                else if (patches.forEach || patches.children) {
+
+                    let _patch = (patches.forEach) ? patches.forEach : patches.children;
+
                     if (patches.forEach) {
-                        Object.keys(model).forEach(key=>{
+                        Object.keys(model).forEach(key => {
                             // Model used in next iteration
                             let _model = model[key];
                             // Run the operation as defined in patches file
                             runOperation(_patch, _model);
 
                             // Go to the next step
-                            goFurther(_patch,_model);
+                            goFurther(_patch, _model);
                         })
 
                     } else {
-                       // Go to the next step
-                       goFurther(_patch,model);
+                        // Go to the next step
+                        goFurther(_patch, model);
                     }
-                   // model.visited += "case 2";
+                    // model.visited += "case 2";
                 }
-                else{
+                else {
                     // Run the operation as defined in patches file
                     runOperation(patches, model);
                     //
@@ -326,9 +326,9 @@ export class DataService {
 
                 let importedCategories = Object.keys(content.categories).map(categoryid => content.categories[categoryid]);
                 importedCategories.forEach(category => {
-                    this.mergeWithCategory(category,currentlySavedFavicons);
+                    this.mergeWithCategory(category, currentlySavedFavicons);
                 });
-                
+
                 //Services.main.reload();
                 Services.data.save();
                 break;
@@ -346,15 +346,15 @@ export class DataService {
      * @param {Object} toMerge Category from the file to merge or add
      * @param {number} oldNbFavs Number of previously saved favicons
      */
-    mergeWithCategory(toMerge,oldNbFavs) {
+    mergeWithCategory(toMerge, oldNbFavs) {
         //Update the iconReference ids
         toMerge.tabGroups.map(
             tabGroup => tabGroup.tabs.map(
-                tab=>{
+                tab => {
                     tab.faviconId += oldNbFavs;
                     return tab;
                 })
-            );
+        );
 
         //Check if the category exists
         if (toMerge?.meta?.name) {
@@ -379,15 +379,15 @@ export class DataService {
      * Icon referencer
      * @param {IconReferencer} toMerge icon referencer to merge
      */
-    mergeIconReferences(toMerge){
+    mergeIconReferences(toMerge) {
         this.model.icons.references = this.model.icons.references.concat(toMerge.references);
     }
 
     /**
      * TO BE DEFINED Merge aliases
      */
-    mergeAliases(toMerge){
-        
+    mergeAliases(toMerge) {
+
     }
 
     // ---------------- SETTINGS ------------- //
@@ -449,6 +449,31 @@ export class DataService {
         return Services.data.model.meta.shortcuts;
     }
 
+    /**
+     * Get the list of aliases when filtered 
+     * @param {searchParameters} filter Filter parameters
+     * @returns  (aliases, list, meta) object
+     */
+    getAliasesFiltered(filter) {
+        let values = filter.values;
+        let lastValue = values[values.length - 1];
+
+        let matchesFormat = /:(!?[^:]*)$/g.test(lastValue);
+        let input = RegExp.$1;
+
+        let aliases = Services.data.getAliases();
+
+        let meta = {
+            reversed: input.indexOf("!") == 0
+        }
+
+        let list = (matchesFormat) ?
+            Object.keys(aliases).filter(
+                x => x.indexOf(input.replace("!", "")) != -1)
+            : [];
+        return { aliases, list, meta };
+    }
+
 
     /**
      * Get the list of filter associated to an alias
@@ -464,7 +489,7 @@ export class DataService {
      * @param {number} [iteration=0] 
      * @returns Available name
      */
-    checkForNewAliasName(name){
+    checkForNewAliasName(name) {
         let count = 0;
         let _name = name;
 
@@ -473,16 +498,16 @@ export class DataService {
             _name = name + count;
         }
         return _name;
-    } 
-    
-    
-    suggestAliasName(name,iteration=0){
-        if(Services.data.model.meta.shortcuts[name]){
+    }
+
+
+    suggestAliasName(name, iteration = 0) {
+        if (Services.data.model.meta.shortcuts[name]) {
             this.suggestAliasName(
                 `${name}${iteration}`,
                 iteration++
-            ); 
-        }else{
+            );
+        } else {
             return name;
         }
     }
@@ -496,7 +521,7 @@ export class DataService {
         let alias = this.suggestAliasName(_alias);
         Services.data.model.meta.shortcuts[alias] = { value: ["example.com"] }
         Services.data.save();
-        
+
         return alias;
     }
 
@@ -506,7 +531,7 @@ export class DataService {
      */
     setValuesForAlias(alias, values) {
         // Check if the alias exist and create one if not
-        if(Services.data.model.meta.shortcuts[alias] == undefined){
+        if (Services.data.model.meta.shortcuts[alias] == undefined) {
             alias = this.addAlias(alias);
         }
 
@@ -550,9 +575,9 @@ export class DataService {
     }
 
 
-        /**
-     * Download the saved tabs
-     */
+    /**
+ * Download the saved tabs
+ */
     download() {
         var data = JSON.stringify(this.model);
         var a = document.createElement("a");

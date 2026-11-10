@@ -4,6 +4,7 @@ import Chip from "../../element/chip/chip.jsx";
 import { t } from "i18next";
 import "./searchBar.css";
 import { AliasAutocompleter } from "../../element/aliasAutocompleter/aliasAutocompleter.jsx";
+import { Services } from "../../../services.jsx";
 
 export class SearchBarPanel extends Component {
     /** Parameters linked to the searchbar */
@@ -62,11 +63,31 @@ export class SearchBarPanel extends Component {
     }
 
     addValue(event) {
-        if (event.keyCode == 13) {
-            this.clearSearchbar()
-            this.params.addValue(event.target.value)
+        let processInput = (value) => {
+            this.clearSearchbar();
+            this.params.addValue(value)
 
             this.updateFilter();
+        };
+
+        if (event.keyCode == 13) {
+            processInput(event.target.value);
+        }
+        else if (event.keyCode == 9) {
+            const { aliases, list, meta } = Services.data.getAliasesFiltered(this.params);
+            let firstAlias = list[0];
+            //Do nothing if there are no matching aliases
+            if (!firstAlias || firstAlias == "") {
+                return;
+            }
+
+            const entry = (meta.reversed) ?
+                `:!${firstAlias}` : `:${firstAlias}`;
+
+            processInput(entry);
+
+            // Prevent the default tab behavior
+            event.preventDefault();
         }
     }
 

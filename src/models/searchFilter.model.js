@@ -72,9 +72,9 @@ export class searchParameters{
      * @returns 
      */
     getFilterForAlias(enteredText){
-        let isReversed = enteredText.match(CommonRegExps.SEARCH_NEGATION) != null;
-        
-        let alias = enteredText.split(':')[1];
+        CommonRegExps.SEARCH_ALIASES.test(enteredText);
+        let alias = RegExp.$1;
+        let isReversed = enteredText[1] == "!";
         if (Services.data.hasAlias(alias)) {
             let valuesForAlias = Services.data.getValuesForAlias(alias);
 

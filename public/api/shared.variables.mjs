@@ -128,6 +128,6 @@ export function objectToArray(o, cond) {
 
 
 export const CommonRegExps = {
-  SEARCH_ALIASES: /^!?:[a-zA-Z0-9]*/gim,
+  SEARCH_ALIASES: /^:!?([a-zA-Z0-9]*)/gim,
   SEARCH_NEGATION: /^!.*/
 }

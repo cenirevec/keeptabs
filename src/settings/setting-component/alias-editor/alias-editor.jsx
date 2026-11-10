@@ -75,7 +75,7 @@ export class AliasEditor extends React.Component {
      */
     setEditingValues(isEditingValues) {
         if (this.state.editingValues) {
-            Services.data.setValuesForAlias(this.key, this.state.values.split(/ *, */gm));
+            Services.data.setValuesForAlias(this.key, this.state.values.replaceAll(" ","").split(/ *, */gm));
             this.refresh();
         }
 
