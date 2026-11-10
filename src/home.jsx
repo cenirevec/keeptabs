@@ -200,8 +200,10 @@ class Home extends React.Component {
         if(!this.state.data?.categories) return;
         
         let theme = window.matchMedia('(prefers-color-scheme: dark)').matches? "dark": "light";
+        document.body.dataset.bsTheme = theme;
+        
         return (
-            <div data-bs-theme={theme} className="container">
+            <div className="container">
                 <HeaderPanel />
                 <CurrentTabsPanel
                     filter={this.searchFilter}

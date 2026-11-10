@@ -20,7 +20,7 @@
 }
 
 #searchbox .searchbar {
-    box-shadow: var(--default-shadow);
+    box-shadow: var(--default-box-shadow);
     opacity: 0.6;
     background-color: var(--list-bg-color);
 }

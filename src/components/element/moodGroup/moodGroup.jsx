@@ -47,6 +47,7 @@ export class MoodGroup extends React.Component {
     constructor(props) {
         super(props);
 
+        this.ref = React.createRef();
         this.state = {
             tabGroups: this.props.category.tabGroups,
             enableScrollToTop: false,
@@ -181,6 +182,16 @@ export class MoodGroup extends React.Component {
         this.props.saveData();
     }
 
+    /**
+     * Search for tab groups in the DOM after filter being applied
+     * @returns Whether or not there are still tab groups
+     */
+    hasNoneInFilter() {
+        let node = this.ref.current;
+        return !!node &&
+            node.getElementsByClassName("kt-component-tabgroup").length == 0;
+    }
+
     /************************************************
      *                  RENDER METHODS
      **************************************************/
@@ -239,8 +250,6 @@ export class MoodGroup extends React.Component {
         if (this.props.category.tabGroups == undefined)
             return;
 
-        //console.warn("MoodGroup refresh")
-
         this.cleanDataModel();
 
         //Create the list of visible tab groups
@@ -256,14 +265,17 @@ export class MoodGroup extends React.Component {
 
         let openRandomButton = (
             <Button variant="outline-secondary" className="kt kt-open-rand-btn"
-                onClick={() => TabService.openRandomTabGroup(this.props.category,this.props.filter)}>
+                onClick={() => TabService.openRandomTabGroup(this.props.category, this.props.filter)}>
                 {t("savedTabs.openRandom")}</Button>
         )
         // Improve readability
         let defaultDesc = this.props.category.meta.translationDescription;
 
+        //Check if there are tabgroups after applying filter
+        let hasNoneInFilter = this.hasNoneInFilter();
 
-        return <div className="kt kt-component kt-component-moodgroup">
+
+        return <div ref={this.ref} className="kt kt-component kt-component-moodgroup">
             <div className="kt-component-moodgroup-header">
                 <p className="description">
                     {defaultDesc &&
@@ -293,9 +305,17 @@ export class MoodGroup extends React.Component {
                     </small>
                 </div>
             }
+            {hasNoneInFilter &&
+                <div className="empty">
+                    <div>
+                        <p>{t("currentTabs.noneInFilter")}</p>
+                        <small>{t("currentTabs.noneInFilterAdvice")}</small>
+                    </div>
+                </div>
+            }
 
 
-            {hiddenTabgroupList.length > 0 &&
+            {(!hasNoneInFilter && hiddenTabgroupList.length > 0) &&
                 <h3 className="notify-expiracy">{t("savedTabs.notifyExpiracy")}</h3>
             }
             {hiddenTabgroupList}

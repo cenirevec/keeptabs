@@ -16,7 +16,7 @@
     },
     "timeAgo": {
         "yesterday": "yesterday",
-        "twoDaysAgo": "two days ago",
+        "twoDaysAgo": "2 days ago",
         "second_zero": "right now",
         "second_one": "{{count}} second ago",
         "second_other": "{{count}} seconds ago",
