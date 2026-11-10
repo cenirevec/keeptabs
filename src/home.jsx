@@ -12,6 +12,8 @@ import { searchParameters } from "./models/searchFilter.model"
 import DataService from "../public/api/services/data/data.service.mjs";
 import { Services } from "./services.jsx";
 import './home.css';
+import { Alert } from "react-bootstrap";
+import { t } from "i18next";
 
 
 class Home extends React.Component {
@@ -35,12 +37,13 @@ class Home extends React.Component {
         super(props);
 
         // Come back to last visited category
-        this.category = (isNaN(localStorage.selectedCategory))? 
+        this.category = (isNaN(localStorage.selectedCategory)) ?
             0 : parseInt(localStorage.selectedCategory);
 
         this.state = {
             data: {},
-            category: this.category
+            category: this.category,
+            tabsToOpen: 0
         };
         this.setMoods = this.setMoods.bind(this);
         this.refresh = this.refresh.bind(this);
@@ -51,6 +54,7 @@ class Home extends React.Component {
         this.reload = this.reload.bind(this);
         this.reloadOtherInstances = this.reloadOtherInstances.bind(this);
         this.watch = this.watch.bind(this);
+        //this.setTabsToOpen = this.setTabsToOpen.bind(this);
 
         Services.main = this;
 
@@ -65,14 +69,24 @@ class Home extends React.Component {
     }
 
     /** Just before update */
-    shouldComponentUpdate(nextProps, nextStates) {
-        return !(this.props.data == nextProps.data &&
-             this.state.category == nextStates.category)
+    // shouldComponentUpdate(nextProps, nextStates) {
+    //     return !(this.props.data == nextProps.data &&
+    //         this.state.category == nextStates.category)
+    // }
+
+
+    watch() {
+        console.log("In watch");
     }
 
-
-    watch(){
-        console.log("In watch");
+    /**
+     * Indicates that tabs are opening and how much
+     * @param {*} remaining How much tabs remaining to open
+     */
+    setTabsToOpen(remaining) {
+        this.setState({
+            tabsToOpen: remaining
+        })
     }
 
     //Shared Methods
@@ -117,7 +131,7 @@ class Home extends React.Component {
         this.setState({
             category: index
         });
-        
+
         //Save the focus on category and fix potential selected category bug with NaN
         localStorage.selectedCategory = (isNaN(index)) ? 0 : index;
     }
@@ -140,13 +154,13 @@ class Home extends React.Component {
         /* Check for a correct category to show */
         let index = this.state.category;
 
-        if(!this.state.data.categories[0]){
+        if (!this.state.data.categories[0]) {
             console.error("Corrupted dataset: No 'temporary' category")
         }
-        while(!this.state.data.categories[index] && index > 0){
+        while (!this.state.data.categories[index] && index > 0) {
             index--;
         }
-        
+
         this.setSelectedCategory(index);
 
         /* Actual update */
@@ -197,11 +211,11 @@ class Home extends React.Component {
      * @returns Rendered content
      */
     render() {
-        if(!this.state.data?.categories) return;
-        
-        let theme = window.matchMedia('(prefers-color-scheme: dark)').matches? "dark": "light";
+        if (!this.state.data?.categories) return;
+
+        let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
         document.body.dataset.bsTheme = theme;
-        
+
         return (
             <div className="container">
                 <HeaderPanel />
@@ -224,6 +238,10 @@ class Home extends React.Component {
                     selected={this.state.category}
                     setMoods={this.setMoods} />
                 <FooterPanel />
+                {this.state.tabsToOpen > 0 &&
+                    <Alert className="tabsToOpen">
+                        {t("alert.remainingTabsToOpen", { count: this.state.tabsToOpen })}
+                    </Alert>}
             </div>
         )
     }

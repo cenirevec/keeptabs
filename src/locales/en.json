@@ -14,6 +14,10 @@
         "cancel": "Cancel",
         "confirm": "Confirm"
     },
+    "alert":{
+        "remainingTabsToOpen_one": "Currently opening the last tab...",
+        "remainingTabsToOpen_other": "Currently opening {{count}} tabs..."
+    },
     "timeAgo": {
         "yesterday": "yesterday",
         "twoDaysAgo": "2 days ago",

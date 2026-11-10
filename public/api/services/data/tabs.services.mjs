@@ -119,6 +119,8 @@ export class TabService {
                         options.windowId = windowId;
                     }
                     browser.tabs.create(options).then(loadNext, loadNext);
+
+                    Services.main.setTabsToOpen(filteredTabs.length - index - 1);
                 }
 
                 //Create tabs where the user started the open all feature when possible

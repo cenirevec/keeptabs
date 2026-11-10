@@ -14,6 +14,10 @@
         "cancel": "Annuler",
         "confirm": "Confirmer"
     },
+    "alert":{
+        "remainingTabsToOpen_one": "Ouverture du dernier onglet...",
+        "remainingTabsToOpen_other": "Ouvre en ce moment {{count}} onglets..."
+    },
     "timeAgo": {
         "yesterday": "hier",
         "twoDaysAgo": "avant-hier",
