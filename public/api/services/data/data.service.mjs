@@ -332,13 +332,15 @@ export class DataService {
                 });
 
                 //Merging aliases
-                //let importedAliases = Object.keys(content.shortcuts).map(shortcut => content.shortcuts[shortcut]);
                 for (const key in content.meta.shortcuts) {
                     if (!Object.hasOwn(content.meta.shortcuts, key)) continue;
 
                     const alias = content.meta.shortcuts[key];
                     this.mergeAliases(key, alias);
                 }
+
+                //Replace settings
+                this.model.meta.settings = content.meta.settings;
 
                 //Save the new data
                 Services.data.save();
@@ -407,7 +409,6 @@ export class DataService {
             this.model.meta.shortcuts[name] = toMerge;
         }
     }
-
     // ---------------- SETTINGS ------------- //
 
     /**
