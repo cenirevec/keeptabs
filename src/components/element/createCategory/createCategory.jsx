@@ -30,6 +30,7 @@ export class CreateCategory extends Component {
             name: ''
         }
         this.createCategory = this.createCategory.bind(this);
+        this.enableEdition = this.enableEdition.bind(this);
     }
 
     /**
@@ -43,7 +44,7 @@ export class CreateCategory extends Component {
         if (this.props.onCreated) {
             this.props.onCreated(category);
         }
-        this.toggleEditionMode(false);
+        this.enableEdition(false);
         Services.main?.refresh();
     }
 
@@ -57,7 +58,7 @@ export class CreateCategory extends Component {
      * Set/Unset the Edition mode
      * @param {boolean} enabled Whether the mode is active or not
      */
-    toggleEditionMode(enabled) {
+    enableEdition(enabled) {
         this.setState({
             edition: enabled
         });
@@ -75,22 +76,26 @@ export class CreateCategory extends Component {
     renderButtonWithInput() {
         return <React.Fragment>
             {!this.state.edition &&
-                <Button variant="outline-secondary" className="kt kt-element kt-add-category-bttn" onClick={() => { this.toggleEditionMode(true) }}>
+                <Button variant="outline-secondary" className="kt kt-element kt-add-category-bttn" onClick={() => { this.enableEdition(true) }}>
                     + {t("category.add")}
                 </Button>
             }
             {this.state.edition &&
                 <Form className="kt kt-element kt-add-category-inputs" onSubmit={this.createCategory}>
-                    <InputGroup>
+                    <InputGroup 
+                    onBlur={()=>{
+                        setTimeout(()=>this.enableEdition(false),100)
+                    }}
+                    >
                         <Form.Control placeholder={t("common.add")+"..."}
                             aria-describedby="add-category-input"
                             value={this.state.name}
                             autoFocus
                             onChange={(e) => this.setName(e.target.value)}
                         ></Form.Control>
-                        <Button onClick={this.createCategory}
+                        {/* <Button onClick={this.createCategory}
                             id="add-category-input"
-                        >{t("common.add")}</Button>
+                        >{t("common.add")}</Button> */}
                     </InputGroup>
                 </Form>
             }

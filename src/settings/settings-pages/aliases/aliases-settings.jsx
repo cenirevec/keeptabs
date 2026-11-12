@@ -85,7 +85,6 @@ export class AliasSettings extends React.Component {
     render() {
 
         let aliases = Services.data.getAliases();
-        console.log(aliases)
 
         let tPath = "settings.alias";
         let aliasesList = Object.entries(aliases).sort(this.compareAliases).map((alias, index) =>

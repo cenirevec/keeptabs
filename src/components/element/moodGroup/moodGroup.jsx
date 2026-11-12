@@ -305,7 +305,7 @@ export class MoodGroup extends React.Component {
                     </small>
                 </div>
             }
-            {hasNoneInFilter &&
+            {(this.props.category.tabGroups.length > 0 && hasNoneInFilter) &&
                 <div className="empty">
                     <div>
                         <p>{t("currentTabs.noneInFilter")}</p>
